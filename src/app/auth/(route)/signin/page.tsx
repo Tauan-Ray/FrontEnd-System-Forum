@@ -107,7 +107,7 @@ const SignInPage = () => {
                       />
                     )}
                   />
-                  <FormError message={form.formState.errors.email?.message} />
+                  <FormError message={form.formState.errors.password?.message} />
 
                   <FormField
                     control={form.control}

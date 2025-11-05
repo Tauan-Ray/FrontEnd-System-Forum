@@ -2,6 +2,7 @@ import "./globals.css"
 import { Toaster } from "sonner";
 import { Header } from "./ui/header";
 import { JetBrains_Mono, Roboto } from "next/font/google"
+import { Suspense } from "react";
 
 
 const jetbrains = JetBrains_Mono({
@@ -24,7 +25,11 @@ export default function RootLayout({
       <body className="min-h-screen bg-background">
         <Toaster position="top-right" richColors />
         <Header/>
-        <main className="container">{children}</main>
+        <main className="container">
+          <Suspense>
+            {children}
+          </Suspense>
+        </main>
       </body>
     </html>
   );
