@@ -168,7 +168,7 @@ const SignUpPage = () => {
                         label="Confirmar senha"
                         placeholder="Confirme sua senha"
                         show={showPassword.confirm}
-                        toggle={() => setShowPassword((prev) => ({ ...prev, confirm: !showPassword.password }))}
+                        toggle={() => setShowPassword((prev) => ({ ...prev, confirm: !showPassword.confirm }))}
                         disabled={isLoading}
                       />
                     )}
