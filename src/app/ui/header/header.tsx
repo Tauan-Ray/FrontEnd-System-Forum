@@ -1,8 +1,7 @@
 import Link from "next/link";
 import Image from "next/image";
-import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
-import { Search, UserCircle2 } from "lucide-react";
+import { UserCircle2 } from "lucide-react";
 import MenuMobile from "./menuMobile";
 import SearchInput from "./searchInput";
 
@@ -22,11 +21,11 @@ export const Header = () => {
           <SearchInput />
 
           <div className="hidden md:flex items-center gap-4">
-            <Button className="rounded-md px-5 py-3 text-sm font-medium text-white bg-blue-medium hover:bg-blue-hover transition">
+            <Button className="rounded-md px-5 py-3 text-sm font-medium bg-blue-medium hover:bg-blue-hover transition">
               <Link href="/auth/signin">Login</Link>
             </Button>
 
-            <Button className="rounded-md px-5 py-3 text-sm font-medium text-white bg-blue-medium hover:bg-blue-hover transition">
+            <Button className="rounded-md px-5 py-3 text-sm font-medium bg-blue-medium hover:bg-blue-hover transition">
               <Link href="/auth/signup">Cadastro</Link>
             </Button>
 

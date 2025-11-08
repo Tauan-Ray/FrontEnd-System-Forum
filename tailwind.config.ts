@@ -35,6 +35,7 @@ const config: Config = {
       fontFamily: {
         mono: ["var(--font-jetbrains)", "monospace"],
         sans: ["var(--font-roboto)", "sans-serif"],
+        poppins: ["var(--font-poppins)", "sans-serif"]
       },
       keyframes: {
         fadeIn: {

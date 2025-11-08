@@ -199,7 +199,7 @@ const SignUpPage = () => {
                 </div>
               </div>
               <div className="flex flex-col w-full items-center mt-5">
-                <Button type="submit" form="form-signup" className="text-white py-5 w-4/5 md:w-2/5 text-md md:text-lg md:py-6">
+                <Button type="submit" form="form-signup" className="py-5 w-4/5 md:w-2/5 text-md md:text-lg md:py-6">
                   {isLoading && (<Spinner/>)}Cadastrar
                 </Button>
 

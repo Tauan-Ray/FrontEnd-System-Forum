@@ -45,11 +45,11 @@ const MenuMobile = () => {
             className="rounded-lg border border-blue-primary bg-white px-4 py-2 text-base focus:outline-none"
           />
 
-          <Button onClick={() => setOpen(false)} className="rounded-md px-5 py-3 text-sm font-medium text-white bg-blue-medium hover:bg-blue-hover transition">
+          <Button onClick={() => setOpen(false)} className="rounded-md px-5 py-3 text-sm font-medium bg-blue-medium hover:bg-blue-hover transition">
             <Link href="/auth/signin">Login</Link>
           </Button>
 
-          <Button onClick={() => setOpen(false)} className="rounded-md px-5 py-3 text-sm font-medium text-white bg-blue-medium hover:bg-blue-hover transition">
+          <Button onClick={() => setOpen(false)} className="rounded-md px-5 py-3 text-sm font-medium bg-blue-medium hover:bg-blue-hover transition">
             <Link href="/auth/signup">Cadastro</Link>
           </Button>
         </div>

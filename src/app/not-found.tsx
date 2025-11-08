@@ -32,7 +32,7 @@ export default function NotFound() {
         <div className="flex flex-col sm:flex-row justify-center gap-4 mt-4">
           <Button
             asChild
-            className="text-white px-8 py-6 text-base md:text-lg shadow-lg hover:scale-105 transition-transform"
+            className="px-8 py-6 text-base md:text-lg shadow-lg hover:scale-105 transition-transform"
           >
             <Link href="/">Home</Link>
           </Button>
@@ -40,7 +40,7 @@ export default function NotFound() {
           <Button
             asChild
             variant="secondary"
-            className="text-white px-8 py-6 text-base md:text-lg hover:bg-blue-hover hover:scale-105 transition-all"
+            className="px-8 py-6 text-base md:text-lg hover:bg-blue-hover hover:scale-105 transition-all"
           >
             <Link href="/questions" className="flex items-center gap-2">
               <Search size={18} />
