@@ -4,7 +4,6 @@ import { z } from "@/components/pt-zod";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { EyeIcon, EyeOffIcon } from "lucide-react";
 import Image from "next/image";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
@@ -26,11 +25,14 @@ import PasswordInput from "../../ui/PasswordInput";
 
 type showPasswordType = {
   password: boolean;
-  confirm: boolean
-}
+  confirm: boolean;
+};
 
-const SignUpPage = () => {
-  const [showPassword, setShowPassword] = useState<showPasswordType>({ password: false, confirm: false });
+export default function SignUpPage() {
+  const [showPassword, setShowPassword] = useState<showPasswordType>({
+    password: false,
+    confirm: false,
+  });
   const [isLoading, setIsLoading] = useState<boolean>(false);
 
   const form = useForm<z.infer<typeof SignUpFormSchema>>({
@@ -119,7 +121,9 @@ const SignUpPage = () => {
                       </FormItem>
                     )}
                   />
-                  <FormError message={form.formState.errors.username?.message} />
+                  <FormError
+                    message={form.formState.errors.username?.message}
+                  />
 
                   <FormField
                     control={form.control}
@@ -152,12 +156,19 @@ const SignUpPage = () => {
                         label="Senha"
                         placeholder="Digite sua senha"
                         show={showPassword.password}
-                        toggle={() => setShowPassword((prev) => ({ ...prev, password: !showPassword.password }))}
+                        toggle={() =>
+                          setShowPassword((prev) => ({
+                            ...prev,
+                            password: !showPassword.password,
+                          }))
+                        }
                         disabled={isLoading}
                       />
                     )}
                   />
-                  <FormError message={form.formState.errors.password?.message} />
+                  <FormError
+                    message={form.formState.errors.password?.message}
+                  />
 
                   <FormField
                     control={form.control}
@@ -168,12 +179,19 @@ const SignUpPage = () => {
                         label="Confirmar senha"
                         placeholder="Confirme sua senha"
                         show={showPassword.confirm}
-                        toggle={() => setShowPassword((prev) => ({ ...prev, confirm: !showPassword.confirm }))}
+                        toggle={() =>
+                          setShowPassword((prev) => ({
+                            ...prev,
+                            confirm: !showPassword.confirm,
+                          }))
+                        }
                         disabled={isLoading}
                       />
                     )}
                   />
-                  <FormError message={form.formState.errors.confirmPassword?.message} />
+                  <FormError
+                    message={form.formState.errors.confirmPassword?.message}
+                  />
 
                   <FormField
                     control={form.control}
@@ -181,17 +199,19 @@ const SignUpPage = () => {
                     render={({ field }) => (
                       <FormItem className="flex items-center justify-between pl-1 mb-3 md:mb-0">
                         <div className="flex items-center space-x-2">
-                        <FormControl >
-                          <Switch
-                            className="w-11 h-6"
-                            checked={field.value}
-                            onCheckedChange={field.onChange}
-                            aria-readonly
-                            id="remember"
-                            disabled={isLoading}
-                          />
-                        </FormControl>
-                          <Label className="text-zinc-600" htmlFor="remember">Lembrar-me</Label>
+                          <FormControl>
+                            <Switch
+                              className="w-11 h-6"
+                              checked={field.value}
+                              onCheckedChange={field.onChange}
+                              aria-readonly
+                              id="remember"
+                              disabled={isLoading}
+                            />
+                          </FormControl>
+                          <Label className="text-zinc-600" htmlFor="remember">
+                            Lembrar-me
+                          </Label>
                         </div>
                       </FormItem>
                     )}
@@ -199,13 +219,20 @@ const SignUpPage = () => {
                 </div>
               </div>
               <div className="flex flex-col w-full items-center mt-5">
-                <Button type="submit" form="form-signup" className="py-5 w-4/5 md:w-2/5 text-md md:text-lg md:py-6">
-                  {isLoading && (<Spinner/>)}Cadastrar
+                <Button
+                  type="submit"
+                  form="form-signup"
+                  className="py-5 w-4/5 md:w-2/5 text-md md:text-lg md:py-6"
+                >
+                  {isLoading && <Spinner />}Cadastrar
                 </Button>
 
                 <div className="flex flex-col md:flex-row text-md font-sans font-bold gap-2 mt-3 text-center">
                   <span>Já possui uma conta?</span>
-                  <Link href="/auth/signin" className="text-blue-primary hover:underline">
+                  <Link
+                    href="/auth/signin"
+                    className="text-blue-primary hover:underline"
+                  >
                     Entre Agora!
                   </Link>
                 </div>
@@ -216,6 +243,4 @@ const SignUpPage = () => {
       </div>
     </div>
   );
-};
-
-export default SignUpPage;
+}

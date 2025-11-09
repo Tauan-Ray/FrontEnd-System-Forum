@@ -2,7 +2,6 @@
 
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { EyeIcon, EyeOffIcon } from "lucide-react";
 import Image from "next/image";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
@@ -16,7 +15,7 @@ import {
   FormLabel,
   FormMessage,
 } from "@/components/ui/form";
-import { zodResolver } from "@hookform/resolvers/zod"
+import { zodResolver } from "@hookform/resolvers/zod";
 import { Spinner } from "@/components/ui/spinner";
 import { AuthenticateUser } from "../../actions/auth";
 import { Label } from "@/components/ui/label";
@@ -26,7 +25,7 @@ import Link from "next/link";
 import FormError from "../../ui/FormError";
 import PasswordInput from "../../ui/PasswordInput";
 
-const SignInPage = () => {
+export default function SignInPage() {
   const [showPassword, setShowPassword] = useState<boolean>(false);
   const [isLoading, setIsLoading] = useState<boolean>(false);
 
@@ -38,7 +37,7 @@ const SignInPage = () => {
       email: "",
       password: "",
       password_remember: true,
-      redirect: searchParams.get('redirect') || '/'
+      redirect: searchParams.get("redirect") || "/",
     },
   });
 
@@ -67,7 +66,11 @@ const SignInPage = () => {
           </h1>
 
           <Form {...form}>
-            <form id="form-login" onSubmit={form.handleSubmit(onSubmit)} className="w-full mb-8">
+            <form
+              id="form-login"
+              onSubmit={form.handleSubmit(onSubmit)}
+              className="w-full mb-8"
+            >
               <div className="flex flex-col items-center w-full px-4 md:px-0">
                 <div className="flex flex-col gap-5 w-full text-sm md:text-md">
                   <FormField
@@ -76,7 +79,7 @@ const SignInPage = () => {
                     render={({ field }) => (
                       <FormItem>
                         <FormLabel className="pl-3">E-mail</FormLabel>
-                        <FormControl >
+                        <FormControl>
                           <div>
                             <Input
                               placeholder="Digite seu e-mail"
@@ -107,7 +110,9 @@ const SignInPage = () => {
                       />
                     )}
                   />
-                  <FormError message={form.formState.errors.password?.message} />
+                  <FormError
+                    message={form.formState.errors.password?.message}
+                  />
 
                   <FormField
                     control={form.control}
@@ -115,17 +120,19 @@ const SignInPage = () => {
                     render={({ field }) => (
                       <FormItem className="flex items-center justify-between pl-1 mb-3 md:mb-0">
                         <div className="flex items-center space-x-2">
-                        <FormControl >
-                          <Switch
-                            className="w-11 h-6"
-                            checked={field.value}
-                            onCheckedChange={field.onChange}
-                            aria-readonly
-                            id="remember"
-                            disabled={isLoading}
-                          />
-                        </FormControl>
-                          <Label className="text-zinc-600" htmlFor="remember">Lembrar-me</Label>
+                          <FormControl>
+                            <Switch
+                              className="w-11 h-6"
+                              checked={field.value}
+                              onCheckedChange={field.onChange}
+                              aria-readonly
+                              id="remember"
+                              disabled={isLoading}
+                            />
+                          </FormControl>
+                          <Label className="text-zinc-600" htmlFor="remember">
+                            Lembrar-me
+                          </Label>
                         </div>
                       </FormItem>
                     )}
@@ -133,13 +140,20 @@ const SignInPage = () => {
                 </div>
               </div>
               <div className="flex flex-col w-full items-center mt-5">
-                <Button type="submit" form="form-login" className="py-5 w-4/5 md:w-2/5 text-md md:text-lg md:py-6">
-                  {isLoading && (<Spinner/>)}Login
+                <Button
+                  type="submit"
+                  form="form-login"
+                  className="py-5 w-4/5 md:w-2/5 text-md md:text-lg md:py-6"
+                >
+                  {isLoading && <Spinner />}Login
                 </Button>
 
                 <div className="flex flex-col md:flex-row text-md font-sans font-bold gap-2 mt-3 text-center">
                   <span>Não tem uma conta?</span>
-                  <Link href="/auth/signup" className="text-blue-primary hover:underline">
+                  <Link
+                    href="/auth/signup"
+                    className="text-blue-primary hover:underline"
+                  >
                     Crie Agora!
                   </Link>
                 </div>
@@ -150,6 +164,4 @@ const SignInPage = () => {
       </div>
     </div>
   );
-};
-
-export default SignInPage;
+}

@@ -1,8 +1,8 @@
 import "./globals.css"
 import { Toaster } from "sonner";
-import { Header } from "./ui/header/header";
 import { JetBrains_Mono, Poppins, Roboto } from "next/font/google"
 import { Suspense } from "react";
+import Header from "./ui/header/header";
 
 
 const jetbrains = JetBrains_Mono({

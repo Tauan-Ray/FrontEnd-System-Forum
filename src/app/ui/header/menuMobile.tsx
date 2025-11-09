@@ -1,4 +1,4 @@
-"use client"
+"use client";
 
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -14,8 +14,8 @@ import { Menu, UserCircle2 } from "lucide-react";
 import Link from "next/link";
 import { useState } from "react";
 
-const MenuMobile = () => {
-  const [open, setOpen] = useState<boolean>(false)
+export default function MenuMobile() {
+  const [open, setOpen] = useState<boolean>(false);
   return (
     <Sheet open={open} onOpenChange={setOpen}>
       <SheetTrigger asChild>
@@ -45,17 +45,21 @@ const MenuMobile = () => {
             className="rounded-lg border border-blue-primary bg-white px-4 py-2 text-base focus:outline-none"
           />
 
-          <Button onClick={() => setOpen(false)} className="rounded-md px-5 py-3 text-sm font-medium bg-blue-medium hover:bg-blue-hover transition">
+          <Button
+            onClick={() => setOpen(false)}
+            className="rounded-md px-5 py-3 text-sm font-medium bg-blue-medium hover:bg-blue-hover transition"
+          >
             <Link href="/auth/signin">Login</Link>
           </Button>
 
-          <Button onClick={() => setOpen(false)} className="rounded-md px-5 py-3 text-sm font-medium bg-blue-medium hover:bg-blue-hover transition">
+          <Button
+            onClick={() => setOpen(false)}
+            className="rounded-md px-5 py-3 text-sm font-medium bg-blue-medium hover:bg-blue-hover transition"
+          >
             <Link href="/auth/signup">Cadastro</Link>
           </Button>
         </div>
       </SheetContent>
     </Sheet>
   );
-};
-
-export default MenuMobile;
+}

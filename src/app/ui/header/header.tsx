@@ -5,7 +5,7 @@ import { UserCircle2 } from "lucide-react";
 import MenuMobile from "./menuMobile";
 import SearchInput from "./searchInput";
 
-export const Header = () => {
+export default function Header() {
   return (
     <header className="w-full bg-white/80 border-b border-b-gray-300 p-4 sticky top-0 z-50 backdrop-blur-md">
       <div className="mx-auto max-w-7xl px-2 sm:px-6 lg:px-8">
@@ -44,4 +44,4 @@ export const Header = () => {
       </div>
     </header>
   );
-};
+}
