@@ -3,7 +3,7 @@
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Button } from "@/components/ui/button";
-import { searchParams } from "../lib/types";
+import { defaultParams, searchParams } from "../lib/types";
 import CategorySelect from "./CategorySelect";
 import { XCircle } from "lucide-react";
 
@@ -19,11 +19,7 @@ export default function FilterQuestions({
   const today = new Date().toLocaleDateString("en-CA");
 
   const handleClearFilters = () => {
-    setSearch({
-      registerStart: undefined,
-      registerEnd: undefined,
-      ID_CT: undefined,
-    });
+    setSearch(defaultParams);
   };
 
   return (

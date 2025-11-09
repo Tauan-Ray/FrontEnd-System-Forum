@@ -19,7 +19,7 @@ export default function PageAllQuestions () {
       <FilterQuestions search={search} setSearch={setSearch} />
 
       <div className="w-full sm:w-8/12">
-        <AllQuestions search={search} debouncedSearch={debouncedSearch} setDebouncedSearch={setDebouncedSearch} />
+        <AllQuestions search={search} setSearch={setSearch} debouncedSearch={debouncedSearch} setDebouncedSearch={setDebouncedSearch} />
       </div>
     </div>
   );

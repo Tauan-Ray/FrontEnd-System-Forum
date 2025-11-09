@@ -13,11 +13,12 @@ import { RefreshCw } from "lucide-react";
 
 type AllQuestionsProps = {
     search: searchParams;
+    setSearch: React.Dispatch<React.SetStateAction<searchParams>>;
     debouncedSearch: searchParams;
     setDebouncedSearch: React.Dispatch<React.SetStateAction<searchParams>>;
 }
 
-export default function AllQuestion ({ search, debouncedSearch, setDebouncedSearch }: AllQuestionsProps) {
+export default function AllQuestion ({ search, setSearch, debouncedSearch, setDebouncedSearch }: AllQuestionsProps) {
     const getParams = useCallback(
     (pgIndx: number, prevPgIndx?: any) => {
       const params = new URLSearchParams();
@@ -120,11 +121,12 @@ export default function AllQuestion ({ search, debouncedSearch, setDebouncedSear
                             }
                         }) :
                         <QuestionsNotFound
+                          setSearch={setSearch}
                           message="Parece que ainda não há perguntas que correspondam aos filtros aplicados.
                             Que tal explorar outras categorias ou criar uma nova pergunta?"
                         />
                 ) : (
-                    <QuestionsNotFound type="error" message={errorQuestion?.data?.message || "Falha ao carregar perguntas..."} />
+                    <QuestionsNotFound setSearch={setSearch} type="error" message={errorQuestion?.data?.message || "Falha ao carregar perguntas..."} />
                 )}
             </div>
             {isValidating && (
