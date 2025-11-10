@@ -13,12 +13,21 @@ import { useEffect, useState } from "react";
 import { getCategories, ResCategory } from "../lib/sessions";
 import { searchParams } from "../lib/types";
 
-type CategorySelectProps = {
-  search: searchParams
-  setSearch: React.Dispatch<React.SetStateAction<searchParams>>;
-};
+type CategorySelectProps =
+  | {
+      search: searchParams;
+      setSearch: React.Dispatch<React.SetStateAction<searchParams>>;
+      value?: never;
+      onChange?: never;
+    }
+  | {
+      value?: string;
+      onChange?: (value: string) => void;
+      search?: never;
+      setSearch?: never;
+    };
 
-export default function CategorySelect({ search, setSearch }: CategorySelectProps) {
+export default function CategorySelect(props: CategorySelectProps) {
   const [allCategories, setAllCategories] = useState<ResCategory[]>([]);
   const [isLoading, setIsLoading] = useState<boolean>(false);
 
@@ -36,12 +45,25 @@ export default function CategorySelect({ search, setSearch }: CategorySelectProp
       });
   }, []);
 
-  const handleSelectCategory = (value: string) => {
-    setSearch((prev) => ({ ...prev, ID_CT: value }));
+  const handleChange = (value: string) => {
+    if (props?.setSearch) {
+      props.setSearch((prev) => ({ ...prev, ID_CT: value }));
+    } else if (props.onChange) {
+      props.onChange(value);
+    }
   };
 
+  const currentValue =
+    props?.search
+      ? props.search.ID_CT || ""
+      : props.value || "";
+
   return (
-    <Select onValueChange={handleSelectCategory} disabled={isLoading} value={search.ID_CT || ""}>
+    <Select
+      onValueChange={handleChange}
+      value={currentValue}
+      disabled={isLoading}
+    >
       <SelectTrigger>
         <SelectValue placeholder={isLoading ? "Carregando..." : "Selecione"} />
       </SelectTrigger>
