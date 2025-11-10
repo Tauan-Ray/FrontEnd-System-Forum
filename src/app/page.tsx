@@ -1,5 +1,5 @@
 import HomeActionsSection from "./ui/home/HomeActionsSection";
-import OneQuestion from "./questions/ui/OneQuestion";
+import RecentQuestions from "./ui/home/RecentQuestions";
 
 export default function HomePage() {
   return (
@@ -12,13 +12,7 @@ export default function HomePage() {
         </h2>
 
         <div className="flex flex-col gap-6">
-          <OneQuestion
-            username="_tauankk"
-            DT_CR={new Date()}
-            title="Como criar uma API segura com Node.js e JWT"
-            category="Des. Backend"
-            description="Estou desenvolvendo uma API em Node.js e quero implementar autenticação usando JSON Web Tokens (JWT). Gostaria de saber quais são as melhores práticas para proteger as rotas, armazenar o token de forma segura e evitar vulnerabilidades. Também aceito dicas sobre middleware e bibliotecas recomendadas."
-          />
+          <RecentQuestions />
         </div>
       </div>
     </div>
