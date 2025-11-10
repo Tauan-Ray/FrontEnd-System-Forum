@@ -46,7 +46,7 @@ export default function CreateQuestionDialog({
 
   async function onSubmit(values: z.infer<typeof CreateQuestionFormSchema>) {
     setIsLoading(true);
-    console.log(values)
+    console.log(values);
     // await AuthenticateUser(values);
     setIsLoading(false);
   }
@@ -58,7 +58,12 @@ export default function CreateQuestionDialog({
           onSubmit={form.handleSubmit(onSubmit)}
           className="w-full mb-8"
         >
-          <DialogContent className="max-h-[90vh] w-full sm:max-w-md md:max-w-lg mx-auto overflow-auto">
+          <DialogContent
+            className="max-h-[90vh] w-full sm:max-w-md md:max-w-lg mx-auto overflow-auto"
+            onInteractOutside={(e) => {
+              e.preventDefault();
+            }}
+          >
             <DialogHeader className="flex flex-col items-center">
               <DialogTitle className="text-lg md:text-2xl">
                 Qual sua dúvida?
@@ -146,7 +151,6 @@ export default function CreateQuestionDialog({
                 {isLoading && <Spinner />} Criar pergunta
               </Button>
             </div>
-
           </DialogContent>
         </form>
       </Form>
