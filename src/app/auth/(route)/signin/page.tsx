@@ -83,7 +83,6 @@ export default function SignInPage() {
                             <Input
                               placeholder="Digite seu e-mail"
                               className="w-full font-mono font-bold text-md"
-                              autoFocus
                               disabled={isLoading}
                               {...field}
                             />

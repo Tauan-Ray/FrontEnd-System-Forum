@@ -26,7 +26,6 @@ export default function PasswordInput({
             type={show ? "text" : "password"}
             placeholder={placeholder}
             className="w-full pr-12 font-mono font-bold text-md"
-            autoFocus
             disabled={disabled}
             {...field}
           />

@@ -81,7 +81,6 @@ export default function CreateQuestionDialog({
                         <Input
                           placeholder="Digite sua dúvida"
                           className="w-full font-mono font-bold text-xs md:text-base"
-                          autoFocus
                           disabled={isLoading}
                           {...field}
                         />

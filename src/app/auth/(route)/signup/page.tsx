@@ -90,7 +90,6 @@ export default function SignUpPage() {
                             <Input
                               placeholder="Digite seu nome"
                               className="w-full font-mono font-bold text-md"
-                              autoFocus
                               disabled={isLoading}
                               {...field}
                             />
@@ -112,7 +111,6 @@ export default function SignUpPage() {
                             <Input
                               placeholder="Digite seu username"
                               className="w-full font-mono font-bold text-md"
-                              autoFocus
                               disabled={isLoading}
                               {...field}
                             />
@@ -136,7 +134,6 @@ export default function SignUpPage() {
                             <Input
                               placeholder="Digite seu e-mail"
                               className="w-full font-mono font-bold text-md"
-                              autoFocus
                               disabled={isLoading}
                               {...field}
                             />
