@@ -4,11 +4,11 @@ import { useEffect, useState } from "react";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import OneQuestion from "../../ui/OneQuestion";
 import { getQuestionById, ResQuestion } from "../../lib/sessions";
-import SkeletonQuestions from "@/components/SkeletonQuestion";
+import { SkeletonQuestions } from "@/components/SkeletonModel";
 import QuestionsNotFound from "../../ui/QuestionsNotFound";
 import RichTextEditor from "../../ui/RichTextEditor/RichTextEditor";
 import { Button } from "@/components/ui/button";
-import { ThumbsDown, ThumbsUp, UserCircle2 } from "lucide-react";
+import AllQuestion from "./AllAnswers";
 
 type IntoQuestionProps = {
   questionId: string;
@@ -83,42 +83,8 @@ export default function IntoQuestion({ questionId }: IntoQuestionProps) {
         </div>
       )}
 
-      <h2>Respostas(2)</h2>
-      <div className="flex flex-col border border-gray-dark rounded-md p-4 sm:p-5 gap-4 hover:border-blue-hover transition-colors">
-        <div className="flex flex-col gap-2 sm:flex-row sm:justify-between">
-          <div className="flex flex-row gap-3 items-center">
-            <UserCircle2
-              size={32}
-              className="text-blue-light hover:text-blue-hover transition"
-            />
-            <p className="font-sans text-base sm:text-lg text-gray-dark">
-              Maluzitos
-            </p>
-          </div>
+      <AllQuestion questionId={questionId} />
 
-          <p className="font-sans text-sm sm:text-md text-gray-dark">
-            Resposta enviada em: {new Date().toLocaleDateString("pt-BR")}
-          </p>
-        </div>
-
-        <div
-          className="prose prose-sm sm:prose-base max-w-none text-gray-dark prose-pre:bg-gray-100 prose-pre:p-3 prose-pre:rounded-md prose-pre:overflow-x-auto prose-code:text-blue-700 prose-code:font-mono prose-code:text-sm break-words whitespace-pre-wrap overflow-hidden"
-          dangerouslySetInnerHTML={{
-            __html:
-              "Pesquisa ai como faz",
-          }}
-        />
-
-        <div className="flex flex-row gap-7 justify-end">
-          <Button variant={"outline"}>
-            <ThumbsUp size={26} className="text-blue-primary" />
-          </Button>
-
-          <Button variant={"outline"}>
-            <ThumbsDown size={26} className="text-blue-dark" />
-          </Button>
-        </div>
-      </div>
     </div>
   );
 }

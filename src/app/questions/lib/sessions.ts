@@ -33,6 +33,18 @@ export type ResQuestion = {
   DEL_AT?: Date | null
 }
 
+export type ResAnswer = {
+  ID_AN: string;
+  ID_QT: string;
+  RESPONSE: string;
+  DT_CR: Date;
+  USERNAME: string;
+  ROLE: string;
+  TITLE: string;
+  CATEGORY: string;
+  likes: number;
+  dislikes: number;
+};
 
 type ResCreateQuestion = {
   message: string;

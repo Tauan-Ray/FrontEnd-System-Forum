@@ -1,7 +1,7 @@
 "use client";
 
 import useSWR from "swr";
-import SkeletonQuestions from "@/components/SkeletonQuestion";
+import { SkeletonQuestions } from "@/components/SkeletonModel";
 import OneQuestion from "@/app/questions/ui/OneQuestion";
 import { ParamsRequest } from "@/lib/type";
 import { ResQuestion } from "@/app/questions/lib/sessions";
