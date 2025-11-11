@@ -22,6 +22,7 @@ import { Spinner } from "@/components/ui/spinner";
 import Link from "next/link";
 import FormError from "../../ui/FormError";
 import PasswordInput from "../../ui/PasswordInput";
+import PasswordChecklist from "../../ui/PasswordCheckList";
 
 type showPasswordType = {
   password: boolean;
@@ -148,25 +149,24 @@ export default function SignUpPage() {
                     control={form.control}
                     name="password"
                     render={({ field }) => (
-                      <PasswordInput
-                        field={field}
-                        label="Senha"
-                        placeholder="Digite sua senha"
-                        show={showPassword.password}
-                        toggle={() =>
-                          setShowPassword((prev) => ({
-                            ...prev,
-                            password: !showPassword.password,
-                          }))
-                        }
-                        disabled={isLoading}
-                      />
+                      <>
+                        <PasswordInput
+                          field={field}
+                          label="Senha"
+                          placeholder="Digite sua senha"
+                          show={showPassword.password}
+                          toggle={() =>
+                            setShowPassword((prev) => ({
+                              ...prev,
+                              password: !showPassword.password,
+                            }))
+                          }
+                          disabled={isLoading}
+                        />
+                        <PasswordChecklist password={field.value} />
+                      </>
                     )}
                   />
-                  <FormError
-                    message={form.formState.errors.password?.message}
-                  />
-
                   <FormField
                     control={form.control}
                     name="confirmPassword"
@@ -186,6 +186,7 @@ export default function SignUpPage() {
                       />
                     )}
                   />
+
                   <FormError
                     message={form.formState.errors.confirmPassword?.message}
                   />

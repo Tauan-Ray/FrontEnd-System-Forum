@@ -29,12 +29,7 @@ export const SignUpFormSchema = z.object({
     .regex(/[a-zA-Z]/, { message: 'É esperado ao menos 1 letra' })
     .regex(/[0-9]/, { message: 'É esperado ao menos 1 número' })
     .trim(),
-  confirmPassword: z.string()
-    .min(8, 'A senha deve conter pelo menos 8 caracter(es)')
-    .max(20, 'A senha deve conter pelo menos 8 caracter(es)')
-    .regex(/[a-zA-Z]/, { message: 'É esperado ao menos 1 letra' })
-    .regex(/[0-9]/, { message: 'É esperado ao menos 1 número' })
-    .trim(),
+  confirmPassword: z.string(),
   password_remember: z.boolean().default(true).optional(),
 }).refine((data) => data.password === data.confirmPassword, {
   message: 'As senhas não coincidem',

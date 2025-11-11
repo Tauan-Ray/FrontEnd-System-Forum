@@ -28,6 +28,10 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="pt-br" className={`${jetbrains.variable} ${roboto.variable} ${poppins.variable}`}>
+      <head>
+        <title>Devtalk</title>
+        {/* <link rel="shortcut icon" href="/favicon.ico" type="image/x-icon" /> */}
+      </head>
       <body className="min-h-screen bg-background">
         <Toaster position="top-right" richColors />
         <Header/>
