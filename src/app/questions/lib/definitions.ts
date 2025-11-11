@@ -13,7 +13,7 @@ export const CreateQuestionFormSchema = z.object({
       const div = document.createElement('div');
       div.innerHTML = html;
       const text = div.textContent || div.innerText || '';
-      return text.length <= 255;
+      return text.length <= 1200;
     }, {
       message: 'A descrição deve conter no máximo 255 caracteres (somente texto)',
     }),
