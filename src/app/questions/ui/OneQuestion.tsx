@@ -44,9 +44,7 @@ export default function OneQuestion({
       </div>
 
       <div className="text-justify">
-        <p className="font-sans text-sm sm:text-base text-gray-dark text-justify">
-          {description}
-        </p>
+        <p className="font-sans text-sm sm:text-base text-gray-dark text-justify" dangerouslySetInnerHTML={{ __html: description }} />
       </div>
 
       <div className="flex justify-end">
