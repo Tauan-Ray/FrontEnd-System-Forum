@@ -5,6 +5,10 @@ import { Globe, MessageSquareOff, PlusCircle } from "lucide-react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { defaultParams, searchParams } from "../lib/types";
+import { useUser } from "@/context/user-context";
+import { useState } from "react";
+import { toast } from "sonner";
+import CreateQuestionDialog from "./CreateQuestionDialog";
 
 type QuestionsNotFoundProps = {
   message: string;
@@ -17,6 +21,18 @@ export default function QuestionsNotFound({
   type,
   setSearch,
 }: QuestionsNotFoundProps) {
+  const [openDialog, setOpenDialog] = useState<boolean>(false);
+  const user = useUser();
+
+  function handleOpenDialog() {
+    if (!user) {
+      toast.warning("Você precisa estar logado para criar uma pergunta", {
+        description: "Faça login para continuar.",
+      });
+      return;
+    }
+    setOpenDialog(true);
+  }
   const router = useRouter();
 
   const handleResetFilters = () => {
@@ -59,14 +75,13 @@ export default function QuestionsNotFound({
         )}
 
         <Button
-          asChild
+          onClick={handleOpenDialog}
           className="px-8 py-6 text-base md:text-lg shadow-lg hover:scale-105 transition-transform"
         >
-          <Link href="/questions/new" className="flex items-center gap-2">
-            <PlusCircle size={18} />
-            Fazer uma pergunta
-          </Link>
+          <PlusCircle size={18} />
+          Fazer uma pergunta
         </Button>
+        <CreateQuestionDialog open={openDialog} onOpenChange={setOpenDialog} />
       </div>
     </div>
   );

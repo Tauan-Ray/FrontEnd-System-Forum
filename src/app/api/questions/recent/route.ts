@@ -15,7 +15,6 @@ export async function GET() {
     }
 
     const questions = await response.json();
-    console.log(questions)
     return NextResponse.json(questions);
   } catch (error) {
     console.error("Erro na requisição", error);

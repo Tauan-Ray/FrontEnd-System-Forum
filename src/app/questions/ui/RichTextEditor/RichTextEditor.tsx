@@ -5,31 +5,30 @@ import StarterKit from "@tiptap/starter-kit";
 import MenuBarEditor from "./MenuBarEditor";
 import TextAlign from "@tiptap/extension-text-align";
 import CodeBlock from "@tiptap/extension-code-block";
+import { useState } from "react";
 
 type RichTextEditorProps = {
   value: string;
   onChange: (content: string) => void;
-}
+};
+
+const MAX_LENGTH = 1200;
 
 export default function RichTextEditor({ value, onChange }: RichTextEditorProps) {
+  const [charCount, setCharCount] = useState(0);
+
   const editor = useEditor({
     immediatelyRender: false,
     extensions: [
       StarterKit.configure({
         bulletList: {
-          HTMLAttributes: {
-            class: "list-disc ml-4"
-          },
+          HTMLAttributes: { class: "list-disc ml-4" },
         },
         orderedList: {
-          HTMLAttributes: {
-            class: "list-decimal ml-4"
-          }
-        }
+          HTMLAttributes: { class: "list-decimal ml-4" },
+        },
       }),
-      TextAlign.configure({
-        types: ["heading", "paragraph"]
-      }),
+      TextAlign.configure({ types: ["heading", "paragraph"] }),
       CodeBlock,
     ],
     content: value,
@@ -40,14 +39,25 @@ export default function RichTextEditor({ value, onChange }: RichTextEditorProps)
       },
     },
     onUpdate: ({ editor }) => {
+      const text = editor.getText();
+      setCharCount(text.length);
+
+      if (text.length > MAX_LENGTH) {
+        const trimmedText = text.slice(0, MAX_LENGTH);
+        editor.commands.setContent(trimmedText);
+      }
+
       onChange(editor.getHTML());
-    }
+    },
   });
 
   return (
     <div>
       <MenuBarEditor editor={editor} />
       <EditorContent editor={editor} />
+      <p className="text-sm mt-1 text-gray-500">
+        {charCount} / {MAX_LENGTH} caracteres
+      </p>
     </div>
   );
 }

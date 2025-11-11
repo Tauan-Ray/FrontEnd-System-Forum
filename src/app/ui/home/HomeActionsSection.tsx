@@ -2,12 +2,25 @@
 
 import CreateQuestionDialog from "@/app/questions/ui/CreateQuestionDialog";
 import { Button } from "@/components/ui/button";
+import { useUser } from "@/context/user-context";
 import { Globe, Plus } from "lucide-react";
 import Link from "next/link";
 import { useState } from "react";
+import { toast } from "sonner";
 
 const HomeActionsSection = () => {
   const [openDialog, setOpenDialog] = useState<boolean>(false);
+  const user = useUser();
+
+  function handleOpenDialog() {
+    if (!user) {
+      toast.warning("Você precisa estar logado para criar uma pergunta", {
+        description: "Faça login para continuar.",
+      });
+      return;
+    }
+    setOpenDialog(true);
+  }
 
   return (
     <div className="flex flex-col items-center gap-6 text-center">
@@ -29,7 +42,7 @@ const HomeActionsSection = () => {
           ou
         </span>
 
-        <Button  onClick={() => setOpenDialog(true)} className=" bg-blue-light w-full sm:w-64 p-5 rounded-lg border border-[#808080] gap-2">
+        <Button  onClick={handleOpenDialog} className=" bg-blue-light w-full sm:w-64 p-5 rounded-lg border border-[#808080] gap-2">
           <Plus className="text-black h-6 w-6 sm:h-7 sm:w-7" />
           <span className="font-mono text-base text-black">Criar</span>
           <span className="font-mono text-base text-blue-800">pergunta</span>

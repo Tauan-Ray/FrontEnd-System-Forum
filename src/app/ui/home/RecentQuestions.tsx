@@ -19,7 +19,7 @@ export default function RecentQuestions() {
     localFetcher,
     {
       revalidateOnFocus: false,
-      dedupingInterval: 1000 * 60 * 5,
+      dedupingInterval: 1000 * 60 * 2,
     }
   );
 

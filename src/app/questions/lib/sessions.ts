@@ -4,6 +4,8 @@ import 'server-only'
 import { handleApiError } from "@/lib/client.util"
 import { DefaultParamsResponse } from "@/lib/type"
 import { service_api } from "@/service/service.api"
+import { CreateQuestionFormSchema } from './definitions'
+import { z } from '@/components/pt-zod'
 
 export type ResCategory = {
     ID_CT: string,
@@ -28,10 +30,25 @@ export type ResQuestion = {
       USERNAME: string,
       ROLE: string,
   }
+  DEL_AT?: Date | null
+}
+
+
+type ResCreateQuestion = {
+  message: string;
+  data: ResQuestion
 }
 
 export async function getCategories(): Promise<{ data: ResCategory, status: number } | DefaultParamsResponse> {
   return await service_api.get<ResCategory[]>(`/category/all`)
     .then(({ data, status }) => ({ status, data }))
+    .catch(handleApiError)
+}
+
+export async function createQuestion(
+  question: z.infer<typeof CreateQuestionFormSchema>
+): Promise<ResCreateQuestion & DefaultParamsResponse> {
+  return await service_api.post('/questions/create', question)
+    .then(({ data, status }) => ({ ...data, status }))
     .catch(handleApiError)
 }

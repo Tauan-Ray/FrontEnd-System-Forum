@@ -1,3 +1,5 @@
+"use client"
+
 import { zodResolver } from "@hookform/resolvers/zod";
 import {
   Dialog,
@@ -23,6 +25,7 @@ import CategorySelect from "./CategorySelect";
 import RichTextEditor from "./RichTextEditor/RichTextEditor";
 import { Spinner } from "@/components/ui/spinner";
 import { Button } from "@/components/ui/button";
+import { CreateQuestion } from "../actions/CreateQuestion";
 
 type CreateQuestionDialogProps = {
   open: boolean;
@@ -40,15 +43,16 @@ export default function CreateQuestionDialog({
     defaultValues: {
       title: "",
       description: "",
-      category: "",
+      ID_CT: "",
     },
   });
 
   async function onSubmit(values: z.infer<typeof CreateQuestionFormSchema>) {
     setIsLoading(true);
-    console.log(values);
-    // await AuthenticateUser(values);
+    await CreateQuestion(values);
     setIsLoading(false);
+
+    onOpenChange(false)
   }
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
@@ -98,7 +102,7 @@ export default function CreateQuestionDialog({
 
               <FormField
                 control={form.control}
-                name="category"
+                name="ID_CT"
                 render={({ field }) => (
                   <FormItem>
                     <div className="flex flex-col md:flex-row gap-3 items-center">
@@ -115,7 +119,7 @@ export default function CreateQuestionDialog({
                   </FormItem>
                 )}
               />
-              <FormError message={form.formState.errors.category?.message} />
+              <FormError message={form.formState.errors.ID_CT?.message} />
 
               <FormField
                 control={form.control}
