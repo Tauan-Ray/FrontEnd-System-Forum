@@ -45,6 +45,12 @@ export async function getCategories(): Promise<{ data: ResCategory, status: numb
     .catch(handleApiError)
 }
 
+export async function getQuestionById(id: string): Promise<{ data: ResQuestion, status: number } | DefaultParamsResponse> {
+  return await service_api.get<ResCategory>(`/questions/find?id=${id}`)
+    .then(({ data, status }) => ({ status, data }))
+    .catch(handleApiError)
+}
+
 export async function createQuestion(
   question: z.infer<typeof CreateQuestionFormSchema>
 ): Promise<ResCreateQuestion & DefaultParamsResponse> {

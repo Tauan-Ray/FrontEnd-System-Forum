@@ -10,7 +10,6 @@ import SkeletonQuestions from "@/components/SkeletonQuestion";
 import QuestionsNotFound from "./QuestionsNotFound";
 import OneQuestion from "./OneQuestion";
 import { RefreshCw } from "lucide-react";
-import { UserProvider } from "@/context/user-context";
 
 type AllQuestionsProps = {
   search: searchParams;
@@ -105,7 +104,6 @@ export default function AllQuestion({
     };
   }, [questions, setSize, errorQuestion, isValidating]);
   return (
-    <UserProvider>
       <div className="pb-14">
         <div id="scroll-area" className="flex flex-col gap-6">
           {isLoading ? (
@@ -117,12 +115,14 @@ export default function AllQuestion({
                   return _data?.map((question, index: number) => {
                     return (
                       <OneQuestion
-                        key={index}
+                        key={question.ID_QT}
+                        ID_QT={question.ID_QT}
                         username={question.User.USERNAME}
                         DT_CR={question.DT_CR}
                         category={question.Category.CATEGORY}
                         title={question.TITLE}
                         description={question.DESCRIPTION}
+                        redirect={true}
                       />
                     );
                   });
@@ -152,6 +152,5 @@ export default function AllQuestion({
           </div>
         )}
       </div>
-    </UserProvider>
   );
 }

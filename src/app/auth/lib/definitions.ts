@@ -31,6 +31,7 @@ export const SignUpFormSchema = z.object({
     .trim(),
   confirmPassword: z.string(),
   password_remember: z.boolean().default(true).optional(),
+  redirect: z.string().trim().default('/'),
 }).refine((data) => data.password === data.confirmPassword, {
   message: 'As senhas não coincidem',
   path: ['confirmPassword']

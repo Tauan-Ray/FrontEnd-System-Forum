@@ -1,28 +1,40 @@
-import { Button } from "@/components/ui/button";
 import { UserCircle2 } from "lucide-react";
+import { useRouter } from "next/navigation";
+import ResponseButton from "./ResponseButton";
 
 type OneQuestionProps = {
+  ID_QT: string;
   username: string;
   DT_CR: Date;
   title: string;
   category: string;
   description: string;
+  redirect?: boolean;
+  onOpenResponseModal?: () => void;
 };
 
 export default function OneQuestion({
+  ID_QT,
   username,
   DT_CR,
   title,
   category,
   description,
+  redirect,
+  onOpenResponseModal,
 }: OneQuestionProps) {
+  const router = useRouter();
   const formatDescription =
-  description && description.length > 250
+  description && redirect && description.length > 250
     ? `${description.slice(0, description.slice(0, 250).lastIndexOf(" "))}...`
     : description || "";
 
+  const handleRedirectToQuestion = (idQuestion: string) => {
+    if (redirect) router.push(`/questions/${idQuestion}`);
+  }
+
   return (
-    <div className="flex flex-col border border-gray-dark rounded-md p-4 sm:p-5 gap-4 hover:border-blue-hover transition-colors">
+    <div onClick={() => handleRedirectToQuestion(ID_QT)} className="flex flex-col border border-gray-dark rounded-md p-4 sm:p-5 gap-4 hover:border-blue-hover transition-colors">
       <div className="flex flex-col gap-2 sm:flex-row sm:justify-between">
         <div className="flex flex-row gap-3 items-center">
           <UserCircle2
@@ -53,11 +65,7 @@ export default function OneQuestion({
         dangerouslySetInnerHTML={{ __html: formatDescription }}
       />
 
-      <div className="flex justify-end">
-        <Button className="p-4 text-sm sm:text-base w-full sm:w-auto">
-          Responder
-        </Button>
-      </div>
+      <ResponseButton onOpenModal={onOpenResponseModal} idQuestion={ID_QT} />
     </div>
   );
 }

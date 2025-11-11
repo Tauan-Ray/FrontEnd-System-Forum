@@ -149,7 +149,7 @@ export default function SignInPage() {
                 <div className="flex flex-col md:flex-row text-md font-sans font-bold gap-2 mt-3 text-center">
                   <span>Não tem uma conta?</span>
                   <Link
-                    href="/auth/signup"
+                    href={searchParams.get("redirect") ? `/auth/signup?redirect=${searchParams.get("redirect")}` : "/auth/signup"}
                     className="text-blue-primary hover:underline"
                   >
                     Crie Agora!

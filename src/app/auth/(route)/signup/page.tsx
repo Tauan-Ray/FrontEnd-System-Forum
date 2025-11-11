@@ -23,6 +23,7 @@ import Link from "next/link";
 import FormError from "../../ui/FormError";
 import PasswordInput from "../../ui/PasswordInput";
 import PasswordChecklist from "../../ui/PasswordCheckList";
+import { useSearchParams } from "next/navigation";
 
 type showPasswordType = {
   password: boolean;
@@ -36,6 +37,8 @@ export default function SignUpPage() {
   });
   const [isLoading, setIsLoading] = useState<boolean>(false);
 
+  const searchParams = useSearchParams();
+
   const form = useForm<z.infer<typeof SignUpFormSchema>>({
     resolver: zodResolver(SignUpFormSchema),
     defaultValues: {
@@ -45,6 +48,7 @@ export default function SignUpPage() {
       password: "",
       confirmPassword: "",
       password_remember: true,
+      redirect: searchParams.get("redirect") || "/"
     },
   });
 
@@ -228,7 +232,7 @@ export default function SignUpPage() {
                 <div className="flex flex-col md:flex-row text-md font-sans font-bold gap-2 mt-3 text-center">
                   <span>Já possui uma conta?</span>
                   <Link
-                    href="/auth/signin"
+                    href={searchParams.get("redirect") ? `/auth/signin?redirect=${searchParams.get("redirect")}` : "/auth/signin"}
                     className="text-blue-primary hover:underline"
                   >
                     Entre Agora!

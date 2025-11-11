@@ -39,11 +39,13 @@ export default function RecentQuestions() {
         {questions?._data?.map((question) => (
           <OneQuestion
             key={question.ID_QT}
+            ID_QT={question.ID_QT}
             username={question.User.USERNAME}
             DT_CR={question.DT_CR}
             title={question.TITLE}
             category={question.Category.CATEGORY}
             description={question.DESCRIPTION}
+            redirect={true}
           />
         ))}
       </div>

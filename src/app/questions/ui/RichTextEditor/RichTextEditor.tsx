@@ -35,7 +35,7 @@ export default function RichTextEditor({ value, onChange }: RichTextEditorProps)
     editorProps: {
       attributes: {
         class:
-          "min-h-[180px] w-full rounded-md border border-gray-blue bg-white px-4 py-3 text-gray-dark focus:outline-none focus:ring-2 focus:ring-blue-primary focus:border-blue-primary transition-all duration-200 prose prose-sm sm:prose-base",
+          "min-h-[180px] max-w-full rounded-md border border-gray-blue bg-white px-4 py-3 text-gray-dark focus:outline-none focus:ring-2 focus:ring-blue-primary focus:border-blue-primary transition-all duration-200 prose prose-sm sm:prose-base",
       },
     },
     onUpdate: ({ editor }) => {

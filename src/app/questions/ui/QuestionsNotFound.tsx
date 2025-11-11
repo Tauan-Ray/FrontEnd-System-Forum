@@ -5,15 +5,15 @@ import { Globe, MessageSquareOff, PlusCircle } from "lucide-react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { defaultParams, searchParams } from "../lib/types";
-import { useUser } from "@/context/user-context";
 import { useState } from "react";
 import { toast } from "sonner";
 import CreateQuestionDialog from "./CreateQuestionDialog";
+import { getUser } from "@/app/auth/lib/sessions";
 
 type QuestionsNotFoundProps = {
   message: string;
   type?: "error" | "normal";
-  setSearch: React.Dispatch<React.SetStateAction<searchParams>>;
+  setSearch?: React.Dispatch<React.SetStateAction<searchParams>>;
 };
 
 export default function QuestionsNotFound({
@@ -22,10 +22,10 @@ export default function QuestionsNotFound({
   setSearch,
 }: QuestionsNotFoundProps) {
   const [openDialog, setOpenDialog] = useState<boolean>(false);
-  const user = useUser();
 
-  function handleOpenDialog() {
-    if (!user) {
+  async function handleOpenDialog() {
+    const user = await getUser();
+    if (user?.message) {
       toast.warning("Você precisa estar logado para criar uma pergunta", {
         description: "Faça login para continuar.",
       });
@@ -36,7 +36,7 @@ export default function QuestionsNotFound({
   const router = useRouter();
 
   const handleResetFilters = () => {
-    setSearch(defaultParams);
+    setSearch?.(defaultParams);
     router.push("/questions");
   };
 

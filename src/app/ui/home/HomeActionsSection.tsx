@@ -1,8 +1,8 @@
 "use client"
 
+import { getUser } from "@/app/auth/lib/sessions";
 import CreateQuestionDialog from "@/app/questions/ui/CreateQuestionDialog";
 import { Button } from "@/components/ui/button";
-import { useUser } from "@/context/user-context";
 import { Globe, Plus } from "lucide-react";
 import Link from "next/link";
 import { useState } from "react";
@@ -10,10 +10,11 @@ import { toast } from "sonner";
 
 const HomeActionsSection = () => {
   const [openDialog, setOpenDialog] = useState<boolean>(false);
-  const user = useUser();
 
-  function handleOpenDialog() {
-    if (!user) {
+  async function handleOpenDialog() {
+    const user = await getUser();
+
+    if (user?.message) {
       toast.warning("Você precisa estar logado para criar uma pergunta", {
         description: "Faça login para continuar.",
       });
