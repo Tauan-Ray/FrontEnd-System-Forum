@@ -50,12 +50,34 @@ const config: Config = {
           '0%, 100%': { transform: 'translateX(0)' },
           '25%': { transform: 'translateX(-4px)' },
           '75%': { transform: 'translateX(4px)' },
-        }
+        },
+        slideFadeIn: {
+          '0%': {
+            opacity: '0',
+            transform: 'translateY(10px)'
+          },
+          '100%': {
+            opacity: '1',
+            transform: 'translateY(0)'
+          }
+        },
+        slideFadeOut: {
+          '0%': {
+            opacity: '1',
+            transform: 'translateY(0)'
+          },
+          '100%': {
+            opacity: '0',
+            transform: 'translateY(-10px)'
+          }
+        },
       },
       animation: {
         fadeIn: 'fadeIn 0.3s ease-in forwards',
         fadeOut: 'fadeOut 0.3s ease-out forwards',
         shake: 'shake 0.3s ease-in-out',
+        slideFadeIn: 'slideFadeIn 0.25s ease-out forwards',
+        slideFadeOut: 'slideFadeOut 0.25s ease-out forwards'
       }
     }
   },

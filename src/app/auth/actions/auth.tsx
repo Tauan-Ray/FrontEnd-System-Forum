@@ -4,11 +4,15 @@ import { toast } from "sonner";
 import { SigninFormSchema, SignUpFormSchema } from '../lib/definitions';
 import { createNewUserSession, createSession, deleteSession } from '../lib/sessions';
 import { redirect } from 'next/navigation';
+import { useAuthStore } from '@/store/useAuthStore';
 
 export async function AuthenticateUser(value: z.infer<typeof SigninFormSchema>) {
   const res = await createSession(value);
 
   if (!res?.message) {
+    const { checkAuth } = useAuthStore.getState();
+    await checkAuth();
+
     return redirect(value.redirect)
   } else {
     if (res.status == HttpStatusCode.Unauthorized) {
@@ -33,7 +37,9 @@ export async function AuthenticateNewUser(value: z.infer<typeof SignUpFormSchema
   const res = await createNewUserSession(value);
 
   if (!res?.message) {
-    return redirect('/')
+    const { checkAuth } = useAuthStore.getState();
+    await checkAuth();
+    return redirect(value.redirect)
   } else {
     if (res.status == HttpStatusCode.Conflict) {
       toast.warning(res.message, {

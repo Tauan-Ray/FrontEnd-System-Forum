@@ -8,7 +8,7 @@ import { defaultParams, searchParams } from "../lib/types";
 import { useState } from "react";
 import { toast } from "sonner";
 import CreateQuestionDialog from "./CreateQuestionDialog";
-import { getUser } from "@/app/auth/lib/sessions";
+import { useAuthStore } from "@/store/useAuthStore";
 
 type QuestionsNotFoundProps = {
   message: string;
@@ -22,10 +22,10 @@ export default function QuestionsNotFound({
   setSearch,
 }: QuestionsNotFoundProps) {
   const [openDialog, setOpenDialog] = useState<boolean>(false);
+  const user = useAuthStore((state) => state.user);
 
   async function handleOpenDialog() {
-    const user = await getUser();
-    if (user?.message) {
+    if (!user) {
       toast.warning("Você precisa estar logado para criar uma pergunta", {
         description: "Faça login para continuar.",
       });

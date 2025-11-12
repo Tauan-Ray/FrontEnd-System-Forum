@@ -1,8 +1,8 @@
 import { Button } from "@/components/ui/button";
 import React, { useState } from "react";
 import { UpdateVoteAction } from "../actions/UpdateVoteAction";
-import { getUser } from "@/app/auth/lib/sessions";
 import { toast } from "sonner";
+import { useAuthStore } from "@/store/useAuthStore";
 
 type UpdateVotesButtonProps = {
   idAnswer: string;
@@ -20,12 +20,12 @@ export default function UpdateVotesButton({
   setNewVote
 }: UpdateVotesButtonProps) {
   const [isLoading, setIsLoading] = useState(false);
+  const user = useAuthStore((state) => state.user);
 
   const handleUpdateVote = async () => {
     setIsLoading(true);
 
-    const user = await getUser();
-    if (user?.message) {
+    if (!user) {
       toast.warning("Você precisa estar logado para inserir um vote", {
         description: "Faça login para continuar.",
       });

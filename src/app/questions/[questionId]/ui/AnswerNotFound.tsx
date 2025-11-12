@@ -5,6 +5,7 @@ import { MessageCircleOff, PlusCircle } from "lucide-react";
 import React from "react";
 import { toast } from "sonner";
 import { getUser } from "@/app/auth/lib/sessions";
+import { useAuthStore } from "@/store/useAuthStore";
 
 type AnswersNotFoundProps = {
   message: string;
@@ -12,9 +13,10 @@ type AnswersNotFoundProps = {
 };
 
 export default function AnswersNotFound({ message, onChangeModal }: AnswersNotFoundProps) {
+  const user = useAuthStore((state) => state.user);
+
   async function handleOpenDialog() {
-    const user = await getUser();
-    if (user?.message) {
+    if (!user) {
       toast.warning("Você precisa estar logado para responder uma pergunta", {
         description: "Faça login para continuar.",
       });

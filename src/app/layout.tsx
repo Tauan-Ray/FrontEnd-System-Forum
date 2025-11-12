@@ -1,25 +1,25 @@
-import "./globals.css"
+import "./globals.css";
 import { Toaster } from "sonner";
-import { JetBrains_Mono, Poppins, Roboto } from "next/font/google"
+import { JetBrains_Mono, Poppins, Roboto } from "next/font/google";
 import { Suspense } from "react";
 import Header from "./ui/header/header";
-
+import AppInitializer from "@/context/AppInitializer";
 
 const jetbrains = JetBrains_Mono({
   subsets: ["latin"],
   variable: "--font-jetbrains",
-})
+});
 
 const roboto = Roboto({
   subsets: ["latin"],
   variable: "--font-roboto",
-})
+});
 
 const poppins = Poppins({
   subsets: ["latin"],
   variable: "--font-poppins",
   weight: ["400", "500", "600", "700"],
-})
+});
 
 export default function RootLayout({
   children,
@@ -27,18 +27,22 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="pt-br" className={`${jetbrains.variable} ${roboto.variable} ${poppins.variable}`}>
+    <html
+      lang="pt-br"
+      className={`${jetbrains.variable} ${roboto.variable} ${poppins.variable}`}
+    >
       <head>
         <title>Devtalk</title>
       </head>
+
       <body className="min-h-screen bg-background">
-        <Toaster position="top-right" richColors />
-        <Header/>
-        <main className="container">
-          <Suspense>
-            {children}
-          </Suspense>
-        </main>
+        <AppInitializer>
+          <Toaster position="top-right" richColors />
+          <Header />
+          <main className="container">
+            <Suspense>{children}</Suspense>
+          </main>
+        </AppInitializer>
       </body>
     </html>
   );

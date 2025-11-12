@@ -3,50 +3,51 @@ import RichTextEditor from "../../ui/RichTextEditor/RichTextEditor";
 import { Button } from "@/components/ui/button";
 import { CreateAnswer } from "../actions/CreateAnswer";
 import { toast } from "sonner";
-import { mutate } from "swr";
 
 type AnswerFormProps = {
   closeResponseBox: () => void;
-  questionId: string;
   mutate: () => void;
-}
+  questionId: string;
+};
 
-export default function AnswerForm({ questionId, closeResponseBox, mutate }: AnswerFormProps) {
+export default function AnswerForm({
+  questionId,
+  closeResponseBox,
+  mutate,
+}: AnswerFormProps) {
   const [response, setResponse] = useState<string>("");
-  const [isLoading, setIsLoading] = useState<boolean>(false)
+  const [isLoading, setIsLoading] = useState<boolean>(false);
 
   const isEmptyResponse = (response: string) => {
-  const text = response.replace(/<[^>]*>/g, "").trim();
-
-  return text === "";
-
-  }
+    const text = response.replace(/<[^>]*>/g, "").trim();
+    return text === "";
+  };
 
   async function onSubmit() {
     setIsLoading(true);
     if (isEmptyResponse(response)) {
       toast.warning("Resposta vazia", {
-        description: "Atenção, você não pode enviar uma resposta vazia!"
-      })
+        description: "Atenção, você não pode enviar uma resposta vazia!",
+      });
     } else {
       await CreateAnswer({ ID_QT: questionId, response });
-      mutate()
-      closeResponseBox()
+      mutate();
+      closeResponseBox();
     }
 
     setIsLoading(false);
     setResponse("");
   }
 
-
   return (
-    <div className="flex flex-col gap-3">
+    <div className="flex flex-col gap-3 animate-slideFadeIn">
+      {" "}
       <h2 className="font-mono font-bold text-xl text-gray-dark">Responda</h2>
-
       <RichTextEditor value={response} onChange={setResponse} />
-
       <div className="mb-6">
-        <Button disabled={isLoading} onClick={onSubmit} className="w-36 p-3">Enviar</Button>
+        <Button disabled={isLoading} onClick={onSubmit} className="w-36 p-3">
+          Enviar
+        </Button>
       </div>
     </div>
   );

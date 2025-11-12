@@ -3,13 +3,14 @@
 import { ParamsRequest } from "@/lib/type";
 import React, { useCallback, useEffect, useState } from "react";
 import useSWRInfinite from "swr/infinite";
-import { fetcher, getUser, UserProps } from "@/app/auth/lib/sessions";
+import { fetcher } from "@/app/auth/lib/sessions";
 import { SkeletonAnswers } from "@/components/SkeletonModel";
 import { RefreshCw } from "lucide-react";
 import { ResAnswer } from "../../lib/sessions";
 import OneAnswer from "./OneAnswer";
 import AnswersNotFound from "./AnswerNotFound";
 import AnswerForm from "./AnswerForm";
+import { useAuthStore } from "@/store/useAuthStore";
 
 type AllAnswersProps = {
   questionId: string;
@@ -22,13 +23,9 @@ export default function AllAnswers({
   questionId,
   onChangeModal,
   openResponseBox,
-  setOpenResponseBox
+  setOpenResponseBox,
 }: AllAnswersProps) {
-  const [user, setUser] = useState<UserProps | null | undefined>(undefined);
-
-  useEffect(() => {
-    getUser().then((res) => setUser(res ?? null));
-  }, []);
+  const { user, loading } = useAuthStore();
 
   const getParams = useCallback(
     (pgIndx: number, prevPgIndx?: any) => {
@@ -44,26 +41,37 @@ export default function AllAnswers({
   );
 
   const {
-  data: answers,
-  isLoading,
-  isValidating,
-  size,
-  setSize,
-  mutate,
-  error: errorAnswer,
-} = useSWRInfinite<ParamsRequest<ResAnswer[]>>(
-  (pgIndx, prevPgIndx) => {
-    if (user === undefined) return null;
-    return getParams(pgIndx, prevPgIndx);
-  },
-  fetcher,
-  {
-    revalidateOnFocus: true,
-    onErrorRetry(err) {
-      if (err.status === 401) return;
+    data: answers,
+    isLoading,
+    isValidating,
+    size,
+    setSize,
+    mutate,
+    error: errorAnswer,
+  } = useSWRInfinite<ParamsRequest<ResAnswer[]>>(
+    (pgIndx, prevPgIndx) => {
+      if (loading) return null;
+      return getParams(pgIndx, prevPgIndx);
     },
-  }
-);
+    fetcher,
+    {
+      revalidateOnFocus: true,
+      onErrorRetry(err) {
+        if (err.status === 401) return;
+      },
+    }
+  );
+
+  const [showForm, setShowForm] = useState(openResponseBox);
+
+  useEffect(() => {
+    if (openResponseBox) {
+      setShowForm(true);
+    } else {
+      const timeout = setTimeout(() => setShowForm(false), 250);
+      return () => clearTimeout(timeout);
+    }
+  }, [openResponseBox]);
 
   useEffect(() => {
     const scrollArea = document?.querySelector("#scroll-area");
@@ -104,7 +112,7 @@ export default function AllAnswers({
     };
   }, [answers, setSize, errorAnswer, isValidating]);
 
-  if (user === undefined) {
+  if (loading) {
     return (
       <div className="py-10 text-gray-500 text-center">
         Carregando informações do usuário...
@@ -114,9 +122,20 @@ export default function AllAnswers({
 
   return (
     <div className="pb-14">
-      {openResponseBox && (
-        <AnswerForm mutate={() => mutate()} closeResponseBox={() => setOpenResponseBox(false)} questionId={questionId} />
+      {showForm && (
+        <div
+          className={`transition-all duration-200 ${
+            openResponseBox ? "animate-slideFadeIn" : "animate-slideFadeOut"
+          }`}
+        >
+          <AnswerForm
+            mutate={() => mutate()}
+            closeResponseBox={() => setOpenResponseBox(false)}
+            questionId={questionId}
+          />
+        </div>
       )}
+
       <h2 className="text-xl font-semibold text-gray-dark mb-4">
         Respostas
         {answers && answers[0]?._meta?._total_results !== undefined && (

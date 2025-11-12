@@ -34,7 +34,7 @@ export default function OneQuestion({
   }
 
   return (
-    <div onClick={() => handleRedirectToQuestion(ID_QT)} className="flex flex-col border border-gray-dark rounded-md p-4 sm:p-5 gap-4 hover:border-blue-hover transition-colors">
+    <div onClick={() => handleRedirectToQuestion(ID_QT)} className="flex flex-col border border-gray-dark rounded-md p-4 sm:p-5 gap-4 hover:border-blue-hover transition-colors cursor-pointer">
       <div className="flex flex-col gap-2 sm:flex-row sm:justify-between">
         <div className="flex flex-row gap-3 items-center">
           <UserCircle2
