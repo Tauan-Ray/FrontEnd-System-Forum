@@ -46,9 +46,24 @@ export type ResAnswer = {
   dislikes: number;
 };
 
+export type ResAnswerCreate = {
+  ID_AN: string;
+  RESPONSE: string;
+  DT_CR: Date;
+  DT_UP: Date;
+  DEL_AT: Date | null;
+  ID_USER: string;
+  ID_QT: string;
+};
+
 type ResCreateQuestion = {
   message: string;
   data: ResQuestion
+}
+
+type ResCreateAnswer = {
+  message: string;
+  data: ResCreateAnswer;
 }
 
 export async function getCategories(): Promise<{ data: ResCategory, status: number } | DefaultParamsResponse> {
@@ -67,6 +82,13 @@ export async function createQuestion(
   question: z.infer<typeof CreateQuestionFormSchema>
 ): Promise<ResCreateQuestion & DefaultParamsResponse> {
   return await service_api.post('/questions/create', question)
+    .then(({ data, status }) => ({ ...data, status }))
+    .catch(handleApiError)
+}
+
+
+export async function createAnswer(answer: { ID_QT: string, response: string }): Promise<ResCreateAnswer & DefaultParamsResponse> {
+  return await service_api.post('/answers/create', answer)
     .then(({ data, status }) => ({ ...data, status }))
     .catch(handleApiError)
 }

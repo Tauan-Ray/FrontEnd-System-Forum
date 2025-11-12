@@ -2,13 +2,12 @@
 
 import { useEffect, useState } from "react";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
-import OneQuestion from "../../ui/OneQuestion";
 import { getQuestionById, ResQuestion } from "../../lib/sessions";
 import { SkeletonQuestions } from "@/components/SkeletonModel";
-import QuestionsNotFound from "../../ui/QuestionsNotFound";
-import RichTextEditor from "../../ui/RichTextEditor/RichTextEditor";
-import { Button } from "@/components/ui/button";
 import AllAnswers from "./AllAnswers";
+import OneQuestion from "../../ui/OneQuestion";
+import QuestionsNotFound from "../../ui/QuestionsNotFound";
+import AnswerForm from "./AnswerForm";
 
 type IntoQuestionProps = {
   questionId: string;
@@ -18,12 +17,11 @@ export default function IntoQuestion({ questionId }: IntoQuestionProps) {
   const [openResponseBox, setOpenResponseBox] = useState(false);
   const [isLoading, setIsLoading] = useState<boolean>(true);
   const [question, setQuestion] = useState<ResQuestion | null>(null);
-  const [response, setResponse] = useState<string>("");
+  const [answersUpdated, setAnswersUpdated] = useState(false);
 
   const searchParams = useSearchParams();
   const route = useRouter();
   const pathname = usePathname()
-
 
   useEffect(() => {
     const openBox = searchParams.get("response");
@@ -70,21 +68,10 @@ export default function IntoQuestion({ questionId }: IntoQuestionProps) {
       />
 
       {openResponseBox && (
-        <div className="flex flex-col gap-3">
-          <h2 className="font-mono font-bold text-xl text-gray-dark">
-            Responda
-          </h2>
-
-          <RichTextEditor value={response} onChange={setResponse} />
-
-          <div className="">
-            <Button className="w-36 p-3">Enviar</Button>
-          </div>
-        </div>
+        <AnswerForm closeResponseBox={() => setOpenResponseBox(false)} onNewAnswer={() => setAnswersUpdated(prev => !prev)} questionId={questionId} />
       )}
 
-      <AllAnswers onChangeModal={setOpenResponseBox} questionId={questionId} />
-
+      <AllAnswers answersUpdated={answersUpdated} onChangeModal={setOpenResponseBox} questionId={questionId} />
     </div>
   );
 }

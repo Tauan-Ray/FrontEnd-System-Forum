@@ -6,7 +6,7 @@ import { ResQuestion } from "../lib/sessions";
 import useSWRInfinite from "swr/infinite";
 import { fetcher } from "@/app/auth/lib/sessions";
 import { searchParams } from "../lib/types";
-import SkeletonQuestions from "@/components/SkeletonQuestion";
+import { SkeletonQuestions } from "@/components/SkeletonModel";
 import QuestionsNotFound from "./QuestionsNotFound";
 import OneQuestion from "./OneQuestion";
 import { RefreshCw } from "lucide-react";

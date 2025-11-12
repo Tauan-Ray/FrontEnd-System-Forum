@@ -45,14 +45,22 @@ export default function OneAnswer({
         }}
       />
 
-      <div className="flex flex-row gap-7 justify-end">
-        <Button variant="outline">
-          <ThumbsUp size={26} className="text-blue-primary" />
-        </Button>
+      <div className="flex flex-row gap-4 justify-end items-center">
+        <div className="flex flex-col items-center">
+          <Button variant="outline" className="border-none p-2">
+            <ThumbsUp size={24} className="text-blue-primary" />
+          </Button>
+          <span className="text-gray-dark font-semibold text-sm">{likes}</span>
+        </div>
 
-        <Button variant="outline">
-          <ThumbsDown size={26} className="text-blue-dark" />
-        </Button>
+        <div className="flex flex-col items-center">
+          <Button variant="outline" className="border-none p-2">
+            <ThumbsDown size={24} className="text-blue-dark" />
+          </Button>
+          <span className="text-gray-dark font-semibold text-sm">
+            {deslikes}
+          </span>
+        </div>
       </div>
     </div>
   );

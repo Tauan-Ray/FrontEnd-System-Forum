@@ -11,11 +11,12 @@ import OneAnswer from "./OneAnswer";
 import AnswersNotFound from "./AnswerNotFound";
 
 type AllAnswersProps = {
-  onChangeModal: React.Dispatch<React.SetStateAction<boolean>>
   questionId: string;
+  onChangeModal: React.Dispatch<React.SetStateAction<boolean>>
+  answersUpdated: boolean;
 }
 
-export default function AllAnswers({ questionId, onChangeModal }: AllAnswersProps) {
+export default function AllAnswers({ questionId, onChangeModal, answersUpdated }: AllAnswersProps) {
   const getParams = useCallback(
     (pgIndx: number, prevPgIndx?: any) => {
       const params = new URLSearchParams();
@@ -42,6 +43,10 @@ export default function AllAnswers({ questionId, onChangeModal }: AllAnswersProp
       if (err.status == 401) return;
     },
   });
+
+  useEffect(() => {
+    mutate()
+  }, [answersUpdated, mutate])
 
   useEffect(() => {
     const scrollArea = document?.querySelector("#scroll-area");
@@ -122,7 +127,7 @@ export default function AllAnswers({ questionId, onChangeModal }: AllAnswersProp
           <AnswersNotFound
             onChangeModal={onChangeModal}
             message={
-              errorAnswer?.data?.message || "Falha ao carregar perguntas..."
+              errorAnswer?.data?.message || "Falha ao carregar respostas..."
             }
           />
         )}
