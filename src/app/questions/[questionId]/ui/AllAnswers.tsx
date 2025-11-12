@@ -1,7 +1,7 @@
 "use client";
 
 import { ParamsRequest } from "@/lib/type";
-import { useCallback, useEffect } from "react";
+import React, { useCallback, useEffect } from "react";
 import useSWRInfinite from "swr/infinite";
 import { fetcher } from "@/app/auth/lib/sessions";
 import { SkeletonAnswers } from "@/components/SkeletonModel";
@@ -10,7 +10,12 @@ import { ResAnswer } from "../../lib/sessions";
 import OneAnswer from "./OneAnswer";
 import AnswersNotFound from "./AnswerNotFound";
 
-export default function AllQuestion({ questionId }: { questionId: string }) {
+type AllAnswersProps = {
+  onChangeModal: React.Dispatch<React.SetStateAction<boolean>>
+  questionId: string;
+}
+
+export default function AllAnswers({ questionId, onChangeModal }: AllAnswersProps) {
   const getParams = useCallback(
     (pgIndx: number, prevPgIndx?: any) => {
       const params = new URLSearchParams();
@@ -111,10 +116,11 @@ export default function AllQuestion({ questionId }: { questionId: string }) {
               }
             })
           ) : (
-            <AnswersNotFound message="Ainda não há respostas para esta pergunta. Que tal ser o primeiro a responder?" />
+            <AnswersNotFound onChangeModal={onChangeModal} message="Ainda não há respostas para esta pergunta. Que tal ser o primeiro a responder?" />
           )
         ) : (
           <AnswersNotFound
+            onChangeModal={onChangeModal}
             message={
               errorAnswer?.data?.message || "Falha ao carregar perguntas..."
             }

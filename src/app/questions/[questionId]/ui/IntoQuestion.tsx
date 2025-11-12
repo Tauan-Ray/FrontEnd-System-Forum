@@ -8,7 +8,7 @@ import { SkeletonQuestions } from "@/components/SkeletonModel";
 import QuestionsNotFound from "../../ui/QuestionsNotFound";
 import RichTextEditor from "../../ui/RichTextEditor/RichTextEditor";
 import { Button } from "@/components/ui/button";
-import AllQuestion from "./AllAnswers";
+import AllAnswers from "./AllAnswers";
 
 type IntoQuestionProps = {
   questionId: string;
@@ -83,7 +83,7 @@ export default function IntoQuestion({ questionId }: IntoQuestionProps) {
         </div>
       )}
 
-      <AllQuestion questionId={questionId} />
+      <AllAnswers onChangeModal={setOpenResponseBox} questionId={questionId} />
 
     </div>
   );

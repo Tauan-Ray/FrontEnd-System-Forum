@@ -2,18 +2,17 @@
 
 import { Button } from "@/components/ui/button";
 import { MessageCircleOff, PlusCircle } from "lucide-react";
-import { useState } from "react";
+import React, { useState } from "react";
 import { toast } from "sonner";
 import { getUser } from "@/app/auth/lib/sessions";
 import CreateQuestionDialog from "../../ui/CreateQuestionDialog";
 
 type AnswersNotFoundProps = {
   message: string;
+  onChangeModal: React.Dispatch<React.SetStateAction<boolean>>;
 };
 
-export default function AnswersNotFound({ message }: AnswersNotFoundProps) {
-  const [openDialog, setOpenDialog] = useState<boolean>(false);
-
+export default function AnswersNotFound({ message, onChangeModal }: AnswersNotFoundProps) {
   async function handleOpenDialog() {
     const user = await getUser();
     if (user?.message) {
@@ -22,7 +21,7 @@ export default function AnswersNotFound({ message }: AnswersNotFoundProps) {
       });
       return;
     }
-    setOpenDialog(true);
+    onChangeModal(true);
   }
 
   return (
@@ -44,8 +43,6 @@ export default function AnswersNotFound({ message }: AnswersNotFoundProps) {
           <PlusCircle size={18} />
           Responder pergunta
         </Button>
-
-        <CreateQuestionDialog open={openDialog} onOpenChange={setOpenDialog} />
       </div>
     </div>
   );
