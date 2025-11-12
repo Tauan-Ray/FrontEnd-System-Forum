@@ -18,7 +18,7 @@ export default function ResponseButton ({ idQuestion, onOpenModal }: ResponseBut
         const user = await getUser();
 
         if (user?.message) {
-            toast.warning("Você precisa estar logado para criar uma pergunta", {
+            toast.warning("Você precisa estar logado para responder uma pergunta", {
                 description: "Faça login para continuar.",
             });
             return;

@@ -2,10 +2,9 @@
 
 import { Button } from "@/components/ui/button";
 import { MessageCircleOff, PlusCircle } from "lucide-react";
-import React, { useState } from "react";
+import React from "react";
 import { toast } from "sonner";
 import { getUser } from "@/app/auth/lib/sessions";
-import CreateQuestionDialog from "../../ui/CreateQuestionDialog";
 
 type AnswersNotFoundProps = {
   message: string;

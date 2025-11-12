@@ -1,5 +1,6 @@
-import { Button } from "@/components/ui/button";
-import { ThumbsDown, ThumbsUp, UserCircle2 } from "lucide-react";
+import { UserCircle2, ThumbsUp, ThumbsDown } from "lucide-react";
+import UpdateVotesButton from "./UpdateVotesButton";
+import { useState } from "react";
 
 type OneAnswerProps = {
   ID_AN: string;
@@ -8,15 +9,47 @@ type OneAnswerProps = {
   response: string;
   likes: number;
   deslikes: number;
+  userVote: "LIKE" | "DESLIKE" | null;
 };
 
 export default function OneAnswer({
+  ID_AN,
   username,
   DT_CR,
   response,
-  likes,
-  deslikes,
+  likes: initialLikes,
+  deslikes: initialDeslikes,
+  userVote,
 }: OneAnswerProps) {
+  const [actualVote, setActualVote] = useState<"LIKE" | "DESLIKE" | null>(
+    userVote
+  );
+  const [_, setNewVote] = useState<"LIKE" | "DESLIKE" | null>(null);
+  const [likes, setLikes] = useState<number>(initialLikes);
+  const [deslikes, setDeslikes] = useState<number>(initialDeslikes);
+
+  const handleVote = (type: "LIKE" | "DESLIKE") => {
+    if (actualVote === type) {
+      setActualVote(null);
+      type === "LIKE"
+        ? setLikes((prev) => prev - 1)
+        : setDeslikes((prev) => prev - 1);
+    } else {
+      if (type === "LIKE") {
+        if (actualVote === "DESLIKE") setDeslikes((prev) => prev - 1);
+        setLikes((prev) => prev + 1);
+      } else {
+        if (actualVote === "LIKE") setLikes((prev) => prev - 1);
+        setDeslikes((prev) => prev + 1);
+      }
+      setActualVote(type);
+    }
+
+    setNewVote(type);
+  };
+
+
+
   return (
     <div className="flex flex-col border border-gray-dark rounded-md p-4 sm:p-5 gap-4 hover:border-blue-hover transition-colors">
       <div className="flex flex-col gap-2 sm:flex-row sm:justify-between">
@@ -47,16 +80,40 @@ export default function OneAnswer({
 
       <div className="flex flex-row gap-4 justify-end items-center">
         <div className="flex flex-col items-center">
-          <Button variant="outline" className="border-none p-2">
-            <ThumbsUp size={24} className="text-blue-primary" />
-          </Button>
+          <UpdateVotesButton
+            idAnswer={ID_AN}
+            type="LIKE"
+            isActive={actualVote === "LIKE"}
+            setNewVote={handleVote}
+          >
+            <ThumbsUp
+              size={24}
+              className={`transition-transform duration-200 ${
+                actualVote === "LIKE"
+                  ? "text-blue-primary scale-110"
+                  : "text-gray-500 hover:text-blue-primary hover:scale-105"
+              }`}
+            />
+          </UpdateVotesButton>
           <span className="text-gray-dark font-semibold text-sm">{likes}</span>
         </div>
 
         <div className="flex flex-col items-center">
-          <Button variant="outline" className="border-none p-2">
-            <ThumbsDown size={24} className="text-blue-dark" />
-          </Button>
+          <UpdateVotesButton
+            idAnswer={ID_AN}
+            type="DESLIKE"
+            isActive={actualVote === "DESLIKE"}
+            setNewVote={handleVote}
+          >
+            <ThumbsDown
+              size={24}
+              className={`transition-transform duration-200 ${
+                actualVote === "DESLIKE"
+                  ? "text-red-500 scale-110"
+                  : "text-gray-500 hover:text-red-500 hover:scale-105"
+              }`}
+            />
+          </UpdateVotesButton>
           <span className="text-gray-dark font-semibold text-sm">
             {deslikes}
           </span>

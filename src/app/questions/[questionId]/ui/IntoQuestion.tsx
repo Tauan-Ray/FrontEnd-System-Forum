@@ -7,7 +7,6 @@ import { SkeletonQuestions } from "@/components/SkeletonModel";
 import AllAnswers from "./AllAnswers";
 import OneQuestion from "../../ui/OneQuestion";
 import QuestionsNotFound from "../../ui/QuestionsNotFound";
-import AnswerForm from "./AnswerForm";
 
 type IntoQuestionProps = {
   questionId: string;
@@ -17,7 +16,6 @@ export default function IntoQuestion({ questionId }: IntoQuestionProps) {
   const [openResponseBox, setOpenResponseBox] = useState(false);
   const [isLoading, setIsLoading] = useState<boolean>(true);
   const [question, setQuestion] = useState<ResQuestion | null>(null);
-  const [answersUpdated, setAnswersUpdated] = useState(false);
 
   const searchParams = useSearchParams();
   const route = useRouter();
@@ -67,11 +65,7 @@ export default function IntoQuestion({ questionId }: IntoQuestionProps) {
         onOpenResponseModal={handleOpenModal}
       />
 
-      {openResponseBox && (
-        <AnswerForm closeResponseBox={() => setOpenResponseBox(false)} onNewAnswer={() => setAnswersUpdated(prev => !prev)} questionId={questionId} />
-      )}
-
-      <AllAnswers answersUpdated={answersUpdated} onChangeModal={setOpenResponseBox} questionId={questionId} />
+      <AllAnswers openResponseBox={openResponseBox} setOpenResponseBox={setOpenResponseBox} onChangeModal={setOpenResponseBox} questionId={questionId} />
     </div>
   );
 }

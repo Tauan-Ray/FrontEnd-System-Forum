@@ -1,52 +1,69 @@
 "use client";
 
 import { ParamsRequest } from "@/lib/type";
-import React, { useCallback, useEffect } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import useSWRInfinite from "swr/infinite";
-import { fetcher } from "@/app/auth/lib/sessions";
+import { fetcher, getUser, UserProps } from "@/app/auth/lib/sessions";
 import { SkeletonAnswers } from "@/components/SkeletonModel";
 import { RefreshCw } from "lucide-react";
 import { ResAnswer } from "../../lib/sessions";
 import OneAnswer from "./OneAnswer";
 import AnswersNotFound from "./AnswerNotFound";
+import AnswerForm from "./AnswerForm";
 
 type AllAnswersProps = {
   questionId: string;
-  onChangeModal: React.Dispatch<React.SetStateAction<boolean>>
-  answersUpdated: boolean;
-}
+  onChangeModal: React.Dispatch<React.SetStateAction<boolean>>;
+  openResponseBox: boolean;
+  setOpenResponseBox: React.Dispatch<React.SetStateAction<boolean>>;
+};
 
-export default function AllAnswers({ questionId, onChangeModal, answersUpdated }: AllAnswersProps) {
+export default function AllAnswers({
+  questionId,
+  onChangeModal,
+  openResponseBox,
+  setOpenResponseBox
+}: AllAnswersProps) {
+  const [user, setUser] = useState<UserProps | null | undefined>(undefined);
+
+  useEffect(() => {
+    getUser().then((res) => setUser(res ?? null));
+  }, []);
+
   const getParams = useCallback(
     (pgIndx: number, prevPgIndx?: any) => {
       const params = new URLSearchParams();
-
       params.set("page", pgIndx.toString());
       params.set("id", questionId);
 
+      if (user?.ID_USER) params.set("idUser", user.ID_USER);
+
       return `/answers/question?${params.toString()}`;
     },
-    [questionId]
+    [questionId, user]
   );
 
   const {
-    data: answers,
-    isLoading,
-    isValidating,
-    size,
-    setSize,
-    mutate,
-    error: errorAnswer,
-  } = useSWRInfinite<ParamsRequest<ResAnswer[]>>(getParams, fetcher, {
+  data: answers,
+  isLoading,
+  isValidating,
+  size,
+  setSize,
+  mutate,
+  error: errorAnswer,
+} = useSWRInfinite<ParamsRequest<ResAnswer[]>>(
+  (pgIndx, prevPgIndx) => {
+    if (user === undefined) return null;
+    return getParams(pgIndx, prevPgIndx);
+  },
+  fetcher,
+  {
     revalidateOnFocus: true,
-    onErrorRetry(err, key, config, revalidate, revalidateOpts) {
-      if (err.status == 401) return;
+    onErrorRetry(err) {
+      if (err.status === 401) return;
     },
-  });
-
-  useEffect(() => {
-    mutate()
-  }, [answersUpdated, mutate])
+  }
+);
 
   useEffect(() => {
     const scrollArea = document?.querySelector("#scroll-area");
@@ -55,10 +72,9 @@ export default function AllAnswers({ questionId, onChangeModal, answersUpdated }
     function handle() {
       if (scrollArea && meta && !isValidating) {
         const { scrollTop, scrollHeight, clientHeight } = scrollArea;
-
         if (
           scrollTop + clientHeight >= scrollHeight - 10 &&
-          meta?._page < meta?._total_page
+          meta._page < meta._total_page
         ) {
           setSize((prev) => prev + 1);
         }
@@ -68,9 +84,9 @@ export default function AllAnswers({ questionId, onChangeModal, answersUpdated }
     const intervalCheckScroll: NodeJS.Timeout = setInterval(() => {
       if (scrollArea && meta && !isValidating) {
         if (
-          scrollArea?.scrollTop + scrollArea?.clientHeight ==
-            scrollArea?.scrollHeight &&
-          meta?._page < meta?._total_page &&
+          scrollArea.scrollTop + scrollArea.clientHeight ===
+            scrollArea.scrollHeight &&
+          meta._page < meta._total_page &&
           !errorAnswer
         ) {
           setSize((prev) => prev + 1);
@@ -88,8 +104,19 @@ export default function AllAnswers({ questionId, onChangeModal, answersUpdated }
     };
   }, [answers, setSize, errorAnswer, isValidating]);
 
+  if (user === undefined) {
+    return (
+      <div className="py-10 text-gray-500 text-center">
+        Carregando informações do usuário...
+      </div>
+    );
+  }
+
   return (
     <div className="pb-14">
+      {openResponseBox && (
+        <AnswerForm mutate={() => mutate()} closeResponseBox={() => setOpenResponseBox(false)} questionId={questionId} />
+      )}
       <h2 className="text-xl font-semibold text-gray-dark mb-4">
         Respostas
         {answers && answers[0]?._meta?._total_results !== undefined && (
@@ -98,30 +125,31 @@ export default function AllAnswers({ questionId, onChangeModal, answersUpdated }
           </span>
         )}
       </h2>
+
       <div id="scroll-area" className="flex flex-col gap-6">
         {isLoading ? (
           <SkeletonAnswers quantity={3} />
         ) : size >= 0 && !errorAnswer ? (
           answers?.length && answers[0]._data?.length ? (
-            answers?.map(({ _data }, _index) => {
-              if (_data?.length) {
-                return _data?.map((answer) => {
-                  return (
-                    <OneAnswer
-                      key={answer.ID_AN}
-                      ID_AN={answer.ID_AN}
-                      username={answer.USERNAME}
-                      DT_CR={answer.DT_CR}
-                      response={answer.RESPONSE}
-                      likes={answer.likes}
-                      deslikes={answer.dislikes}
-                    />
-                  );
-                });
-              }
-            })
+            answers?.map(({ _data }) =>
+              _data?.map((answer) => (
+                <OneAnswer
+                  key={answer.ID_AN}
+                  ID_AN={answer.ID_AN}
+                  username={answer.USERNAME}
+                  DT_CR={answer.DT_CR}
+                  response={answer.RESPONSE}
+                  likes={answer.likes}
+                  deslikes={answer.dislikes}
+                  userVote={answer.user_vote}
+                />
+              ))
+            )
           ) : (
-            <AnswersNotFound onChangeModal={onChangeModal} message="Ainda não há respostas para esta pergunta. Que tal ser o primeiro a responder?" />
+            <AnswersNotFound
+              onChangeModal={onChangeModal}
+              message="Ainda não há respostas para esta pergunta. Que tal ser o primeiro a responder?"
+            />
           )
         ) : (
           <AnswersNotFound
@@ -132,6 +160,7 @@ export default function AllAnswers({ questionId, onChangeModal, answersUpdated }
           />
         )}
       </div>
+
       {isValidating && (
         <div className="flex flex-1 flex-row text-lg py-10 w-full items-center justify-center text-zinc-400 gap-5">
           &nbsp; Carregando mais dados

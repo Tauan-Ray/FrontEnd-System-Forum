@@ -3,7 +3,6 @@ import RichTextEditor from "../../ui/RichTextEditor/RichTextEditor";
 import { Button } from "@/components/ui/button";
 import { CreateAnswer } from "../actions/CreateAnswer";
 import { toast } from "sonner";
-import { mutate } from "swr";
 
 type AnswerFormProps = {
   closeResponseBox: () => void;
@@ -30,8 +29,8 @@ export default function AnswerForm({ questionId, closeResponseBox, mutate }: Ans
       })
     } else {
       await CreateAnswer({ ID_QT: questionId, response });
-      mutate()
       closeResponseBox()
+      mutate()
     }
 
     setIsLoading(false);
@@ -45,7 +44,7 @@ export default function AnswerForm({ questionId, closeResponseBox, mutate }: Ans
 
       <RichTextEditor value={response} onChange={setResponse} />
 
-      <div className="mb-6">
+      <div className="mb-5">
         <Button disabled={isLoading} onClick={onSubmit} className="w-36 p-3">Enviar</Button>
       </div>
     </div>
