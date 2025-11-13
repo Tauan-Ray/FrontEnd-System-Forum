@@ -70,14 +70,7 @@ export default function FilterQuestions({
           />
         </div>
 
-        <div className="flex flex-col gap-1">
-          <Label className="text-sm font-medium text-gray-700">
-            Categoria
-          </Label>
-          <CategorySelect search={search} setSearch={setSearch} />
-        </div>
-
-        <div className="flex flex-col gap-1 sm:col-span-2 lg:col-span-1">
+        <div className="flex flex-col gap-1 sm:col-span-2 lg:col-span-2">
           <Label htmlFor="content" className="text-sm font-medium text-gray-700">
             Conteúdo
           </Label>
@@ -95,6 +88,13 @@ export default function FilterQuestions({
             }
             className="h-11 text-base rounded-lg border-gray-300"
           />
+        </div>
+
+        <div className="flex flex-col gap-1">
+          <Label className="text-sm font-medium text-gray-700">
+            Categoria
+          </Label>
+          <CategorySelect search={search} setSearch={setSearch} />
         </div>
       </div>
 
