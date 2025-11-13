@@ -1,8 +1,8 @@
 import { Button } from "@/components/ui/button";
 import React, { useState } from "react";
 import { UpdateVoteAction } from "../actions/UpdateVoteAction";
-import { toast } from "sonner";
 import { useAuthStore } from "@/store/useAuthStore";
+import { useRedirectStore } from "@/store/useRedirectStore";
 
 type UpdateVotesButtonProps = {
   idAnswer: string;
@@ -20,15 +20,14 @@ export default function UpdateVotesButton({
   setNewVote
 }: UpdateVotesButtonProps) {
   const [isLoading, setIsLoading] = useState(false);
+  const { setOpenDialog } = useRedirectStore();
   const user = useAuthStore((state) => state.user);
 
   const handleUpdateVote = async () => {
     setIsLoading(true);
 
     if (!user) {
-      toast.warning("Você precisa estar logado para inserir um vote", {
-        description: "Faça login para continuar.",
-      });
+      setOpenDialog(true);
       setIsLoading(false);
       return;
     }

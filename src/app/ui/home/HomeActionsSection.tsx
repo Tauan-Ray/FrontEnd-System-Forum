@@ -3,23 +3,22 @@
 import CreateQuestionDialog from "@/app/questions/ui/CreateQuestionDialog";
 import { Button } from "@/components/ui/button";
 import { useAuthStore } from "@/store/useAuthStore";
+import { useRedirectStore } from "@/store/useRedirectStore";
 import { Globe, Plus } from "lucide-react";
 import Link from "next/link";
 import { useState } from "react";
-import { toast } from "sonner";
 
 const HomeActionsSection = () => {
-  const [openDialog, setOpenDialog] = useState<boolean>(false);
+  const [openCreateDialog, setOpenCreateDialog] = useState<boolean>(false);
+  const { setOpenDialog } = useRedirectStore();
   const user = useAuthStore((state) => state.user);
 
   async function handleOpenDialog() {
     if (!user) {
-      toast.warning("Você precisa estar logado para criar uma pergunta", {
-        description: "Faça login para continuar.",
-      });
+      setOpenDialog(true);
       return;
     }
-    setOpenDialog(true);
+    setOpenCreateDialog(true);
   }
 
   return (
@@ -48,7 +47,7 @@ const HomeActionsSection = () => {
           <span className="font-mono text-base text-blue-800">pergunta</span>
         </Button>
       </div>
-      <CreateQuestionDialog open={openDialog} onOpenChange={setOpenDialog} />
+      <CreateQuestionDialog open={openCreateDialog} onOpenChange={setOpenCreateDialog} />
     </div>
   );
 };

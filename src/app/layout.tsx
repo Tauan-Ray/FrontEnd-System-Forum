@@ -4,6 +4,7 @@ import { JetBrains_Mono, Poppins, Roboto } from "next/font/google";
 import { Suspense } from "react";
 import Header from "./ui/header/header";
 import AppInitializer from "@/context/AppInitializer";
+import GlobalDialogs from "@/context/GlobalDialogs";
 
 const jetbrains = JetBrains_Mono({
   subsets: ["latin"],
@@ -37,6 +38,7 @@ export default function RootLayout({
 
       <body className="min-h-screen bg-background">
         <AppInitializer>
+          <GlobalDialogs />
           <Toaster position="top-right" richColors />
           <Header />
           <main className="container">
