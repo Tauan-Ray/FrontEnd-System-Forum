@@ -18,26 +18,22 @@ export default function FilterQuestions({
 }: FilterQuestionsProps) {
   const today = new Date().toLocaleDateString("en-CA");
 
-  const handleClearFilters = () => {
-    setSearch(defaultParams);
-  };
-
+  const handleClearFilters = () => setSearch(defaultParams);
   return (
-    <div className="w-full max-w-5xl bg-white rounded-2xl p-6">
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-        <div className="flex flex-col gap-2">
-          <Label
-            htmlFor="start_date"
-            className="pl-1 text-sm font-medium text-gray-700"
-          >
+    <div className="w-full rounded-xl bg-white shadow-sm p-4 sm:p-6 space-y-6">
+      <h3 className="text-lg font-semibold text-blue-medium border-b pb-2">
+        Filtros de Pesquisa
+      </h3>
+
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+        <div className="flex flex-col gap-1">
+          <Label htmlFor="start_date" className="text-sm font-medium text-gray-700">
             Data inicial
           </Label>
           <Input
             id="start_date"
             type="date"
-            value={
-              search.registerStart ? search.registerStart.split("T")[0] : ""
-            }
+            value={search.registerStart ? search.registerStart.split("T")[0] : ""}
             onChange={({ target }) =>
               setSearch((prev) => ({
                 ...prev,
@@ -48,15 +44,12 @@ export default function FilterQuestions({
             }
             min="2010-01-01"
             max={today}
-            className="h-12 text-base rounded-xl border-gray-300"
+            className="h-11 text-base rounded-lg border-gray-300"
           />
         </div>
 
-        <div className="flex flex-col gap-2">
-          <Label
-            htmlFor="end_date"
-            className="pl-1 text-sm font-medium text-gray-700"
-          >
+        <div className="flex flex-col gap-1">
+          <Label htmlFor="end_date" className="text-sm font-medium text-gray-700">
             Data final
           </Label>
           <Input
@@ -73,24 +66,39 @@ export default function FilterQuestions({
             }
             min="2010-01-01"
             max={today}
-            className="h-12 text-base rounded-xl border-gray-300"
+            className="h-11 text-base rounded-lg border-gray-300"
           />
         </div>
 
-        <div className="flex flex-col gap-2">
-          <Label
-            htmlFor="category"
-            className="pl-1 text-sm font-medium text-gray-700"
-          >
+        <div className="flex flex-col gap-1">
+          <Label className="text-sm font-medium text-gray-700">
             Categoria
           </Label>
-          <div className="h-12">
-            <CategorySelect search={search} setSearch={setSearch} />
-          </div>
+          <CategorySelect search={search} setSearch={setSearch} />
+        </div>
+
+        <div className="flex flex-col gap-1 sm:col-span-2 lg:col-span-1">
+          <Label htmlFor="content" className="text-sm font-medium text-gray-700">
+            Conteúdo
+          </Label>
+          <Input
+            id="content"
+            type="search"
+            placeholder="Buscar por título ou descrição..."
+            maxLength={255}
+            value={search.search ?? ""}
+            onChange={({ target }) =>
+              setSearch((prev) => ({
+                ...prev,
+                search: target.value || undefined,
+              }))
+            }
+            className="h-11 text-base rounded-lg border-gray-300"
+          />
         </div>
       </div>
 
-      <div className="flex justify-end mt-8">
+      <div className="flex justify-end">
         <Button
           variant="outline"
           onClick={handleClearFilters}

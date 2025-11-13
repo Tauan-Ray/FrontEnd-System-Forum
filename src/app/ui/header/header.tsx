@@ -5,7 +5,6 @@ import Image from "next/image";
 import { Button } from "@/components/ui/button";
 import { UserCircle2 } from "lucide-react";
 import MenuMobile from "./menuMobile";
-import SearchInput from "./searchInput";
 import { useAuthStore } from "@/store/useAuthStore";
 import { toast } from "sonner";
 

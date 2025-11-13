@@ -31,6 +31,7 @@ export default function AllQuestion({
       params.set("page", pgIndx.toString());
 
       if (debouncedSearch?.ID_CT) params.set("ID_CT", debouncedSearch?.ID_CT);
+      if (debouncedSearch?.search) params.set("search", debouncedSearch.search)
       if (debouncedSearch?.registerStart)
         params.set("DT_IN", debouncedSearch?.registerStart);
       if (debouncedSearch?.registerEnd)
