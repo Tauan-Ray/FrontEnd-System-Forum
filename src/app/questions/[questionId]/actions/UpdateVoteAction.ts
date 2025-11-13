@@ -3,9 +3,10 @@ import { toast } from "sonner";
 import { UpdateVote } from "../../lib/sessions";
 
 export async function UpdateVoteAction(idAnswer: string, type: { type: "LIKE" | "DESLIKE" }) {
-  const res = await UpdateVote(idAnswer, type);
+  const resData = await UpdateVote(idAnswer, type);
+  const res = resData.data
 
-  if (res?.message === "Voto atualizado") {
+  if (res?.message?.includes("Voto")) {
     toast.success(res.message, {
       description: `Seu ${type.type.toLowerCase()} foi registrado. Obrigado por contribuir!`,
     });

@@ -10,12 +10,26 @@ import {
   SheetTitle,
   SheetTrigger,
 } from "@/components/ui/sheet";
+import { useAuthStore } from "@/store/useAuthStore";
 import { Menu, UserCircle2 } from "lucide-react";
 import Link from "next/link";
 import { useState } from "react";
+import { toast } from "sonner";
 
 export default function MenuMobile() {
   const [open, setOpen] = useState<boolean>(false);
+
+  const { user, logout } = useAuthStore();
+
+  const handleLogoutUser = async () => {
+    await logout();
+    setOpen(false);
+
+    toast.info("Logout", {
+      description: "Sua sessão foi encerrada com sucesso!",
+    });
+  };
+
   return (
     <Sheet open={open} onOpenChange={setOpen}>
       <SheetTrigger asChild>
@@ -45,12 +59,23 @@ export default function MenuMobile() {
             className="rounded-lg border border-blue-primary bg-white px-4 py-2 text-base focus:outline-none"
           />
 
-          <Button
-            onClick={() => setOpen(false)}
-            className="rounded-md px-5 py-3 text-sm font-medium bg-blue-medium hover:bg-blue-hover transition"
-          >
-            <Link href="/auth/signin">Login</Link>
-          </Button>
+          {user ? (
+            <Button
+              onClick={handleLogoutUser}
+              className="rounded-md px-5 py-3 text-sm font-medium bg-blue-medium hover:bg-blue-hover transition"
+            >
+              Logout
+            </Button>
+          ) : (
+            <Link href="/auth/signin">
+              <Button
+                onClick={() => setOpen(false)}
+                className="rounded-md px-5 py-3 text-sm font-medium bg-blue-medium hover:bg-blue-hover transition"
+              >
+                Login
+              </Button>
+            </Link>
+          )}
 
           <Button
             onClick={() => setOpen(false)}

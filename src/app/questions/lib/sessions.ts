@@ -94,8 +94,8 @@ export async function createAnswer(answer: { ID_QT: string, response: string }):
     .catch(handleApiError)
 }
 
-export async function UpdateVote(idAnswer: string, vote: { type: "LIKE" | "DESLIKE" }): Promise<{ message: string , status: number } | DefaultParamsResponse> {
-  return await service_api.patch<{ message: string }>(`/answers/${idAnswer}/vote`, vote)
+export async function UpdateVote(idAnswer: string, vote: { type: "LIKE" | "DESLIKE" }): Promise<{ data: { message: string } , status: number } | DefaultParamsResponse> {
+  return await service_api.patch<{ data: { message: string } }>(`/answers/${idAnswer}/vote`, vote)
     .then(({ data, status }) => ({ status, data }))
     .catch(handleApiError)
 }

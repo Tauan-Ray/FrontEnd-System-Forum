@@ -2,7 +2,7 @@
 
 import { Button } from "@/components/ui/button";
 import { useAuthStore } from "@/store/useAuthStore";
-import { usePathname, useRouter } from "next/navigation";
+import { usePathname } from "next/navigation";
 import { toast } from "sonner";
 
 type ResponseButtonProps = {
@@ -11,7 +11,6 @@ type ResponseButtonProps = {
 }
 
 export default function ResponseButton ({ idQuestion, onOpenModal }: ResponseButtonProps) {
-    const router = useRouter();
     const pathname = usePathname();
     const user = useAuthStore((state) => state.user);
 
@@ -28,8 +27,7 @@ export default function ResponseButton ({ idQuestion, onOpenModal }: ResponseBut
             return
         }
 
-        router.push(`/questions/${idQuestion}?response=true`);
-
+        window.location.href = `/questions/${idQuestion}?response=true`;
     }
 
     return (
