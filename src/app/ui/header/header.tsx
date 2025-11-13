@@ -23,7 +23,7 @@ export default function Header() {
   return (
     <header className="w-full bg-white/80 border-b border-b-gray-300 p-4 sticky top-0 z-50 backdrop-blur-md">
       <div className="mx-auto max-w-7xl px-2 sm:px-6 lg:px-8">
-        <div className="flex h-16 items-center justify-between gap-4">
+        <div className="flex h-16 items-center justify-between gap-4 flex-row-reverse sm:flex-row">
           <Link
             href="/"
             title="Página inicial"
@@ -31,8 +31,6 @@ export default function Header() {
           >
             <Image src="/logo.svg" alt="Logo" width={100} height={32} />
           </Link>
-
-          <SearchInput />
 
           <div className="hidden md:flex items-center gap-4">
             {user ? (

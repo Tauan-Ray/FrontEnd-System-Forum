@@ -1,7 +1,10 @@
 "use client";
 
-import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
+import { useState } from "react";
+import { useAuthStore } from "@/store/useAuthStore";
+import { toast } from "sonner";
+import Link from "next/link";
+import { usePathname } from "next/navigation";
 import {
   Sheet,
   SheetContent,
@@ -10,79 +13,130 @@ import {
   SheetTitle,
   SheetTrigger,
 } from "@/components/ui/sheet";
-import { useAuthStore } from "@/store/useAuthStore";
-import { Menu, UserCircle2 } from "lucide-react";
-import Link from "next/link";
-import { useState } from "react";
-import { toast } from "sonner";
+import { Button } from "@/components/ui/button";
+import {
+  Menu,
+  UserCircle2,
+  LogOut,
+  LogIn,
+  UserPlus,
+  Home,
+  HelpCircle,
+  Handshake,
+} from "lucide-react";
 
 export default function MenuMobile() {
-  const [open, setOpen] = useState<boolean>(false);
-
+  const [open, setOpen] = useState(false);
   const { user, logout } = useAuthStore();
+  const pathname = usePathname();
 
-  const handleLogoutUser = async () => {
+  const handleLogout = async () => {
     await logout();
     setOpen(false);
-
-    toast.info("Logout", {
-      description: "Sua sessão foi encerrada com sucesso!",
-    });
+    toast.info("Logout", { description: "Sessão encerrada com sucesso!" });
   };
+
+  const NavItem = ({
+    href,
+    icon: Icon,
+    label,
+  }: {
+    href: string;
+    icon: any;
+    label: string;
+  }) => (
+    <Link
+      href={href}
+      onClick={() => setOpen(false)}
+      className={`flex items-center gap-3 px-3 py-2 rounded-md transition-all duration-200 ${
+        pathname === href
+          ? "bg-blue-light text-white font-semibold"
+          : "hover:bg-blue-hover/10 text-gray-700"
+      }`}
+    >
+      <Icon size={20} />
+      {label}
+    </Link>
+  );
 
   return (
     <Sheet open={open} onOpenChange={setOpen}>
       <SheetTrigger asChild>
-        <button className="p-2 rounded-md hover:bg-gray-100">
+        <button
+          aria-label="Abrir menu"
+          className="p-2 rounded-md hover:bg-gray-100 transition"
+        >
           <Menu size={28} className="text-blue-medium" />
         </button>
       </SheetTrigger>
 
-      <SheetContent className="bg-white w-72 sm:w-80">
-        <SheetHeader>
-          <SheetTitle>
-            <UserCircle2
-              size={32}
-              className="text-blue-light hover:text-blue-hover transition"
-              onClick={() => setOpen(false)}
-            />
+      <SheetContent side="left" className="bg-white w-72 sm:w-80 p-0">
+        <SheetHeader className="px-6 pt-4 pb-2 border-b">
+          <SheetTitle className="flex items-center gap-3">
+            <UserCircle2 size={36} className="text-blue-medium" />
+            {user ? (
+              <span className="flex items-center gap-2 text-lg font-semibold text-gray-800">
+                Olá, {user.USERNAME || "Usuário"}
+                <Handshake size={20} className="text-blue-medium" />
+              </span>
+            ) : (
+              <span className="text-lg font-semibold text-gray-800">
+                Bem-vindo
+              </span>
+            )}
           </SheetTitle>
 
-          <SheetDescription className="text-xl font-bold text-blue-medium">
-            Menu
+          <SheetDescription className="text-sm text-gray-500">
+            {user
+              ? "Gerencie sua conta e explore o app"
+              : "Acesse ou cadastre-se para participar"}
           </SheetDescription>
         </SheetHeader>
 
-        <div className="mt-8 flex flex-col gap-6">
-          <Input
-            placeholder="Pesquise..."
-            className="rounded-lg border border-blue-primary bg-white px-4 py-2 text-base focus:outline-none"
-          />
+        <div className="p-6 flex flex-col gap-6 overflow-y-auto">
+          <nav className="flex flex-col gap-2">
+            <NavItem href="/" icon={Home} label="Início" />
+            <NavItem href="/questions" icon={HelpCircle} label="Perguntas" />
+            {user && (
+              <NavItem
+                href="/user"
+                icon={UserCircle2}
+                label="Perfil de usuário"
+              />
+            )}
+          </nav>
+
+          <hr className="border-gray-200 my-3" />
 
           {user ? (
             <Button
-              onClick={handleLogoutUser}
-              className="rounded-md px-5 py-3 text-sm font-medium bg-blue-medium hover:bg-blue-hover transition"
+              onClick={handleLogout}
+              variant="destructive"
+              className="flex items-center justify-center gap-2"
             >
-              Logout
+              <LogOut size={18} />
+              Sair
             </Button>
           ) : (
-            <Link href="/auth/signin">
-              <Button
-                onClick={() => setOpen(false)}
-                className="rounded-md px-5 py-3 text-sm font-medium bg-blue-medium hover:bg-blue-hover transition"
-              >
-                Login
-              </Button>
-            </Link>
-          )}
+            <div className="flex flex-col gap-3">
+              <Link href="/auth/signin" onClick={() => setOpen(false)}>
+                <Button className="w-full flex items-center justify-center gap-2 bg-blue-medium hover:bg-blue-hover">
+                  <LogIn size={18} />
+                  Login
+                </Button>
+              </Link>
 
-          <Button
-            onClick={() => setOpen(false)}
-            className="rounded-md px-5 py-3 text-sm font-medium bg-blue-medium hover:bg-blue-hover transition"
-          >
-            <Link href="/auth/signup">Cadastro</Link>
-          </Button>
+              <Link href="/auth/signup" onClick={() => setOpen(false)}>
+                <Button
+                  variant="outline"
+                  className="w-full flex items-center justify-center gap-2"
+                >
+                  <UserPlus size={18} />
+                  Cadastrar-se
+                </Button>
+              </Link>
+            </div>
+          )}
         </div>
       </SheetContent>
     </Sheet>
