@@ -13,9 +13,6 @@ export default function PageAllQuestions () {
 
   return (
     <div className="pt-10 flex flex-col gap-5 items-center">
-      <h1 className="font-mono font-bold text-2xl sm:text-3xl text-center">
-        Filtrar perguntas
-      </h1>
       <FilterQuestions search={search} setSearch={setSearch} />
 
       <div className="w-full sm:w-8/12">
