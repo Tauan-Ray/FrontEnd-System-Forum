@@ -24,10 +24,15 @@ import {
   HelpCircle,
   Handshake,
 } from "lucide-react";
+import { useAvatar } from "@/hooks/useAvatar";
+import { Skeleton } from "@/components/ui/skeleton";
+import Image from "next/image";
 
 export default function MenuMobile() {
   const [open, setOpen] = useState(false);
-  const { user, logout } = useAuthStore();
+  const { user, logout, loading } = useAuthStore();
+  const avatar = useAvatar(user?.ID_USER ?? '');
+
   const pathname = usePathname();
 
   const handleLogout = async () => {
@@ -73,7 +78,26 @@ export default function MenuMobile() {
       <SheetContent side="left" className="bg-white w-72 sm:w-80 p-0">
         <SheetHeader className="px-6 pt-4 pb-2 border-b">
           <SheetTitle className="flex items-center gap-3">
-            <UserCircle2 size={36} className="text-blue-medium" />
+            {loading || avatar === undefined ? (
+              <Skeleton className="w-8 h-8 rounded-full bg-gray-300 animate-pulse" />
+            ) : (
+              <Link href="/">
+                {avatar ? (
+                  <Image
+                    width={38}
+                    height={38}
+                    src={avatar}
+                    alt={`${user?.USERNAME} avatar`}
+                    className="w-10 h-10 rounded-full"
+                  />
+                ) : (
+                  <UserCircle2
+                    size={32}
+                    className="text-blue-medium"
+                  />
+                )}
+              </Link>
+            )}
             {user ? (
               <span className="flex items-center gap-2 text-lg font-semibold text-gray-800">
                 Olá, {user.USERNAME || "Usuário"}

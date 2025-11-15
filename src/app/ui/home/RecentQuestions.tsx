@@ -39,6 +39,7 @@ export default function RecentQuestions() {
         {questions?._data?.map((question) => (
           <OneQuestion
             key={question.ID_QT}
+            ID_USER={question.ID_USER}
             ID_QT={question.ID_QT}
             username={question.User.USERNAME}
             DT_CR={question.DT_CR}

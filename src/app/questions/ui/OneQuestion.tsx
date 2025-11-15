@@ -1,9 +1,12 @@
 import { UserCircle2 } from "lucide-react";
 import { useRouter } from "next/navigation";
 import ResponseButton from "./ResponseButton";
+import { useAvatar } from "@/hooks/useAvatar";
+import Image from "next/image";
 
 type OneQuestionProps = {
   ID_QT: string;
+  ID_USER: string;
   username: string;
   DT_CR: Date;
   title: string;
@@ -15,6 +18,7 @@ type OneQuestionProps = {
 
 export default function OneQuestion({
   ID_QT,
+  ID_USER,
   username,
   DT_CR,
   title,
@@ -24,6 +28,8 @@ export default function OneQuestion({
   onOpenResponseModal,
 }: OneQuestionProps) {
   const router = useRouter();
+  const avatar = useAvatar(ID_USER);
+
   const formatDescription =
   description && redirect && description.length > 250
     ? `${description.slice(0, description.slice(0, 250).lastIndexOf(" "))}...`
@@ -37,10 +43,11 @@ export default function OneQuestion({
     <div onClick={() => handleRedirectToQuestion(ID_QT)} className="flex flex-col border border-gray-dark rounded-md p-4 sm:p-5 gap-4 hover:border-blue-hover transition-colors cursor-pointer">
       <div className="flex flex-col gap-2 sm:flex-row sm:justify-between">
         <div className="flex flex-row gap-3 items-center">
-          <UserCircle2
-            size={32}
-            className="text-blue-light hover:text-blue-hover transition"
-          />
+          {avatar ? (
+              <Image width={32} height={32} src={avatar} alt={`${username} avatar`} className="w-8 h-8 rounded-full" />
+            ) : (
+              <UserCircle2 size={32} className="text-blue-light hover:text-blue-hover transition" />
+            )}
           <p className="font-sans text-base sm:text-lg text-gray-dark">
             {username}
           </p>

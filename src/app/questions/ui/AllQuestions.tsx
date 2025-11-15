@@ -118,6 +118,7 @@ export default function AllQuestion({
                       <OneQuestion
                         key={question.ID_QT}
                         ID_QT={question.ID_QT}
+                        ID_USER={question.ID_USER}
                         username={question.User.USERNAME}
                         DT_CR={question.DT_CR}
                         category={question.Category.CATEGORY}
