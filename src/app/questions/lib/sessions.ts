@@ -36,6 +36,7 @@ export type ResQuestion = {
 export type ResAnswer = {
   ID_AN: string;
   ID_QT: string;
+  ID_USER: string;
   RESPONSE: string;
   DT_CR: Date;
   USERNAME: string;

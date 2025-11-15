@@ -155,6 +155,7 @@ export default function AllAnswers({
                 <OneAnswer
                   key={answer.ID_AN}
                   ID_AN={answer.ID_AN}
+                  ID_USER={answer.ID_USER}
                   username={answer.USERNAME}
                   DT_CR={answer.DT_CR}
                   response={answer.RESPONSE}
