@@ -179,6 +179,24 @@ export async function getUser(): Promise<UserProps> {
     .catch(handleApiError)
 }
 
+export async function UploadUserImage(file: File) {
+  const formData = new FormData();
+  formData.append('image', file);
+
+  const { uploadUrl } = await service_api.post('storage/presign')
+    .then(({ data }) => ({ ...data }))
+    .catch(handleApiError)
+
+  return await service_api.put(uploadUrl, formData.get('image'), {
+      headers: {
+        'Content-Type': file.type,
+      },
+    })
+      .then(({ data }) => ({ ...data }))
+      .catch(handleApiError)
+
+}
+
 export async function fetcher(url: string) {
   return service_api.get(url)
     .then((res) => res.data)

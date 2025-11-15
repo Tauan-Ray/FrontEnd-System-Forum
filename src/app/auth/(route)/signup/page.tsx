@@ -24,6 +24,7 @@ import FormError from "../../ui/FormError";
 import PasswordInput from "../../ui/PasswordInput";
 import PasswordChecklist from "../../ui/PasswordCheckList";
 import { useSearchParams } from "next/navigation";
+import ChooseImageDialog from "../../ui/ChooseImageDialog";
 
 type showPasswordType = {
   password: boolean;
@@ -36,6 +37,7 @@ export default function SignUpPage() {
     confirm: false,
   });
   const [isLoading, setIsLoading] = useState<boolean>(false);
+  const [openChooseImage, setOpenChooseImage] = useState<boolean>(false);
 
   const searchParams = useSearchParams();
 
@@ -54,8 +56,13 @@ export default function SignUpPage() {
 
   async function onSubmit(values: z.infer<typeof SignUpFormSchema>) {
     setIsLoading(true);
-    await AuthenticateNewUser(values);
+    const res = await AuthenticateNewUser(values);
     setIsLoading(false);
+
+    if (res?.ok) {
+      setOpenChooseImage(true);
+    }
+
   }
 
   return (
@@ -241,6 +248,7 @@ export default function SignUpPage() {
               </div>
             </form>
           </Form>
+          <ChooseImageDialog redirect={form.getValues("redirect")} open={openChooseImage} onOpenChange={setOpenChooseImage} />
         </div>
       </div>
     </div>

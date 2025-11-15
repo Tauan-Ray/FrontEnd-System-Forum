@@ -53,7 +53,7 @@ export default function Header() {
               </Link>
             )}
 
-            <Link href="/auth/signin">
+            <Link href="/auth/signup">
               <Button className="rounded-md px-5 py-3 text-sm font-medium bg-blue-medium hover:bg-blue-hover transition">
                 Cadastro
               </Button>

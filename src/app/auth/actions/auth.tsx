@@ -39,7 +39,9 @@ export async function AuthenticateNewUser(value: z.infer<typeof SignUpFormSchema
   if (!res?.message) {
     const { checkAuth } = useAuthStore.getState();
     await checkAuth();
-    return redirect(value.redirect)
+
+    return { ok: true }
+
   } else {
     if (res.status == HttpStatusCode.Conflict) {
       toast.warning(res.message, {
