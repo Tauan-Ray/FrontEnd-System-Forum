@@ -56,6 +56,7 @@ export default function IntoQuestion({ questionId }: IntoQuestionProps) {
   return (
     <div className="flex flex-col gap-8 w-full">
       <OneQuestion
+        ID_USER={question.ID_USER}
         username={question.User.USERNAME}
         DT_CR={question.DT_CR}
         title={question.TITLE}
