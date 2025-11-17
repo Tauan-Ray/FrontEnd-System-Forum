@@ -52,6 +52,8 @@ export default function CreateQuestionDialog({
     await CreateQuestion(values);
     setIsLoading(false);
 
+    form.reset();
+
     onOpenChange(false)
   }
   return (

@@ -35,7 +35,7 @@ export default function Header() {
             <Image src="/logo.svg" alt="Logo" width={100} height={32} />
           </Link>
 
-          <div className="hidden md:flex items-center gap-4">
+          <div className="hidden md:flex items-center gap-6">
             {loading ? (
               <Skeleton className="h-10 w-24 rounded-md bg-gray-300 animate-pulse" />
             ) : user ? (
@@ -46,18 +46,21 @@ export default function Header() {
                 Logout
               </Button>
             ) : (
-              <Link href="/auth/signin">
-                <Button className="rounded-md px-5 py-3 text-sm font-medium bg-blue-medium hover:bg-blue-hover transition">
-                  Login
-                </Button>
-              </Link>
-            )}
+              <div className="flex flex-row gap-6">
+                <Link href="/auth/signin">
+                  <Button className="rounded-md px-5 py-3 text-sm font-medium bg-blue-medium hover:bg-blue-hover transition">
+                    Login
+                  </Button>
+                </Link>
 
-            <Link href="/auth/signup">
-              <Button className="rounded-md px-5 py-3 text-sm font-medium bg-blue-medium hover:bg-blue-hover transition">
-                Cadastro
-              </Button>
-            </Link>
+                <Link href="/auth/signup">
+                  <Button className="rounded-md px-5 py-3 text-sm font-medium bg-blue-medium hover:bg-blue-hover transition">
+                    Cadastro
+                  </Button>
+                </Link>
+              </div>
+
+            )}
 
             {loading || avatar === undefined ? (
               <Skeleton className="w-8 h-8 rounded-full bg-gray-300 animate-pulse" />
