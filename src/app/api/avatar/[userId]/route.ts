@@ -20,7 +20,6 @@ export async function GET(
       {
         method: "GET",
         headers: { Accept: "application/json" },
-        next: { revalidate: 300 },
       }
     );
 
@@ -44,7 +43,7 @@ export async function GET(
       { url: avatarUrl },
       {
         status: 200,
-        headers: { "Cache-Control": "public, max-age=300" },
+        headers: { "Cache-Control": "no-cache" },
       }
     );
   } catch (err) {
