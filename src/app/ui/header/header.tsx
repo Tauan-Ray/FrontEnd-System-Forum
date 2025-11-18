@@ -9,6 +9,7 @@ import { useAuthStore } from "@/store/useAuthStore";
 import { toast } from "sonner";
 import { useAvatar } from "@/hooks/useAvatar";
 import { Skeleton } from "@/components/ui/skeleton";
+import { redirect } from "next/navigation";
 
 export default function Header() {
   const { user, logout, loading } = useAuthStore();
@@ -22,11 +23,16 @@ export default function Header() {
     });
   };
 
+  const handleRedirectToProfile = () => {
+    if (!user) return;
+
+    redirect(`/perfil`);
+  }
+
   return (
     <header className="w-full bg-white/80 border-b border-b-gray-300 p-4 sticky top-0 z-50 backdrop-blur-md">
       <div className="mx-auto max-w-7xl px-2 sm:px-6 lg:px-8">
         <div className="flex h-16 items-center justify-between gap-4 flex-row-reverse sm:flex-row">
-
           <Link
             href="/"
             title="Página inicial"
@@ -65,7 +71,7 @@ export default function Header() {
             {loading || avatar === undefined ? (
               <Skeleton className="w-8 h-8 rounded-full bg-gray-300 animate-pulse" />
             ) : (
-              <Link href="/">
+              <div>
                 {avatar ? (
                   <Image
                     width={38}
@@ -73,14 +79,16 @@ export default function Header() {
                     src={avatar}
                     alt={`${user?.USERNAME} avatar`}
                     className="w-10 h-10 rounded-full"
+                    onClick={handleRedirectToProfile}
                   />
                 ) : (
                   <UserCircle2
                     size={32}
                     className="text-blue-light hover:text-blue-hover transition"
+                    onClick={handleRedirectToProfile}
                   />
                 )}
-              </Link>
+              </div>
             )}
           </div>
 

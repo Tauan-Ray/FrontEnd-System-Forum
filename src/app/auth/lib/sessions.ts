@@ -35,6 +35,11 @@ export type UserProps = {
   USERNAME: string;
   ROLE: string;
   DEL_AT: Date | null
+  DT_CR: Date,
+  _count : {
+    Question: number,
+    Answers: number,
+  }
   status?: number | string;
   message?: string;
 }

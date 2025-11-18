@@ -4,7 +4,6 @@ import { Button } from "@/components/ui/button";
 import { MessageCircleOff, PlusCircle } from "lucide-react";
 import React from "react";
 import { toast } from "sonner";
-import { getUser } from "@/app/auth/lib/sessions";
 import { useAuthStore } from "@/store/useAuthStore";
 
 type AnswersNotFoundProps = {

@@ -123,7 +123,7 @@ export default function MenuMobile() {
             <NavItem href="/questions" icon={HelpCircle} label="Perguntas" />
             {user && (
               <NavItem
-                href="/user"
+                href="/perfil"
                 icon={UserCircle2}
                 label="Perfil de usuário"
               />

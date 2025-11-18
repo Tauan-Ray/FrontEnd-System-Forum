@@ -102,3 +102,75 @@ export function SkeletonQuestions({ quantity }: { quantity: number }) {
     </div>
   );
 }
+
+export function SkeletonUserProfile() {
+  return (
+    <div className="flex flex-col w-full items-center px-6 py-10 gap-14">
+      {/* FOTO */}
+      <Skeleton className="h-36 w-36 rounded-full border bg-gray-200 animate-pulse shadow-md" />
+
+      {/* NOME + EMAIL + USERNAME + DATA CRIAÇÃO */}
+      <div className="flex flex-col items-center gap-4 w-full max-w-sm">
+        <Skeleton className="h-6 w-40 rounded-md bg-gray-300 animate-pulse" />
+
+        <div className="flex flex-row gap-3 justify-center">
+          <Skeleton className="h-4 w-32 rounded-md bg-gray-300 animate-pulse" />
+          <Skeleton className="h-4 w-4 rounded-md bg-gray-300 animate-pulse" />
+          <Skeleton className="h-4 w-28 rounded-md bg-gray-300 animate-pulse" />
+        </div>
+
+        <Skeleton className="h-4 w-28 rounded-md bg-gray-300 animate-pulse" />
+      </div>
+
+      {/* BOTÃO EDITAR PERFIL / TROCAR SENHA */}
+      <Skeleton className="h-12 w-44 rounded-lg bg-gray-300 animate-pulse" />
+      <Skeleton className="h-12 w-44 rounded-lg bg-gray-300 animate-pulse" />
+
+      {/* SEÇÃO USER INFO */}
+      <div className="w-full max-w-xl flex flex-col items-center mt-4">
+        {/* TÍTULO */}
+        <Skeleton className="h-5 w-60 rounded-md bg-gray-300 animate-pulse mb-8" />
+
+        {/* CARDS INFOS */}
+        <div className="grid grid-cols-2 justify-items-center gap-6">
+
+          {/* CARD PERGUNTAS */}
+          <div className="flex items-center gap-4 bg-gray-100 border border-gray-200 px-6 py-5 rounded-xl shadow-sm w-40">
+            <Skeleton className="h-10 w-10 rounded-full bg-gray-300 animate-pulse" />
+            <div className="flex flex-col gap-2 w-full">
+              <Skeleton className="h-4 w-12 bg-gray-300 rounded animate-pulse" />
+              <Skeleton className="h-5 w-6 bg-gray-300 rounded animate-pulse" />
+            </div>
+          </div>
+
+          {/* CARD RESPOSTAS */}
+          <div className="flex items-center gap-4 bg-gray-100 border border-gray-200 px-6 py-5 rounded-xl shadow-sm w-40">
+            <Skeleton className="h-10 w-10 rounded-full bg-gray-300 animate-pulse" />
+            <div className="flex flex-col gap-2 w-full">
+              <Skeleton className="h-4 w-16 bg-gray-300 rounded animate-pulse" />
+              <Skeleton className="h-5 w-6 bg-gray-300 rounded animate-pulse" />
+            </div>
+          </div>
+
+          {/* CARD LIKE */}
+          <div className="flex items-center gap-4 bg-gray-100 border border-gray-200 px-6 py-5 rounded-xl shadow-sm w-40">
+            <Skeleton className="h-10 w-10 rounded-full bg-gray-300 animate-pulse" />
+            <div className="flex flex-col gap-2 w-full">
+              <Skeleton className="h-4 w-16 bg-gray-300 rounded animate-pulse" />
+              <Skeleton className="h-5 w-6 bg-gray-300 rounded animate-pulse" />
+            </div>
+          </div>
+
+          {/* CARD DISLIKE */}
+          <div className="flex items-center gap-4 bg-gray-100 border border-gray-200 px-6 py-5 rounded-xl shadow-sm w-40">
+            <Skeleton className="h-10 w-10 rounded-full bg-gray-300 animate-pulse" />
+            <div className="flex flex-col gap-2 w-full">
+              <Skeleton className="h-4 w-16 bg-gray-300 rounded animate-pulse" />
+              <Skeleton className="h-5 w-6 bg-gray-300 rounded animate-pulse" />
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+}

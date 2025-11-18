@@ -3,7 +3,7 @@ import { cookies } from 'next/headers'
 import { USER_TOKEN } from '@/lib/constants'
 import { decrypt, updateSession } from '@/app/auth/lib/sessions'
 
-const protectedRoutes = ['/user']
+const protectedRoutes = ['/perfil']
 
 export default async function middleware(req: NextRequest) {
   let session;
