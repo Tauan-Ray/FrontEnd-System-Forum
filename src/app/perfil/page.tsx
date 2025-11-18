@@ -9,8 +9,8 @@ export default function PerfilPage() {
       </div>
 
       {/* Versão mobile */}
-      <div>
-
+      <div className="flex sm:hidden flex-row justify-center min-h-screen max-w-lg p-10">
+        <ProfileUser />
       </div>
     </div>
   );
