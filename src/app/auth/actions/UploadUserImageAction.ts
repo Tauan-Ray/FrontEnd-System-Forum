@@ -2,7 +2,6 @@ import { UploadUserImage } from '../lib/sessions';
 import { toast } from "sonner";
 import { HttpStatusCode } from "axios";
 import { redirect } from 'next/navigation';
-import { useAvatar } from '@/hooks/useAvatar';
 import { useAuthStore } from '@/store/useAuthStore';
 import { useAvatarStore } from '@/store/useAvatarStore';
 

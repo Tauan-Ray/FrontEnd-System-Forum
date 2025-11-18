@@ -25,7 +25,7 @@ export const SignUpFormSchema = z.object({
   email: z.string().email().trim(),
   password: z.string()
     .min(8, 'A senha deve conter pelo menos 8 caracter(es)')
-    .max(20, 'A senha deve conter pelo menos 8 caracter(es)')
+    .max(20, 'A senha deve conter no máximo 20 caracteres')
     .regex(/[a-zA-Z]/, { message: 'É esperado ao menos 1 letra' })
     .regex(/[0-9]/, { message: 'É esperado ao menos 1 número' })
     .trim(),

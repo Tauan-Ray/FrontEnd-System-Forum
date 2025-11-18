@@ -5,9 +5,12 @@ import ProfileImage from "./ProfileImage";
 import { Button } from "@/components/ui/button";
 import { SkeletonUserProfile } from "@/components/SkeletonModel";
 import StatisticsCards from "./StatisticsCards";
+import { useState } from "react";
+import ChangeInfosDialog from "./ChangeInfosDialog";
 
 export default function ProfileUser() {
   const { user, loading } = useAuthStore();
+  const [openChangeInfos, setOpenChangeInfos] = useState<boolean>(false);
 
   return (
     <div className="flex flex-col rounded-xl shadow-lg overflow-hidden w-full max-w-5xl border border-gray-dark gap-14">
@@ -27,11 +30,24 @@ export default function ProfileUser() {
                 <p>{user?.USERNAME}</p>
               </div>
               {user?.DT_CR && (
-                <p>Membro desde: {new Date(user.DT_CR).toLocaleDateString('pt-BR')}</p>
+                <p>
+                  Membro desde: {new Date(user.DT_CR).toLocaleDateString("pt-BR")}
+                </p>
               )}
             </div>
             <div className="flex flex-col gap-6">
-              <Button className="px-12 py-5">Editar Perfil</Button>
+              <Button
+                onClick={() => setOpenChangeInfos(true)}
+                className="px-12 py-5"
+              >
+                Editar Perfil
+              </Button>
+              <ChangeInfosDialog
+                open={openChangeInfos}
+                onChange={setOpenChangeInfos}
+                user={user}
+              />
+
               <Button className="px-12 py-5">Alterar senha</Button>
             </div>
           </div>
