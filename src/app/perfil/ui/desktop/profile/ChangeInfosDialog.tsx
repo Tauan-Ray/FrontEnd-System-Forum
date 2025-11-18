@@ -9,7 +9,7 @@ import {
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
-import { UpdateUserFormSchema } from "../../lib/definitions";
+import { UpdateUserFormSchema } from "../../../lib/definitions";
 import { z } from "@/components/pt-zod";
 import {
   Form,
@@ -23,7 +23,7 @@ import FormError from "@/app/auth/ui/FormError";
 import { UserProps } from "@/app/auth/lib/sessions";
 import { Button } from "@/components/ui/button";
 import PasswordInput from "@/app/auth/ui/PasswordInput";
-import { UpdateInfosUserAction } from "../../actions/UpdateUserActions";
+import { UpdateInfosUserAction } from "../../../actions/UpdateUserActions";
 
 type ChangeInfosDialogProps = {
   open: boolean;

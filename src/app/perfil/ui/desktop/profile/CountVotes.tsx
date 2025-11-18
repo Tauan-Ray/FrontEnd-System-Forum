@@ -1,7 +1,7 @@
 import { ThumbsDown, ThumbsUp } from "lucide-react";
 import InfoCard from "./InfoCards";
 import { useEffect, useState } from "react";
-import { getAllVotesUser } from "../../lib/sessions";
+import { getAllVotesUser } from "../../../lib/sessions";
 import { useAuthStore } from "@/store/useAuthStore";
 
 export default function CountVotes() {

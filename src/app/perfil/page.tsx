@@ -1,10 +1,10 @@
-import ProfileUser from "./ui/desktop/ProfileUser";
+import ProfileUser from "./ui/desktop/profile/ProfileUser";
 
 export default function PerfilPage() {
   return (
     <div>
       {/* Versão Desktop */}
-      <div className="hidden md:flex flex-row justify-center min-h-screen max-w-lg p-10">
+      <div className="hidden sm:flex flex-row justify-center min-h-screen max-w-lg p-10">
           <ProfileUser />
       </div>
 
