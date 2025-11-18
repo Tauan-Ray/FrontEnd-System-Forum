@@ -4,9 +4,12 @@ import { useAvatar } from "@/hooks/useAvatar";
 import Image from "next/image";
 import { Pencil } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import { useState } from "react";
+import ChooseImageDialog from "@/app/auth/ui/ChooseImageDialog";
 
 export default function ProfileImage({ ID_USER }: { ID_USER: string }) {
   const avatar = useAvatar(ID_USER);
+  const [openChooseImage, setOpenChooseImage] = useState<boolean>(false);
 
   return (
     <div className="relative w-36 h-36">
@@ -27,9 +30,16 @@ export default function ProfileImage({ ID_USER }: { ID_USER: string }) {
       <Button
         className="absolute bottom-1 right-1 p-2 rounded-full shadow-md hover:bg-gray-100 transition"
         variant={"outline"}
+        onClick={() => setOpenChooseImage(true)}
       >
         <Pencil className="h-4 w-4 text-gray-700" />
       </Button>
+      <ChooseImageDialog
+        open={openChooseImage}
+        onOpenChange={setOpenChooseImage}
+        redirect={"/perfil"}
+        initialPreview={avatar ?? ""}
+      />
     </div>
   );
 }

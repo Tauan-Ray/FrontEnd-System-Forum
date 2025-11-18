@@ -9,30 +9,31 @@ import {
 } from "@/components/ui/dialog";
 import Image from "next/image";
 import { Label } from "@/components/ui/label";
-import { useAuthStore } from "@/store/useAuthStore";
-import { useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { UploadUserImageAction } from "../actions/UploadUserImageAction";
 import { redirect } from "next/navigation";
-import { useAvatar } from "@/hooks/useAvatar";
 
 type ChooseImageDialogProps = {
   open: boolean;
   onOpenChange: (open: boolean) => void;
   redirect: string;
+  initialPreview?: string;
 };
 
 export default function ChooseImageDialog({
   open,
   onOpenChange,
-  redirect: redirectUrl
+  redirect: redirectUrl,
+  initialPreview
 }: ChooseImageDialogProps) {
-  const user = useAuthStore((state) => state.user);
   const [preview, setPreview] = useState<string | null>(null);
   const [file, setFile] = useState<File | null>(null);
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const fileInputRef = useRef<HTMLInputElement | null>(null);
 
-  if (!user) return null;
+  useEffect(() => {
+    if (initialPreview) setPreview(initialPreview);
+  }, [initialPreview])
 
   function handleImageChange(e: React.ChangeEvent<HTMLInputElement>) {
     const selected = e.target.files?.[0];
@@ -46,7 +47,7 @@ export default function ChooseImageDialog({
     setIsLoading(true);
     UploadUserImageAction(file!, redirectUrl);
     setIsLoading(false);
-    
+
     onOpenChange(false);
   }
 

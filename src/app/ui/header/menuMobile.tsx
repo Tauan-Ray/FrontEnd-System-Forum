@@ -4,7 +4,7 @@ import { useState } from "react";
 import { useAuthStore } from "@/store/useAuthStore";
 import { toast } from "sonner";
 import Link from "next/link";
-import { usePathname } from "next/navigation";
+import { redirect, usePathname } from "next/navigation";
 import {
   Sheet,
   SheetContent,
@@ -38,7 +38,10 @@ export default function MenuMobile() {
   const handleLogout = async () => {
     await logout();
     setOpen(false);
+
     toast.info("Logout", { description: "Sessão encerrada com sucesso!" });
+
+    redirect('/')
   };
 
   const NavItem = ({

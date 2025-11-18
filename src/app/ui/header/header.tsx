@@ -21,6 +21,8 @@ export default function Header() {
     toast.info('Logout', {
       description: 'Sua sessão foi encerrada com sucesso!'
     });
+
+    redirect('/')
   };
 
   const handleRedirectToProfile = () => {
