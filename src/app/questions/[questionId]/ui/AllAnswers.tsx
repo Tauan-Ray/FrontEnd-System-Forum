@@ -160,7 +160,7 @@ export default function AllAnswers({
                   DT_CR={answer.DT_CR}
                   response={answer.RESPONSE}
                   likes={answer.likes}
-                  deslikes={answer.dislikes}
+                  dislikes={answer.dislikes}
                   userVote={answer.user_vote}
                 />
               ))

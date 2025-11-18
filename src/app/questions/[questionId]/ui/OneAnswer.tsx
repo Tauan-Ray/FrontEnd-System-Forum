@@ -11,7 +11,7 @@ type OneAnswerProps = {
   DT_CR: Date;
   response: string;
   likes: number;
-  deslikes: number;
+  dislikes: number;
   userVote: "LIKE" | "DESLIKE" | null;
 };
 
@@ -22,7 +22,7 @@ export default function OneAnswer({
   DT_CR,
   response,
   likes: initialLikes,
-  deslikes: initialDeslikes,
+  dislikes: initialDislikes,
   userVote,
 }: OneAnswerProps) {
   const [actualVote, setActualVote] = useState<"LIKE" | "DESLIKE" | null>(
@@ -30,7 +30,7 @@ export default function OneAnswer({
   );
   const [_, setNewVote] = useState<"LIKE" | "DESLIKE" | null>(null);
   const [likes, setLikes] = useState<number>(initialLikes);
-  const [deslikes, setDeslikes] = useState<number>(initialDeslikes);
+  const [dislikes, setDislikes] = useState<number>(initialDislikes);
 
   const avatar = useAvatar(ID_USER);
 
@@ -39,14 +39,14 @@ export default function OneAnswer({
       setActualVote(null);
       type === "LIKE"
         ? setLikes((prev) => prev - 1)
-        : setDeslikes((prev) => prev - 1);
+        : setDislikes((prev) => prev - 1);
     } else {
       if (type === "LIKE") {
-        if (actualVote === "DESLIKE") setDeslikes((prev) => prev - 1);
+        if (actualVote === "DESLIKE") setDislikes((prev) => prev - 1);
         setLikes((prev) => prev + 1);
       } else {
         if (actualVote === "LIKE") setLikes((prev) => prev - 1);
-        setDeslikes((prev) => prev + 1);
+        setDislikes((prev) => prev + 1);
       }
       setActualVote(type);
     }
@@ -122,7 +122,7 @@ export default function OneAnswer({
             />
           </UpdateVotesButton>
           <span className="text-gray-dark font-semibold text-sm">
-            {deslikes}
+            {dislikes}
           </span>
         </div>
       </div>
