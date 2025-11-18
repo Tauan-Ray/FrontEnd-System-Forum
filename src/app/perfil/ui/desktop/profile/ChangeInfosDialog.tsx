@@ -145,7 +145,7 @@ export default function ChangeInfosDialog({
               )}
             />
 
-            <DialogFooter className="pt-4">
+            <DialogFooter className="pt-4 flex flex-col gap-6">
               <Button disabled={isLoading} className="font-medium">
                 Salvar
               </Button>
