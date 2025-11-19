@@ -9,22 +9,15 @@ import { SkeletonQuestions } from "@/components/SkeletonModel";
 import QuestionsNotFound from "@/app/questions/ui/QuestionsNotFound";
 import OneQuestion from "@/app/questions/ui/OneQuestion";
 import { RefreshCw } from "lucide-react";
-import { searchParams } from "@/app/questions/lib/types";
 import { useAuthStore } from "@/store/useAuthStore";
-
-type AllQuestionsProps = {
-  search: searchParams;
-  setSearch: React.Dispatch<React.SetStateAction<searchParams>>;
-  debouncedSearch: searchParams;
-  setDebouncedSearch: React.Dispatch<React.SetStateAction<searchParams>>;
-};
+import { FiltersProps } from "@/app/perfil/lib/types";
 
 export default function AllQuestionsUser({
   search,
   setSearch,
   debouncedSearch,
   setDebouncedSearch,
-}: AllQuestionsProps) {
+}: FiltersProps) {
   const user = useAuthStore((prev) => prev.user);
   const getParams = useCallback(
     (pgIndx: number, prevPgIndx?: any) => {
