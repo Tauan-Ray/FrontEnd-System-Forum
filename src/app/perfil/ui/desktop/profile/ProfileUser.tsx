@@ -23,7 +23,7 @@ export default function ProfileUser() {
           <div className="flex flex-col mx-auto mt-10 items-center">
             <ProfileImage ID_USER={user?.ID_USER ?? ""} />
             <div className="flex flex-col items-center mt-5 mb-10 text-gray-600 gap-2">
-              <h2 className="text-2xl font-semibold">{user?.NAME}</h2>
+              <h2 className="text-2xl font-semibold text-center">{user?.NAME}</h2>
               <div className="flex flex-row gap-3">
                 <p>{user?.EMAIL}</p>
                 <span> - </span>
