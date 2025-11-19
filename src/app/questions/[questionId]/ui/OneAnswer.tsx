@@ -3,6 +3,7 @@ import UpdateVotesButton from "./UpdateVotesButton";
 import { useState } from "react";
 import { useAvatar } from "@/hooks/useAvatar";
 import Image from "next/image";
+import { useRouter } from "next/navigation";
 
 type OneAnswerProps = {
   ID_AN: string;
@@ -13,6 +14,8 @@ type OneAnswerProps = {
   likes: number;
   dislikes: number;
   userVote: "LIKE" | "DESLIKE" | null;
+  redirect?: true;
+  ID_QT?: string;
 };
 
 export default function OneAnswer({
@@ -24,6 +27,8 @@ export default function OneAnswer({
   likes: initialLikes,
   dislikes: initialDislikes,
   userVote,
+  redirect,
+  ID_QT,
 }: OneAnswerProps) {
   const [actualVote, setActualVote] = useState<"LIKE" | "DESLIKE" | null>(
     userVote
@@ -33,6 +38,7 @@ export default function OneAnswer({
   const [dislikes, setDislikes] = useState<number>(initialDislikes);
 
   const avatar = useAvatar(ID_USER);
+  const router = useRouter();
 
   const handleVote = (type: "LIKE" | "DESLIKE") => {
     if (actualVote === type) {
@@ -54,16 +60,34 @@ export default function OneAnswer({
     setNewVote(type);
   };
 
+  const handleRedirectQuestion = () => {
+    if (!redirect) return;
 
+    router.push(`/questions/${ID_QT}`);
+  };
 
   return (
-    <div className="flex flex-col border border-gray-dark rounded-md p-4 sm:p-5 gap-4 hover:border-blue-hover transition-colors">
+    <div
+      onClick={handleRedirectQuestion}
+      className={`flex flex-col border border-gray-dark rounded-md p-4 sm:p-5 gap-4 hover:border-blue-hover transition-colors ${
+        redirect ? "cursor-pointer" : ""
+      }`}
+    >
       <div className="flex flex-col gap-2 sm:flex-row sm:justify-between">
         <div className="flex flex-row gap-3 items-center">
           {avatar ? (
-            <Image width={32} height={32} src={avatar} alt={`${username} avatar`} className="w-8 h-8 rounded-full" />
+            <Image
+              width={32}
+              height={32}
+              src={avatar}
+              alt={`${username} avatar`}
+              className="w-8 h-8 rounded-full"
+            />
           ) : (
-            <UserCircle2 size={32} className="text-blue-light hover:text-blue-hover transition" />
+            <UserCircle2
+              size={32}
+              className="text-blue-light hover:text-blue-hover transition"
+            />
           )}
           <p className="font-sans text-base sm:text-lg text-gray-dark">
             {username}

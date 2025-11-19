@@ -33,7 +33,6 @@ export default function QuestionsNotFound({
     }
     setOpenDialog(true);
   }
-  const router = useRouter();
 
   const handleResetFilters = () => {
     setSearch?.(defaultParams);
@@ -69,7 +68,7 @@ export default function QuestionsNotFound({
             className="px-8 py-6 text-base md:text-lg hover:bg-blue-hover hover:scale-105 transition-all"
           >
             <MessageSquareOff size={18} />
-            Ver todas as perguntas
+            Limpar filtros
           </Button>
         )}
 

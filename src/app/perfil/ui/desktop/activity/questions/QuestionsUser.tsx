@@ -6,7 +6,7 @@ import { FiltersProps } from "@/app/perfil/lib/types";
 import { useEffect } from "react";
 
 
-export default function TabQuestionsUsers ({ search, setSearch, debouncedSearch, setDebouncedSearch }: FiltersProps) {
+export default function QuestionsUser ({ search, setSearch, debouncedSearch, setDebouncedSearch }: FiltersProps) {
   const resetFilters = () => setSearch(defaultParams)
 
   useEffect(() => {

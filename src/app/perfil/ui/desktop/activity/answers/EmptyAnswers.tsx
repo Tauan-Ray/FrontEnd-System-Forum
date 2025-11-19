@@ -1,28 +1,19 @@
 "use client";
 
 import { Button } from "@/components/ui/button";
-import { MessageCircleOff, PlusCircle } from "lucide-react";
-import React from "react";
-import { toast } from "sonner";
-import { useAuthStore } from "@/store/useAuthStore";
+import { MessageCircleOff, MinusCircle } from "lucide-react";
+import React, { SetStateAction } from "react";
+import { defaultParams, searchParams } from "@/app/questions/lib/types";
 
-type AnswersNotFoundProps = {
+type EmptyAnswersProps = {
   message: string;
-  onChangeModal?: React.Dispatch<React.SetStateAction<boolean>>;
+  setSearch: React.Dispatch<SetStateAction<searchParams>>
 };
 
-export default function AnswersNotFound({ message, onChangeModal }: AnswersNotFoundProps) {
-  const user = useAuthStore((state) => state.user);
-
-  async function handleOpenDialog() {
-    if (!user) {
-      toast.warning("Você precisa estar logado para responder uma pergunta", {
-        description: "Faça login para continuar.",
-      });
-      return;
-    }
-    onChangeModal?.(true);
-  }
+export default function EmptyAnswers({ message, setSearch }: EmptyAnswersProps) {
+  const handleResetFilters = () => {
+      setSearch(defaultParams);
+    };
 
   return (
     <div className="flex flex-col items-center justify-center text-center py-20 px-4 animate-in fade-in">
@@ -37,11 +28,11 @@ export default function AnswersNotFound({ message, onChangeModal }: AnswersNotFo
 
       <div className="flex flex-col sm:flex-row gap-4">
         <Button
-          onClick={handleOpenDialog}
+          onClick={handleResetFilters}
           className="px-8 py-6 text-base md:text-lg shadow-lg hover:scale-105 transition-transform"
         >
-          <PlusCircle size={18} />
-          Responder pergunta
+          <MinusCircle size={18} />
+          Limpar filtros
         </Button>
       </div>
     </div>

@@ -5,11 +5,14 @@ import TabQuestionsUsers from "./questions/QuestionsUser";
 import { useState } from "react";
 import { defaultParams, searchParams } from "@/app/questions/lib/types";
 import FilterQuestions from "@/app/questions/ui/FilterQuestions";
+import AnswersUser from "./answers/AnswersUser";
+import QuestionsUser from "./questions/QuestionsUser";
 
 export default function TabsActivity() {
   const [search, setSearch] = useState<searchParams>(defaultParams);
   const [debouncedSearch, setDebouncedSearch] =
     useState<searchParams>(defaultParams);
+
   return (
     <div>
       <FilterQuestions search={search} setSearch={setSearch} />
@@ -34,7 +37,23 @@ export default function TabsActivity() {
 
         <TabsContent value="questions" className="mt-4">
           <div className="space-y-4">
-            <TabQuestionsUsers search={search} setSearch={setSearch} debouncedSearch={debouncedSearch} setDebouncedSearch={setDebouncedSearch} />
+            <QuestionsUser
+              search={search}
+              setSearch={setSearch}
+              debouncedSearch={debouncedSearch}
+              setDebouncedSearch={setDebouncedSearch}
+            />
+          </div>
+        </TabsContent>
+
+        <TabsContent value="answers" className="mt-4">
+          <div className="space-y-4">
+            <AnswersUser
+              search={search}
+              setSearch={setSearch}
+              debouncedSearch={debouncedSearch}
+              setDebouncedSearch={setDebouncedSearch}
+            />
           </div>
         </TabsContent>
       </Tabs>
