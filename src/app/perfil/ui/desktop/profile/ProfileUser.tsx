@@ -13,7 +13,7 @@ export default function ProfileUser() {
   const [openChangeInfos, setOpenChangeInfos] = useState<boolean>(false);
 
   return (
-    <div className="flex flex-col rounded-xl sm:shadow-lg overflow-hidden w-full max-w-5xl sm:border md:border-gray-dark gap-14">
+    <div className="flex flex-col h-full rounded-xl md:shadow-lg overflow-hidden max-w-md md:border md:border-gray-dark gap-14">
       {loading ? (
         <>
           <SkeletonUserProfile />

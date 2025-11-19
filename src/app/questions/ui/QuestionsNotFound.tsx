@@ -37,7 +37,6 @@ export default function QuestionsNotFound({
 
   const handleResetFilters = () => {
     setSearch?.(defaultParams);
-    router.push("/questions");
   };
 
   return (

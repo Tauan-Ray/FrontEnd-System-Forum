@@ -5,7 +5,7 @@ import CountVotes from "./CountVotes";
 
 export default function StatisticsCards({ user }: { user: UserProps | null }) {
   return (
-    <div className="grid grid-cols-1 sm:grid-cols-2 justify-items-center gap-6">
+    <div className="grid grid-cols-1 lg:grid-cols-2 justify-items-center gap-6">
       <InfoCard
         title="Perguntas criadas"
         value={user?._count.Question ?? 0}
