@@ -12,7 +12,7 @@ import { useAuthStore } from "@/store/useAuthStore";
 import { FiltersProps } from "@/app/perfil/lib/types";
 import EmptyAnswers from "./EmptyAnswers";
 
-export default function AllAnswers({
+export default function AllAnswersUser({
   search,
   setSearch,
   debouncedSearch,
