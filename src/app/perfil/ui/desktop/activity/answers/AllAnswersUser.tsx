@@ -116,10 +116,12 @@ export default function AllAnswersUser({
     );
   }
 
+  const isFirstLoad = isLoading || !answers || !answers.length;
+
   return (
     <div className="pb-14">
       <div id="scroll-area" className="flex flex-col gap-6">
-        {isLoading ? (
+        {isFirstLoad ? (
           <SkeletonAnswers quantity={3} />
         ) : size >= 0 && !errorAnswer ? (
           answers?.length && answers[0]._data?.length ? (

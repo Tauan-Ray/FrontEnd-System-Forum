@@ -101,10 +101,13 @@ export default function AllQuestionsUser({
       clearInterval(intervalCheckScroll);
     };
   }, [questions, setSize, errorQuestion, isValidating]);
+
+  const isFirstLoad = isLoading || !questions || !questions.length;
+
   return (
       <div className="pb-14">
         <div id="scroll-area" className="flex flex-col gap-6">
-          {isLoading ? (
+          {isFirstLoad ? (
             <SkeletonQuestions quantity={3} />
           ) : size >= 0 && !errorQuestion ? (
             questions?.length && questions[0]._data?.length ? (
