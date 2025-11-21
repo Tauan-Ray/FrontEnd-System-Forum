@@ -7,7 +7,7 @@ import { fetcher } from "@/app/auth/lib/sessions";
 import { SkeletonAnswers } from "@/components/SkeletonModel";
 import { RefreshCw } from "lucide-react";
 import { ResAnswer } from "@/app/questions/lib/sessions";
-import OneAnswer from "@/app/questions/[questionId]/ui/OneAnswer";
+import OneAnswer from "@/app/_answers/ui/OneAnswer";
 import { useAuthStore } from "@/store/useAuthStore";
 import { FiltersProps } from "@/app/perfil/lib/types";
 import EmptyAnswers from "./EmptyAnswers";

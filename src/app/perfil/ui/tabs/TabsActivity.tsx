@@ -1,7 +1,6 @@
 "use client";
 
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import TabQuestionsUsers from "./questions/QuestionsUser";
 import { useState } from "react";
 import { defaultParams, searchParams } from "@/app/questions/lib/types";
 import FilterQuestions from "@/app/questions/ui/FilterQuestions";

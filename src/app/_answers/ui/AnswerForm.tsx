@@ -1,7 +1,7 @@
 import { useState } from "react";
-import RichTextEditor from "../../ui/RichTextEditor/RichTextEditor";
+import RichTextEditor from "../../questions/ui/RichTextEditor/RichTextEditor";
 import { Button } from "@/components/ui/button";
-import { CreateAnswer } from "../actions/CreateAnswer";
+import { CreateAnswerAction } from "../actions/CreateAnswerAction";
 import { toast } from "sonner";
 
 type AnswerFormProps = {
@@ -30,7 +30,7 @@ export default function AnswerForm({
         description: "Atenção, você não pode enviar uma resposta vazia!",
       });
     } else {
-      await CreateAnswer({ ID_QT: questionId, response });
+      await CreateAnswerAction({ ID_QT: questionId, response });
       mutate();
       closeResponseBox();
     }

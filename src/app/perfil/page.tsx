@@ -1,6 +1,6 @@
-import TabsActivity from "./ui/desktop/activity/TabsActivity";
-import ProfileUser from "./ui/desktop/profile/ProfileUser";
-import TabsUserProfile from "./ui/mobile/TabsUserProfile";
+import TabsActivity from "./ui/tabs/TabsActivity";
+import ProfileUser from "./ui/profile/ProfileUser";
+import TabsUserProfileMobile from "./ui/TabsUserProfileMobile";
 
 export default function PerfilPage() {
   return (
@@ -16,7 +16,7 @@ export default function PerfilPage() {
 
       {/* Versão mobile */}
       <div className="flex min-[900px]:hidden flex-col min-h-screen w-full p-4">
-        <TabsUserProfile />
+        <TabsUserProfileMobile />
       </div>
     </div>
   );

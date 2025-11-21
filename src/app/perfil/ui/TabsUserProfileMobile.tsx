@@ -1,14 +1,14 @@
 "use client";
 
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import ProfileUser from "../desktop/profile/ProfileUser";
+import ProfileUser from "./profile/ProfileUser";
 import { useState } from "react";
 import { defaultParams, searchParams } from "@/app/questions/lib/types";
 import FilterQuestions from "@/app/questions/ui/FilterQuestions";
-import AllQuestionsUser from "../desktop/activity/questions/AllQuestionUser";
-import AllAnswersUser from "../desktop/activity/answers/AllAnswersUser";
+import AllQuestionsUser from "./tabs/questions/AllQuestionUser";
+import AllAnswersUser from "./tabs/answers/AllAnswersUser";
 
-export default function TabsUserProfile() {
+export default function TabsUserProfileMobile() {
   const [search, setSearch] = useState<searchParams>(defaultParams);
   const [debouncedSearch, setDebouncedSearch] =
     useState<searchParams>(defaultParams);

@@ -40,7 +40,7 @@ export default function EditUserDialog({
           defaultValue="infos"
           className="w-full h-full rounded-2xl p-4 flex flex-col items-center"
         >
-          <TabsList className="flex w-full bg-blue-primary/20 p-1 rounded-xl">
+          <TabsList className="flex w-full bg-blue-primary/20 p-1 rounded-xl h-auto">
             <TabsTrigger
               value="infos"
               className="
@@ -48,6 +48,7 @@ export default function EditUserDialog({
         data-[state=active]:bg-blue-primary data-[state=active]:text-white
         data-[state=active]:shadow
         hover:bg-blue-primary/10
+        p-2
       "
             >
               Editar Perfil
@@ -60,6 +61,7 @@ export default function EditUserDialog({
         data-[state=active]:bg-blue-primary data-[state=active]:text-white
         data-[state=active]:shadow
         hover:bg-blue-primary/10
+        p-2
       "
             >
               Alterar Senha

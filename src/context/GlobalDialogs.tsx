@@ -1,6 +1,6 @@
 "use client";
 
-import DialogRedirectToLogin from "@/app/questions/[questionId]/ui/DialogRedirectToLogin";
+import DialogRedirectToLogin from "@/components/DialogRedirectToLogin";
 import { useRedirectStore } from "@/store/useRedirectStore";
 
 export default function GlobalDialogs() {

@@ -2,11 +2,11 @@
 
 import { useEffect, useState } from "react";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
-import { getQuestionById, ResQuestion } from "../../lib/sessions";
+import { getQuestionById, ResQuestion } from "../questions/lib/sessions";
 import { SkeletonQuestions } from "@/components/SkeletonModel";
-import AllAnswers from "./AllAnswers";
-import OneQuestion from "../../ui/OneQuestion";
-import QuestionsNotFound from "../../ui/QuestionsNotFound";
+import AllAnswers from "./ui/AllAnswers";
+import OneQuestion from "../questions/ui/OneQuestion";
+import QuestionsNotFound from "../questions/ui/QuestionsNotFound";
 
 type IntoQuestionProps = {
   questionId: string;

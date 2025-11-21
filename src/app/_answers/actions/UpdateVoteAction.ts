@@ -1,15 +1,14 @@
 import { HttpStatusCode } from "axios";
 import { toast } from "sonner";
-import { createAnswer } from "../../lib/sessions";
+import { UpdateVote } from "../lib/sessions";
 
-export async function CreateAnswer(
-  values: { ID_QT: string, response: string }
-) {
-  const res = await createAnswer(values);
+export async function UpdateVoteAction(idAnswer: string, type: { type: "LIKE" | "DESLIKE" }) {
+  const resData = await UpdateVote(idAnswer, type);
+  const res = resData.data
 
-  if (res?.message === "Resposta criada com sucesso") {
+  if (res?.message?.includes("Voto")) {
     toast.success(res.message, {
-      description: "Obrigado por contribuir com o aprendizado de todos!",
+      description: `Seu ${type.type.toLowerCase()} foi registrado. Obrigado por contribuir!`,
     });
   } else {
     if (res.message) {
@@ -27,7 +26,7 @@ export async function CreateAnswer(
         });
       } else if (res.status === HttpStatusCode.NotFound) {
         toast.warning(res.message, {
-          description: "Pergunta selecionada não encontrada",
+          description: "Resposta selecionada não encontrada",
         });
       } else {
         console.log(res);
