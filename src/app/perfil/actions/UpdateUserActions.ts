@@ -120,12 +120,6 @@ export async function UpdatePasswordUserAction(
         });
         break;
 
-      case HttpStatusCode.Conflict:
-        toast.error("Username em uso", {
-          description: "O username escolhido já esta em uso",
-        });
-        break;
-
       case HttpStatusCode.TooManyRequests:
         toast.warning("Muitas tentativas!", {
           description: "Aguarde alguns segundos e tente novamente.",
