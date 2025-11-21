@@ -47,6 +47,7 @@ export default function RecentQuestions() {
             category={question.Category.CATEGORY}
             description={question.DESCRIPTION}
             redirect={true}
+            ID_CT={question.ID_CT}
           />
         ))}
       </div>

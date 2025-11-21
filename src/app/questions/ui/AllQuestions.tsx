@@ -125,6 +125,7 @@ export default function AllQuestion({
                         title={question.TITLE}
                         description={question.DESCRIPTION}
                         redirect={true}
+                        ID_CT={question.ID_CT}
                       />
                     );
                   });

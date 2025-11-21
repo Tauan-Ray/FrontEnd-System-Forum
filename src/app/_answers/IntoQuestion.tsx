@@ -64,6 +64,7 @@ export default function IntoQuestion({ questionId }: IntoQuestionProps) {
         description={question.DESCRIPTION}
         ID_QT={questionId}
         onOpenResponseModal={handleOpenModal}
+        ID_CT={question.ID_CT}
       />
 
       <AllAnswers openResponseBox={openResponseBox} setOpenResponseBox={setOpenResponseBox} onChangeModal={setOpenResponseBox} questionId={questionId} />

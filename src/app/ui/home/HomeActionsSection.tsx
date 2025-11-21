@@ -47,7 +47,7 @@ const HomeActionsSection = () => {
           <span className="font-mono text-base text-blue-800">pergunta</span>
         </Button>
       </div>
-      <CreateQuestionDialog open={openCreateDialog} onOpenChange={setOpenCreateDialog} />
+      <CreateQuestionDialog type="create" open={openCreateDialog} onOpenChange={setOpenCreateDialog} />
     </div>
   );
 };

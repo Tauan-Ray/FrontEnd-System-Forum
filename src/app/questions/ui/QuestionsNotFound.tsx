@@ -79,7 +79,7 @@ export default function QuestionsNotFound({
           <PlusCircle size={18} />
           Fazer uma pergunta
         </Button>
-        <CreateQuestionDialog open={openDialog} onOpenChange={setOpenDialog} />
+        <CreateQuestionDialog type="create" open={openDialog} onOpenChange={setOpenDialog} />
       </div>
     </div>
   );

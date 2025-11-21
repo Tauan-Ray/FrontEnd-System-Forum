@@ -1,4 +1,4 @@
-"use client"
+"use client";
 
 import { zodResolver } from "@hookform/resolvers/zod";
 import {
@@ -26,58 +26,72 @@ import RichTextEditor from "./RichTextEditor/RichTextEditor";
 import { Spinner } from "@/components/ui/spinner";
 import { Button } from "@/components/ui/button";
 import { CreateQuestion } from "../actions/CreateQuestion";
+import { EditQuestionAction } from "../actions/EditQuestionAction";
 
 type CreateQuestionDialogProps = {
   open: boolean;
   onOpenChange: (open: boolean) => void;
+  type: "edit" | "create";
+  title?: string;
+  description?: string;
+  category?: string;
+  ID_QT?: string;
 };
 
 export default function CreateQuestionDialog({
   open,
   onOpenChange,
+  type,
+  title,
+  description,
+  category,
+  ID_QT,
 }: CreateQuestionDialogProps) {
   const [isLoading, setIsLoading] = useState<boolean>(false);
 
   const form = useForm<z.infer<typeof CreateQuestionFormSchema>>({
     resolver: zodResolver(CreateQuestionFormSchema),
     defaultValues: {
-      title: "",
-      description: "",
-      ID_CT: "",
+      title: title ?? "",
+      description: description ?? "",
+      ID_CT: category ?? "",
     },
   });
 
   async function onSubmit(values: z.infer<typeof CreateQuestionFormSchema>) {
     setIsLoading(true);
-    await CreateQuestion(values);
+
+    if (type === "create") {
+      await CreateQuestion(values);
+    } else {
+      await EditQuestionAction(values, ID_QT ?? "");
+    }
+
     setIsLoading(false);
-
     form.reset();
+    onOpenChange(false);
 
-    onOpenChange(false)
+    if (type === "edit") {
+      window.location.reload();
+    }
   }
+
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
-      <Form {...form}>
-        <form
-          id="form-create-question"
-          onSubmit={form.handleSubmit(onSubmit)}
-          className="w-full mb-8"
-        >
-          <DialogContent
-            className="max-h-[90vh] w-full sm:max-w-md md:max-w-lg mx-auto overflow-auto"
-            onInteractOutside={(e) => {
-              e.preventDefault();
-            }}
-          >
-            <DialogHeader className="flex flex-col items-center">
-              <DialogTitle className="text-lg md:text-2xl">
-                Qual sua dúvida?
-              </DialogTitle>
-              <DialogDescription className="text-xs md:text-sm">
-                Solucione ela agora mesmo!
-              </DialogDescription>
-            </DialogHeader>
+      <DialogContent
+        className="max-h-[90vh] w-full sm:max-w-md md:max-w-lg mx-auto overflow-auto"
+        onInteractOutside={(e) => e.preventDefault()}
+      >
+        <DialogHeader className="flex flex-col items-center">
+          <DialogTitle className="text-lg md:text-2xl">
+            Qual sua dúvida?
+          </DialogTitle>
+          <DialogDescription className="text-xs md:text-sm">
+            Solucione ela agora mesmo!
+          </DialogDescription>
+        </DialogHeader>
+        <Form {...form}>
+          <form onSubmit={form.handleSubmit(onSubmit)} className="w-full mb-8">
             <div className="flex flex-col gap-7">
               <FormField
                 control={form.control}
@@ -88,19 +102,17 @@ export default function CreateQuestionDialog({
                       Título
                     </FormLabel>
                     <FormControl>
-                      <div>
-                        <Input
-                          placeholder="Digite sua dúvida"
-                          className="w-full font-mono font-bold text-xs md:text-base"
-                          disabled={isLoading}
-                          {...field}
-                        />
-                      </div>
+                      <Input
+                        placeholder="Digite sua dúvida"
+                        className="w-full font-mono font-bold text-xs md:text-base"
+                        disabled={isLoading}
+                        {...field}
+                      />
                     </FormControl>
+                    <FormError message={form.formState.errors.title?.message} />
                   </FormItem>
                 )}
               />
-              <FormError message={form.formState.errors.title?.message} />
 
               <FormField
                 control={form.control}
@@ -109,7 +121,7 @@ export default function CreateQuestionDialog({
                   <FormItem>
                     <div className="flex flex-col md:flex-row gap-3 items-center">
                       <FormLabel className="pl-3 text-base md:text-lg">
-                        Categoria:{" "}
+                        Categoria:
                       </FormLabel>
                       <FormControl>
                         <CategorySelect
@@ -118,10 +130,10 @@ export default function CreateQuestionDialog({
                         />
                       </FormControl>
                     </div>
+                    <FormError message={form.formState.errors.ID_CT?.message} />
                   </FormItem>
                 )}
               />
-              <FormError message={form.formState.errors.ID_CT?.message} />
 
               <FormField
                 control={form.control}
@@ -132,12 +144,10 @@ export default function CreateQuestionDialog({
                       Descrição
                     </FormLabel>
                     <FormControl>
-                      <div className="max-w-md">
-                        <RichTextEditor
-                          value={field.value}
-                          onChange={field.onChange}
-                        />
-                      </div>
+                      <RichTextEditor
+                        value={field.value}
+                        onChange={field.onChange}
+                      />
                     </FormControl>
                     <FormError
                       message={form.formState.errors.description?.message}
@@ -145,21 +155,20 @@ export default function CreateQuestionDialog({
                   </FormItem>
                 )}
               />
-
-              <FormError message={form.formState.errors.description?.message} />
             </div>
+
             <div className="flex justify-center mt-6">
               <Button
                 type="submit"
-                form="form-create-question"
                 className="flex py-5 w-4/5 md:w-2/5 text-md md:text-lg md:py-6 justify-center"
               >
-                {isLoading && <Spinner />} Criar pergunta
+                {isLoading && <Spinner />}
+                {type === "edit" ? "Editar pergunta" : "Criar pergunta"}
               </Button>
             </div>
-          </DialogContent>
-        </form>
-      </Form>
+          </form>
+        </Form>
+      </DialogContent>
     </Dialog>
   );
 }

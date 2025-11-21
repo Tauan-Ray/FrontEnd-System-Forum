@@ -1,4 +1,4 @@
-import IntoQuestion from "../../_answers/ui/IntoQuestion";
+import IntoQuestion from "@/app/_answers/IntoQuestion";
 
 export default async function ViewQuestionDetails({ params }: { params: Promise<{ questionId: string }> }) {
   const { questionId } = await params;

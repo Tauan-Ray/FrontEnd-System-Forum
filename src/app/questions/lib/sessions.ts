@@ -83,3 +83,12 @@ export async function createQuestion(
     .then(({ data, status }) => ({ ...data, status }))
     .catch(handleApiError)
 }
+
+export async function editQuestion(
+  question: z.infer<typeof CreateQuestionFormSchema>,
+  idQuestion: string,
+): Promise<ResCreateQuestion & DefaultParamsResponse> {
+  return await service_api.patch(`/questions/update/${idQuestion}`, question)
+    .then(({ data, status }) => ({ ...data, status }))
+    .catch(handleApiError)
+}
