@@ -6,7 +6,7 @@ import { Button } from "@/components/ui/button";
 import { SkeletonUserProfile } from "@/components/SkeletonModel";
 import StatisticsCards from "./StatisticsCards";
 import { useState } from "react";
-import ChangeInfosDialog from "./ChangeInfosDialog";
+import EditUserDialog from "./EditUserDialog";
 
 export default function ProfileUser() {
   const { user, loading } = useAuthStore();
@@ -42,13 +42,10 @@ export default function ProfileUser() {
               >
                 Editar Perfil
               </Button>
-              <ChangeInfosDialog
+              <EditUserDialog
                 open={openChangeInfos}
                 onChange={setOpenChangeInfos}
-                user={user}
               />
-
-              <Button className="px-12 py-5">Alterar senha</Button>
             </div>
           </div>
 

@@ -124,7 +124,6 @@ export function SkeletonUserProfile() {
 
       {/* BOTÃO EDITAR PERFIL / TROCAR SENHA */}
       <Skeleton className="h-12 w-44 rounded-lg bg-gray-300 animate-pulse" />
-      <Skeleton className="h-12 w-44 rounded-lg bg-gray-300 animate-pulse" />
 
       {/* SEÇÃO USER INFO */}
       <div className="w-full max-w-xl flex flex-col items-center mt-4">

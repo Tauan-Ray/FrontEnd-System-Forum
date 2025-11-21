@@ -20,16 +20,22 @@ export default function TabsActivity() {
         defaultValue="questions"
         className="p-6 rounded-2xl bg-white max-w-full"
       >
-        <TabsList className="grid grid-cols-2 w-full mb-4 bg-blue-primary p-1 rounded-xl h-auto">
+        <TabsList className="flex w-full bg-blue-primary/20 p-1 rounded-xl h-auto">
           <TabsTrigger
             value="questions"
-            className="data-[state=active]:bg-gray-200 data-[state=active]:shadow-sm rounded-lg p-2"
+            className="flex-1 text-sm rounded-lg px-4 py-2 transition-all
+        data-[state=active]:bg-blue-primary data-[state=active]:text-white
+        data-[state=active]:shadow
+        hover:bg-blue-primary/10 p-2"
           >
             Perguntas
           </TabsTrigger>
           <TabsTrigger
             value="answers"
-            className="data-[state=active]:bg-gray-200 data-[state=active]:shadow-sm rounded-lg p-2"
+            className="flex-1 text-sm rounded-lg px-4 py-2 transition-all
+        data-[state=active]:bg-blue-primary data-[state=active]:text-white
+        data-[state=active]:shadow
+        hover:bg-blue-primary/10 p-2"
           >
             Respostas
           </TabsTrigger>

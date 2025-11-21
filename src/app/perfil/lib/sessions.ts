@@ -5,7 +5,7 @@ import { handleApiError } from "@/lib/client.util";
 import { DefaultParamsResponse } from "@/lib/type";
 import { service_api } from "@/service/service.api";
 import { z } from "@/components/pt-zod";
-import { UpdateUserFormSchema } from "./definitions";
+import { UpdatePasswordFormSchema, UpdateUserFormSchema } from "./definitions";
 
 export type ResAllVotesUser = {
   likes: number;
@@ -38,6 +38,17 @@ export async function UpdateUserInfos(
 ): Promise<ResUpdateUserInfos & DefaultParamsResponse> {
   return await service_api
     .patch(`/user/update/${userId}`, value)
+    .then(({ data, status }) => ({ ...data, status }))
+    .catch(handleApiError);
+}
+
+
+export async function UpdateUserPassword(
+  value: z.infer<typeof UpdatePasswordFormSchema>,
+  userId: string
+): Promise<ResUpdateUserInfos & DefaultParamsResponse> {
+  return await service_api
+    .patch(`/user/update/${userId}/password`, value)
     .then(({ data, status }) => ({ ...data, status }))
     .catch(handleApiError);
 }
