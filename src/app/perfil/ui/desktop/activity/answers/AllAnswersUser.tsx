@@ -139,6 +139,7 @@ export default function AllAnswersUser({
                   userVote={answer.user_vote}
                   redirect={true}
                   ID_QT={answer.ID_QT}
+                  TITLE={answer.TITLE}
                 />
               ))
             )
