@@ -43,6 +43,7 @@ export default function RecentQuestions() {
             ID_QT={question.ID_QT}
             username={question.User.USERNAME}
             DT_CR={question.DT_CR}
+            DT_UP={question.DT_UP}
             title={question.TITLE}
             category={question.Category.CATEGORY}
             description={question.DESCRIPTION}

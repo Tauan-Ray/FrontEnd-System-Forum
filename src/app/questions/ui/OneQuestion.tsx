@@ -14,6 +14,7 @@ type OneQuestionProps = {
   ID_USER: string;
   username: string;
   DT_CR: Date;
+  DT_UP: Date;
   title: string;
   ID_CT: string;
   category: string;
@@ -27,6 +28,7 @@ export default function OneQuestion({
   ID_USER,
   username,
   DT_CR,
+  DT_UP,
   title,
   ID_CT,
   category,
@@ -80,9 +82,17 @@ export default function OneQuestion({
             </p>
           </div>
 
-          <p className="font-sans text-sm sm:text-md text-gray-dark">
-            Pergunta feita em: {new Date(DT_CR).toLocaleDateString("pt-BR")}
-          </p>
+          <div className="flex flex-col gap-2">
+            <p className="font-sans text-sm sm:text-md text-gray-dark">
+              Pergunta feita em: {new Date(DT_CR).toLocaleDateString("pt-BR")}
+            </p>
+
+            { !(DT_CR === DT_UP) && (
+              <p className="font-sans text-sm sm:text-md text-gray-dark flex sm:justify-end">
+                Editada: {new Date(DT_UP).toLocaleDateString("pt-BR")}
+              </p>
+            )}
+          </div>
         </div>
         <div className="flex flex-col gap-1">
           <h3 className="font-mono font-bold text-base sm:text-lg text-blue-primary">

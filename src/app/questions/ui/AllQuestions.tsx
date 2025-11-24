@@ -121,6 +121,7 @@ export default function AllQuestion({
                         ID_USER={question.ID_USER}
                         username={question.User.USERNAME}
                         DT_CR={question.DT_CR}
+                        DT_UP={question.DT_UP}
                         category={question.Category.CATEGORY}
                         title={question.TITLE}
                         description={question.DESCRIPTION}

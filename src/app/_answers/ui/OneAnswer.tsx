@@ -19,6 +19,7 @@ type OneAnswerProps = {
   ID_USER: string;
   username: string;
   DT_CR: Date;
+  DT_UP: Date;
   response: string;
   likes: number;
   dislikes: number;
@@ -33,6 +34,7 @@ export default function OneAnswer({
   ID_USER,
   username,
   DT_CR,
+  DT_UP,
   response,
   likes: initialLikes,
   dislikes: initialDislikes,
@@ -122,9 +124,17 @@ export default function OneAnswer({
             </p>
           </div>
 
-          <p className="font-sans text-sm sm:text-base text-gray-dark">
-            Resposta enviada em: {new Date(DT_CR).toLocaleDateString("pt-BR")}
-          </p>
+          <div className="flex flex-col gap-2">
+            <p className="font-sans text-sm sm:text-base text-gray-dark">
+              Resposta enviada em: {new Date(DT_CR).toLocaleDateString("pt-BR")}
+            </p>
+
+            { !(DT_CR === DT_UP) && (
+              <p className="font-sans text-sm sm:text-base text-gray-dark flex sm:justify-end">
+                Editada: {new Date(DT_UP).toLocaleDateString("pt-BR")}
+              </p>
+            )}
+          </div>
         </div>
 
         <div

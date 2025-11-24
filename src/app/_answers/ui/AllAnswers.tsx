@@ -158,6 +158,7 @@ export default function AllAnswers({
                   ID_USER={answer.ID_USER}
                   username={answer.USERNAME}
                   DT_CR={answer.DT_CR}
+                  DT_UP={answer.DT_UP}
                   response={answer.RESPONSE}
                   likes={answer.likes}
                   dislikes={answer.dislikes}

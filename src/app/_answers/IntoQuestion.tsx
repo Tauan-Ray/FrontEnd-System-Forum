@@ -59,6 +59,7 @@ export default function IntoQuestion({ questionId }: IntoQuestionProps) {
         ID_USER={question.ID_USER}
         username={question.User.USERNAME}
         DT_CR={question.DT_CR}
+        DT_UP={question.DT_UP}
         title={question.TITLE}
         category={question.Category.CATEGORY}
         description={question.DESCRIPTION}
