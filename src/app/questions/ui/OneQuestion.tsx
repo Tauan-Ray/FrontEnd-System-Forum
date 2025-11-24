@@ -7,6 +7,7 @@ import { Button } from "@/components/ui/button";
 import CreateQuestionDialog from "./CreateQuestionDialog";
 import { useState } from "react";
 import { useAuthStore } from "@/store/useAuthStore";
+import DeleteQuestionDialog from "./DeleteQuestionDialog";
 
 type OneQuestionProps = {
   ID_QT: string;
@@ -33,7 +34,10 @@ export default function OneQuestion({
   redirect,
   onOpenResponseModal,
 }: OneQuestionProps) {
-  const [openCreateDialog, setOpenCreateDialog] = useState<boolean>(false);
+  const [openCreateDialog, setOpenCreateDialog] = useState<{
+    edit: boolean;
+    delete: boolean;
+  }>({ edit: false, delete: false });
   const { user } = useAuthStore();
   const router = useRouter();
   const avatar = useAvatar(ID_USER);
@@ -108,7 +112,9 @@ export default function OneQuestion({
         {showActions && (
           <div className="flex flex-col sm:flex-row gap-2 w-full sm:w-auto">
             <Button
-              onClick={() => setOpenCreateDialog(true)}
+              onClick={() =>
+                setOpenCreateDialog((prev) => ({ ...prev, edit: true }))
+              }
               className="p-4 text-sm sm:text-base w-full sm:w-auto bg-blue-light"
             >
               Editar
@@ -117,14 +123,27 @@ export default function OneQuestion({
             <Button
               variant="destructive"
               className="p-4 text-sm sm:text-base w-full sm:w-auto"
+              onClick={() =>
+                setOpenCreateDialog((prev) => ({ ...prev, delete: true }))
+              }
             >
               Deletar
             </Button>
 
+            <DeleteQuestionDialog
+              idQuestion={ID_QT}
+              onOpenChange={(value: boolean) =>
+                setOpenCreateDialog((prev) => ({ ...prev, delete: value }))
+              }
+              open={openCreateDialog.delete}
+            />
+
             <CreateQuestionDialog
               type="edit"
-              open={openCreateDialog}
-              onOpenChange={setOpenCreateDialog}
+              open={openCreateDialog.edit}
+              onOpenChange={(value: boolean) =>
+                setOpenCreateDialog((prev) => ({ ...prev, edit: value }))
+              }
               title={title}
               category={ID_CT}
               description={description}
