@@ -6,11 +6,11 @@ import useSWRInfinite from "swr/infinite";
 import { fetcher } from "@/app/auth/lib/sessions";
 import { SkeletonAnswers } from "@/components/SkeletonModel";
 import { RefreshCw } from "lucide-react";
-import { ResAnswer } from "../../questions/lib/sessions";
 import OneAnswer from "./OneAnswer";
 import AnswersNotFound from "./AnswerNotFound";
-import AnswerForm from "./AnswerForm";
+import CreateAnswerForm from "./CreateAnswerForm";
 import { useAuthStore } from "@/store/useAuthStore";
+import { ResAnswer } from "../lib/sessions";
 
 type AllAnswersProps = {
   questionId: string;
@@ -128,7 +128,7 @@ export default function AllAnswers({
             openResponseBox ? "animate-slideFadeIn" : "animate-slideFadeOut"
           }`}
         >
-          <AnswerForm
+          <CreateAnswerForm
             mutate={() => mutate()}
             closeResponseBox={() => setOpenResponseBox(false)}
             questionId={questionId}

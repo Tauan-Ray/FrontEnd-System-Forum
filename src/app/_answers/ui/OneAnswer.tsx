@@ -1,9 +1,18 @@
-import { UserCircle2, ThumbsUp, ThumbsDown, CornerDownRight } from "lucide-react";
+import {
+  UserCircle2,
+  ThumbsUp,
+  ThumbsDown,
+  CornerDownRight,
+} from "lucide-react";
 import UpdateVotesButton from "./UpdateVotesButton";
 import { useState } from "react";
 import { useAvatar } from "@/hooks/useAvatar";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
+import { useAuthStore } from "@/store/useAuthStore";
+import { Button } from "@/components/ui/button";
+import EditAnswerDialog from "./EditAnswerDialog";
+import DeleteAnswerDialog from "./DeleteAnswerDialog";
 
 type OneAnswerProps = {
   ID_AN: string;
@@ -30,14 +39,19 @@ export default function OneAnswer({
   userVote,
   redirect,
   ID_QT,
-  TITLE
+  TITLE,
 }: OneAnswerProps) {
+  const { user } = useAuthStore();
   const [actualVote, setActualVote] = useState<"LIKE" | "DESLIKE" | null>(
     userVote
   );
   const [_, setNewVote] = useState<"LIKE" | "DESLIKE" | null>(null);
   const [likes, setLikes] = useState<number>(initialLikes);
   const [dislikes, setDislikes] = useState<number>(initialDislikes);
+  const [openAnswerDialog, setOpenAnswerDialog] = useState<{
+    edit: boolean;
+    delete: boolean;
+  }>({ edit: false, delete: false });
 
   const avatar = useAvatar(ID_USER);
   const router = useRouter();
@@ -68,25 +82,25 @@ export default function OneAnswer({
     router.push(`/questions/${ID_QT}`);
   };
 
+  const showActions = ID_USER === user?.ID_USER || user?.ROLE === "ADMIN";
+
   return (
     <>
       {TITLE && (
-  <div
-    onClick={handleRedirectQuestion}
-    className="flex items-center gap-3 my-3 cursor-pointer group"
-  >
-    <div className="h-px flex-1 bg-gray-300" />
-    <div className="flex items-center gap-2 text-blue-primary group-hover:text-blue-hover transition p-3 border rounded-lg">
-      <CornerDownRight size={18} />
-      <span className="font-semibold text-base">{TITLE}</span>
-    </div>
-    <div className="h-px flex-1 bg-gray-300" />
-  </div>
-)}
+        <div
+          onClick={handleRedirectQuestion}
+          className="flex items-center gap-3 my-3 cursor-pointer group"
+        >
+          <div className="h-px flex-1 bg-gray-300" />
+          <div className="flex items-center gap-2 text-blue-primary group-hover:text-blue-hover transition p-3 border rounded-lg">
+            <CornerDownRight size={18} />
+            <span className="font-semibold text-base">{TITLE}</span>
+          </div>
+          <div className="h-px flex-1 bg-gray-300" />
+        </div>
+      )}
 
-      <div
-        className="flex flex-col border border-gray-dark rounded-md p-4 sm:p-5 gap-4 hover:border-blue-hover transition-colors"
-      >
+      <div className="flex flex-col border border-gray-dark rounded-md p-4 sm:p-5 gap-4 hover:border-blue-hover transition-colors">
         <div className="flex flex-col gap-2 sm:flex-row sm:justify-between">
           <div className="flex flex-row gap-3 items-center">
             {avatar ? (
@@ -123,47 +137,84 @@ export default function OneAnswer({
           }}
         />
 
-        <div className="flex flex-row gap-4 justify-end items-center">
-          <div className="flex flex-col items-center">
-            <UpdateVotesButton
-              idAnswer={ID_AN}
-              type="LIKE"
-              isActive={actualVote === "LIKE"}
-              setNewVote={handleVote}
-            >
-              <ThumbsUp
-                size={24}
-                className={`transition-transform duration-200 ${
-                  actualVote === "LIKE"
-                    ? "text-blue-primary scale-110"
-                    : "text-gray-500 hover:text-blue-primary hover:scale-105"
-                }`}
+        <div className="flex items-center justify-between mt-2">
+          {showActions && (
+            <div className="flex gap-2">
+              <Button
+                onClick={() =>
+                  setOpenAnswerDialog((prev) => ({ ...prev, edit: true }))
+                }
+                className="bg-blue-light px-4 py-2"
+              >
+                Editar
+              </Button>
+              <EditAnswerDialog
+                ID_AN={ID_AN}
+                actualResponse={response}
+                open={openAnswerDialog.edit}
+                onOpenChange={(value) =>
+                  setOpenAnswerDialog((prev) => ({ ...prev, edit: value }))
+                }
               />
-            </UpdateVotesButton>
-            <span className="text-gray-dark font-semibold text-sm">
-              {likes}
-            </span>
-          </div>
 
-          <div className="flex flex-col items-center">
-            <UpdateVotesButton
-              idAnswer={ID_AN}
-              type="DESLIKE"
-              isActive={actualVote === "DESLIKE"}
-              setNewVote={handleVote}
-            >
-              <ThumbsDown
-                size={24}
-                className={`transition-transform duration-200 ${
-                  actualVote === "DESLIKE"
-                    ? "text-red-500 scale-110"
-                    : "text-gray-500 hover:text-red-500 hover:scale-105"
-                }`}
+              <Button
+                onClick={() =>
+                  setOpenAnswerDialog((prev) => ({ ...prev, delete: true }))
+                }
+                variant="destructive"
+                className="px-4 py-2"
+              >
+                Deletar
+              </Button>
+
+              <DeleteAnswerDialog
+                idAnswer={ID_AN}
+                open={openAnswerDialog.delete}
+                onOpenChange={(value) =>
+                  setOpenAnswerDialog((prev) => ({ ...prev, delete: value }))
+                }
               />
-            </UpdateVotesButton>
-            <span className="text-gray-dark font-semibold text-sm">
-              {dislikes}
-            </span>
+            </div>
+          )}
+
+          <div className="flex items-center gap-6">
+            <div className="flex flex-col items-center">
+              <UpdateVotesButton
+                idAnswer={ID_AN}
+                type="LIKE"
+                isActive={actualVote === "LIKE"}
+                setNewVote={handleVote}
+              >
+                <ThumbsUp
+                  size={24}
+                  className={`transition-transform ${
+                    actualVote === "LIKE"
+                      ? "text-blue-primary scale-110"
+                      : "text-gray-500 hover:text-blue-primary hover:scale-105"
+                  }`}
+                />
+              </UpdateVotesButton>
+              <span className="text-sm font-semibold">{likes}</span>
+            </div>
+
+            <div className="flex flex-col items-center">
+              <UpdateVotesButton
+                idAnswer={ID_AN}
+                type="DESLIKE"
+                isActive={actualVote === "DESLIKE"}
+                setNewVote={handleVote}
+              >
+                <ThumbsDown
+                  size={24}
+                  className={`transition-transform ${
+                    actualVote === "DESLIKE"
+                      ? "text-red-500 scale-110"
+                      : "text-gray-500 hover:text-red-500 hover:scale-105"
+                  }`}
+                />
+              </UpdateVotesButton>
+              <span className="text-sm font-semibold">{dislikes}</span>
+            </div>
           </div>
         </div>
       </div>

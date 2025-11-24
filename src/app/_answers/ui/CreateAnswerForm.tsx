@@ -10,7 +10,7 @@ type AnswerFormProps = {
   mutate: () => void;
 }
 
-export default function AnswerForm({ questionId, closeResponseBox, mutate }: AnswerFormProps) {
+export default function CreateAnswerForm({ questionId, closeResponseBox, mutate }: AnswerFormProps) {
   const [response, setResponse] = useState<string>("");
   const [isLoading, setIsLoading] = useState<boolean>(false)
 

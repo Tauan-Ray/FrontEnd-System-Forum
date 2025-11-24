@@ -22,6 +22,7 @@ export type ResQuestion = {
   TITLE: string;
   DESCRIPTION: string;
   DT_CR: Date;
+  DT_UP: Date;
   Category: {
     CATEGORY: string;
   };
@@ -30,31 +31,6 @@ export type ResQuestion = {
     ROLE: string;
   };
   DEL_AT?: Date | null;
-};
-
-export type ResAnswer = {
-  ID_AN: string;
-  ID_QT: string;
-  ID_USER: string;
-  RESPONSE: string;
-  DT_CR: Date;
-  USERNAME: string;
-  ROLE: string;
-  TITLE: string;
-  CATEGORY: string;
-  likes: number;
-  dislikes: number;
-  user_vote: "LIKE" | "DESLIKE" | null;
-};
-
-export type ResAnswerCreate = {
-  ID_AN: string;
-  RESPONSE: string;
-  DT_CR: Date;
-  DT_UP: Date;
-  DEL_AT: Date | null;
-  ID_USER: string;
-  ID_QT: string;
 };
 
 type ResCreateQuestion = {
@@ -101,7 +77,7 @@ export async function editQuestion(
 
 export async function deleteQuestion(
   idQuestion: string
-): Promise<ResCreateQuestion & DefaultParamsResponse> {
+): Promise<{ message: string } & DefaultParamsResponse> {
   return await service_api
     .patch(`/questions/delete/${idQuestion}`)
     .then(({ data, status }) => ({ ...data, status }))
