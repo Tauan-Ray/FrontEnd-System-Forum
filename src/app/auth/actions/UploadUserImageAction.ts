@@ -3,7 +3,6 @@ import { toast } from "sonner";
 import { HttpStatusCode } from "axios";
 import { redirect } from 'next/navigation';
 import { useAuthStore } from '@/store/useAuthStore';
-import { useAvatarStore } from '@/store/useAvatarStore';
 
 export async function UploadUserImageAction(image: File, redirectUrl: string) {
   const res = await UploadUserImage(image);
@@ -11,14 +10,8 @@ export async function UploadUserImageAction(image: File, redirectUrl: string) {
   if (!res || Object.keys(res).length === 0) {
     toast.success("Imagem enviada com sucesso!");
 
-    const { checkAuth, user } = useAuthStore.getState();
+    const { checkAuth } = useAuthStore.getState();
     await checkAuth();
-
-    if (user?.ID_USER) {
-      const { avatars, setAvatar } = useAvatarStore.getState();
-      delete avatars[user.ID_USER];
-      setAvatar(user.ID_USER, '', 0);
-    }
 
     return redirect(redirectUrl);
   }

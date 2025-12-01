@@ -17,6 +17,7 @@ export type ResAnswer = {
   ROLE: string;
   TITLE: string;
   CATEGORY: string;
+  dt_up_user: Date,
   likes: number;
   dislikes: number;
   user_vote: "LIKE" | "DESLIKE" | null;

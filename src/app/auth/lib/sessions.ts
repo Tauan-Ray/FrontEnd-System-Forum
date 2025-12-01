@@ -36,6 +36,7 @@ export type UserProps = {
   ROLE: string;
   DEL_AT: Date | null
   DT_CR: Date,
+  DT_UP: Date,
   _count : {
     Question: number,
     Answers: number,

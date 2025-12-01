@@ -127,6 +127,7 @@ export default function AllQuestion({
                         description={question.DESCRIPTION}
                         redirect={true}
                         ID_CT={question.ID_CT}
+                        DT_UP_USER={question.User.DT_UP}
                       />
                     );
                   });

@@ -141,6 +141,7 @@ export default function AllAnswersUser({
                   redirect={true}
                   ID_QT={answer.ID_QT}
                   TITLE={answer.TITLE}
+                  DT_UP_USER={answer.dt_up_user}
                 />
               ))
             )

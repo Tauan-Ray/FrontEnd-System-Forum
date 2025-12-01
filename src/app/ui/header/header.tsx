@@ -1,4 +1,4 @@
-"use client"
+"use client";
 
 import Link from "next/link";
 import Image from "next/image";
@@ -7,29 +7,28 @@ import { UserCircle2 } from "lucide-react";
 import MenuMobile from "./menuMobile";
 import { useAuthStore } from "@/store/useAuthStore";
 import { toast } from "sonner";
-import { useAvatar } from "@/hooks/useAvatar";
 import { Skeleton } from "@/components/ui/skeleton";
 import { redirect } from "next/navigation";
+import { webConfig } from "@/lib/settings";
 
 export default function Header() {
   const { user, logout, loading } = useAuthStore();
-  const avatar = useAvatar(user?.ID_USER ?? '');
 
   const handleLogoutUser = async () => {
     await logout();
 
-    toast.info('Logout', {
-      description: 'Sua sessão foi encerrada com sucesso!'
+    toast.info("Logout", {
+      description: "Sua sessão foi encerrada com sucesso!",
     });
 
-    redirect('/')
+    redirect("/");
   };
 
   const handleRedirectToProfile = () => {
     if (!user) return;
 
     redirect(`/perfil`);
-  }
+  };
 
   return (
     <header className="w-full bg-white/80 border-b border-b-gray-300 p-4 sticky top-0 z-50 backdrop-blur-md">
@@ -44,53 +43,53 @@ export default function Header() {
           </Link>
 
           <div className="hidden md:flex items-center gap-6">
-            {loading ? (
-              <Skeleton className="h-10 w-24 rounded-md bg-gray-300 animate-pulse" />
-            ) : user ? (
-              <Button
-                onClick={handleLogoutUser}
-                className="rounded-md px-5 py-3 text-sm font-medium bg-blue-medium hover:bg-blue-hover transition"
-              >
-                Logout
-              </Button>
-            ) : (
-              <div className="flex flex-row gap-6">
+            {loading && (
+              <>
+                <Skeleton className="h-10 w-24 rounded-md bg-gray-300" />
+                <Skeleton className="w-8 h-8 rounded-full bg-gray-300" />
+              </>
+            )}
+
+            {!loading && !user && (
+              <>
                 <Link href="/auth/signin">
-                  <Button className="rounded-md px-5 py-3 text-sm font-medium bg-blue-medium hover:bg-blue-hover transition">
+                  <Button className="rounded-md px-5 py-3 text-sm bg-blue-medium hover:bg-blue-hover">
                     Login
                   </Button>
                 </Link>
 
                 <Link href="/auth/signup">
-                  <Button className="rounded-md px-5 py-3 text-sm font-medium bg-blue-medium hover:bg-blue-hover transition">
+                  <Button className="rounded-md px-5 py-3 text-sm bg-blue-medium hover:bg-blue-hover">
                     Cadastro
                   </Button>
                 </Link>
-              </div>
 
+                <UserCircle2
+                  size={32}
+                  className="text-blue-light cursor-pointer"
+                  onClick={() => redirect("/auth/signin")}
+                />
+              </>
             )}
 
-            {loading || avatar === undefined ? (
-              <Skeleton className="w-8 h-8 rounded-full bg-gray-300 animate-pulse" />
-            ) : (
-              <div>
-                {avatar ? (
-                  <Image
-                    width={38}
-                    height={38}
-                    src={avatar}
-                    alt={`${user?.USERNAME} avatar`}
-                    className="w-10 h-10 rounded-full"
-                    onClick={handleRedirectToProfile}
-                  />
-                ) : (
-                  <UserCircle2
-                    size={32}
-                    className="text-blue-light hover:text-blue-hover transition"
-                    onClick={handleRedirectToProfile}
-                  />
-                )}
-              </div>
+            {!loading && user && (
+              <>
+                <Button
+                  onClick={handleLogoutUser}
+                  className="rounded-md px-5 py-3 text-sm bg-blue-medium hover:bg-blue-hover"
+                >
+                  Logout
+                </Button>
+
+                <Image
+                  width={38}
+                  height={38}
+                  src={`${webConfig.url}:${webConfig.port}/storage/${user.ID_USER}/avatar?q=${user.DT_UP}`}
+                  alt={`${user.USERNAME} avatar`}
+                  className="w-10 h-10 rounded-full cursor-pointer"
+                  onClick={handleRedirectToProfile}
+                />
+              </>
             )}
           </div>
 

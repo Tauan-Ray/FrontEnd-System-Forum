@@ -1,13 +1,13 @@
 import { UserCircle2 } from "lucide-react";
 import { useRouter } from "next/navigation";
 import ResponseButton from "./ResponseButton";
-import { useAvatar } from "@/hooks/useAvatar";
 import Image from "next/image";
 import { Button } from "@/components/ui/button";
 import CreateQuestionDialog from "./CreateQuestionDialog";
 import { useState } from "react";
 import { useAuthStore } from "@/store/useAuthStore";
 import DeleteQuestionDialog from "./DeleteQuestionDialog";
+import { webConfig } from "@/lib/settings";
 
 type OneQuestionProps = {
   ID_QT: string;
@@ -15,6 +15,7 @@ type OneQuestionProps = {
   username: string;
   DT_CR: Date;
   DT_UP: Date;
+  DT_UP_USER: Date;
   title: string;
   ID_CT: string;
   category: string;
@@ -29,6 +30,7 @@ export default function OneQuestion({
   username,
   DT_CR,
   DT_UP,
+  DT_UP_USER,
   title,
   ID_CT,
   category,
@@ -42,7 +44,6 @@ export default function OneQuestion({
   }>({ edit: false, delete: false });
   const { user } = useAuthStore();
   const router = useRouter();
-  const avatar = useAvatar(ID_USER);
 
   const formatDescription =
     description && redirect && description.length > 250
@@ -63,11 +64,11 @@ export default function OneQuestion({
       >
         <div className="flex flex-col gap-3 md:gap-12 sm:flex-row sm:justify-between">
           <div className="flex flex-row gap-3 items-center">
-            {avatar ? (
+            {ID_USER ? (
               <Image
                 width={32}
                 height={32}
-                src={avatar}
+                src={`${webConfig.url}:${webConfig.port}/storage/${ID_USER}/avatar?q=${DT_UP_USER}`}
                 alt={`${username} avatar`}
                 className="w-8 h-8 rounded-full"
               />

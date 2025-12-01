@@ -9,31 +9,31 @@ import {
 } from "@/components/ui/dialog";
 import Image from "next/image";
 import { Label } from "@/components/ui/label";
-import { useEffect, useRef, useState } from "react";
+import { useRef, useState } from "react";
 import { UploadUserImageAction } from "../actions/UploadUserImageAction";
 import { redirect } from "next/navigation";
+import { webConfig } from "@/lib/settings";
 
 type ChooseImageDialogProps = {
   open: boolean;
   onOpenChange: (open: boolean) => void;
   redirect: string;
-  initialPreview?: string;
+  ID_USER?: string;
+  DT_UP?: Date | undefined;
 };
 
 export default function ChooseImageDialog({
   open,
   onOpenChange,
   redirect: redirectUrl,
-  initialPreview
+  ID_USER,
+  DT_UP,
 }: ChooseImageDialogProps) {
-  const [preview, setPreview] = useState<string | null>(null);
+  const defaultImage = "/not-found.webp";
+  const [preview, setPreview] = useState<string>(`${webConfig.url}:${webConfig.port}/storage/${ID_USER}/avatar?q=${DT_UP}`);
   const [file, setFile] = useState<File | null>(null);
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const fileInputRef = useRef<HTMLInputElement | null>(null);
-
-  useEffect(() => {
-    if (initialPreview) setPreview(initialPreview);
-  }, [initialPreview])
 
   function handleImageChange(e: React.ChangeEvent<HTMLInputElement>) {
     const selected = e.target.files?.[0];
@@ -49,7 +49,7 @@ export default function ChooseImageDialog({
     setIsLoading(false);
 
     onOpenChange(false);
-  }
+  };
 
   const handleClose = (openState: boolean) => {
     onOpenChange(openState);
@@ -57,7 +57,7 @@ export default function ChooseImageDialog({
     if (!openState && !isLoading) {
       redirect(redirectUrl);
     }
-  }
+  };
 
   return (
     <Dialog open={open} onOpenChange={handleClose}>
@@ -73,31 +73,30 @@ export default function ChooseImageDialog({
 
         <div className="flex flex-col gap-12 items-center mt-3">
           <div className="flex flex-col gap-6 items-center">
-            {preview ? (
-                <Image
-                src={preview}
-                alt="Preview"
-                width={140}
-                height={140}
-                className="rounded-full object-cover h-36 w-36 border shadow-md transition-all"
-                />
-            ) : (
-                <div className="h-36 w-36 rounded-full bg-gray-100 flex items-center justify-center text-gray-500 border shadow-sm text-sm">
-                Nenhuma imagem
-                </div>
-            )}
+            <Image
+              src={preview}
+              alt="Preview"
+              width={140}
+              height={140}
+              className="rounded-full object-cover h-36 w-36 border shadow-md transition-all"
+            />
 
-            <Button asChild className="w-full font-medium" variant={"secondary"} disabled={isLoading}>
-                <Label className="cursor-pointer flex items-center justify-center gap-2 py-2">
+            <Button
+              asChild
+              className="w-full font-medium"
+              variant={"secondary"}
+              disabled={isLoading}
+            >
+              <Label className="cursor-pointer flex items-center justify-center gap-2 py-2">
                 Selecionar imagem
                 <input
-                    type="file"
-                    ref={fileInputRef}
-                    accept="image/*"
-                    className="hidden"
-                    onChange={handleImageChange}
+                  type="file"
+                  ref={fileInputRef}
+                  accept="image/*"
+                  className="hidden"
+                  onChange={handleImageChange}
                 />
-                </Label>
+              </Label>
             </Button>
           </div>
 
@@ -118,7 +117,7 @@ export default function ChooseImageDialog({
                   fileInputRef.current.value = "";
                 }
                 setFile(null);
-                setPreview(null);
+                setPreview(defaultImage);
               }}
               className="font-medium"
             >

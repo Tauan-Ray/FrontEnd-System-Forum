@@ -6,13 +6,13 @@ import {
 } from "lucide-react";
 import UpdateVotesButton from "./UpdateVotesButton";
 import { useState } from "react";
-import { useAvatar } from "@/hooks/useAvatar";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
 import { useAuthStore } from "@/store/useAuthStore";
 import { Button } from "@/components/ui/button";
 import EditAnswerDialog from "./EditAnswerDialog";
 import DeleteAnswerDialog from "./DeleteAnswerDialog";
+import { webConfig } from "@/lib/settings";
 
 type OneAnswerProps = {
   ID_AN: string;
@@ -20,6 +20,7 @@ type OneAnswerProps = {
   username: string;
   DT_CR: Date;
   DT_UP: Date;
+  DT_UP_USER: Date;
   response: string;
   likes: number;
   dislikes: number;
@@ -35,6 +36,7 @@ export default function OneAnswer({
   username,
   DT_CR,
   DT_UP,
+  DT_UP_USER,
   response,
   likes: initialLikes,
   dislikes: initialDislikes,
@@ -55,7 +57,6 @@ export default function OneAnswer({
     delete: boolean;
   }>({ edit: false, delete: false });
 
-  const avatar = useAvatar(ID_USER);
   const router = useRouter();
 
   const handleVote = (type: "LIKE" | "DESLIKE") => {
@@ -105,11 +106,11 @@ export default function OneAnswer({
       <div className="flex flex-col border border-gray-dark rounded-md p-4 sm:p-5 gap-4 hover:border-blue-hover transition-colors">
         <div className="flex flex-col gap-2 sm:flex-row sm:justify-between">
           <div className="flex flex-row gap-3 items-center">
-            {avatar ? (
+            {ID_USER ? (
               <Image
                 width={32}
                 height={32}
-                src={avatar}
+                src={`${webConfig.url}:${webConfig.port}/storage/${ID_USER}/avatar?q=${DT_UP_USER}`}
                 alt={`${username} avatar`}
                 className="w-8 h-8 rounded-full"
               />

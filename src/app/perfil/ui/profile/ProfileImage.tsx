@@ -1,21 +1,21 @@
 "use client";
-
-import { useAvatar } from "@/hooks/useAvatar";
 import Image from "next/image";
 import { Pencil } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { useState } from "react";
 import ChooseImageDialog from "@/app/auth/ui/ChooseImageDialog";
+import { useAuthStore } from "@/store/useAuthStore";
+import { webConfig } from "@/lib/settings";
 
-export default function ProfileImage({ ID_USER }: { ID_USER: string }) {
-  const avatar = useAvatar(ID_USER);
+export default function ProfileImage() {
+  const { user } = useAuthStore();
   const [openChooseImage, setOpenChooseImage] = useState<boolean>(false);
 
   return (
     <div className="relative w-36 h-36">
-      {avatar ? (
+      {user?.ID_USER ? (
         <Image
-          src={avatar}
+          src={`${webConfig.url}:${webConfig.port}/storage/${user.ID_USER}/avatar?q=${user.DT_UP}`}
           alt="Preview"
           width={140}
           height={140}
@@ -38,7 +38,8 @@ export default function ProfileImage({ ID_USER }: { ID_USER: string }) {
         open={openChooseImage}
         onOpenChange={setOpenChooseImage}
         redirect={"/perfil"}
-        initialPreview={avatar ?? ""}
+        ID_USER={user?.ID_USER ?? ""}
+        DT_UP={user?.DT_UP}
       />
     </div>
   );

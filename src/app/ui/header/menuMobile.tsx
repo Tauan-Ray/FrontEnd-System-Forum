@@ -24,14 +24,13 @@ import {
   HelpCircle,
   Handshake,
 } from "lucide-react";
-import { useAvatar } from "@/hooks/useAvatar";
 import { Skeleton } from "@/components/ui/skeleton";
 import Image from "next/image";
+import { webConfig } from "@/lib/settings";
 
 export default function MenuMobile() {
   const [open, setOpen] = useState(false);
   const { user, logout, loading } = useAuthStore();
-  const avatar = useAvatar(user?.ID_USER ?? '');
 
   const pathname = usePathname();
 
@@ -41,7 +40,7 @@ export default function MenuMobile() {
 
     toast.info("Logout", { description: "Sessão encerrada com sucesso!" });
 
-    redirect('/')
+    redirect("/");
   };
 
   const NavItem = ({
@@ -81,40 +80,46 @@ export default function MenuMobile() {
       <SheetContent side="left" className="bg-white w-72 sm:w-80 p-0">
         <SheetHeader className="px-6 pt-4 pb-2 border-b">
           <SheetTitle className="flex items-center gap-3">
-            {loading || avatar === undefined ? (
-              <Skeleton className="w-8 h-8 rounded-full bg-gray-300 animate-pulse" />
-            ) : (
-              <Link href="/">
-                {avatar ? (
-                  <Image
-                    width={38}
-                    height={38}
-                    src={avatar}
-                    alt={`${user?.USERNAME} avatar`}
-                    className="w-10 h-10 rounded-full"
-                  />
-                ) : (
-                  <UserCircle2
-                    size={32}
-                    className="text-blue-medium"
-                  />
-                )}
+
+            {loading && (
+              <Skeleton className="w-10 h-10 rounded-full bg-gray-300 animate-pulse" />
+            )}
+
+            {!loading && user && (
+              <Link href="/" onClick={() => setOpen(false)}>
+                <Image
+                  width={38}
+                  height={38}
+                  src={`${webConfig.url}:${webConfig.port}/storage/${user.ID_USER}/avatar?q=${user.DT_UP}`}
+                  alt={`${user.USERNAME} avatar`}
+                  className="w-10 h-10 rounded-full"
+                />
               </Link>
             )}
-            {user ? (
+
+            {!loading && !user && (
+              <UserCircle2
+                size={32}
+                className="text-blue-medium"
+              />
+            )}
+
+            {!loading && user ? (
               <span className="flex items-center gap-2 text-lg font-semibold text-gray-800">
-                Olá, {user.USERNAME || "Usuário"}
+                Olá, {user.USERNAME}
                 <Handshake size={20} className="text-blue-medium" />
               </span>
-            ) : (
+            ) : !loading ? (
               <span className="text-lg font-semibold text-gray-800">
                 Bem-vindo
               </span>
-            )}
+            ) : null}
           </SheetTitle>
 
           <SheetDescription className="text-sm text-gray-500">
-            {user
+            {loading
+              ? "Carregando..."
+              : user
               ? "Gerencie sua conta e explore o app"
               : "Acesse ou cadastre-se para participar"}
           </SheetDescription>
@@ -124,7 +129,8 @@ export default function MenuMobile() {
           <nav className="flex flex-col gap-2">
             <NavItem href="/" icon={Home} label="Início" />
             <NavItem href="/questions" icon={HelpCircle} label="Perguntas" />
-            {user && (
+
+            {!loading && user && (
               <NavItem
                 href="/perfil"
                 icon={UserCircle2}
@@ -135,7 +141,7 @@ export default function MenuMobile() {
 
           <hr className="border-gray-200 my-3" />
 
-          {user ? (
+          {!loading && user && (
             <Button
               onClick={handleLogout}
               variant="destructive"
@@ -144,7 +150,9 @@ export default function MenuMobile() {
               <LogOut size={18} />
               Sair
             </Button>
-          ) : (
+          )}
+
+          {!loading && !user && (
             <div className="flex flex-col gap-3">
               <Link href="/auth/signin" onClick={() => setOpen(false)}>
                 <Button className="w-full flex items-center justify-center gap-2 bg-blue-medium hover:bg-blue-hover">

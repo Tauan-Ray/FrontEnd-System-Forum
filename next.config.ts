@@ -8,7 +8,7 @@ const nextConfig: NextConfig = {
     }
   },
   images: {
-    remotePatterns: [{ hostname: 'objectstorage.sa-saopaulo-1.oraclecloud.com' }]
+    remotePatterns: [{ hostname: 'objectstorage.sa-saopaulo-1.oraclecloud.com' }, { hostname: 'localhost' }]
   }
 };
 
