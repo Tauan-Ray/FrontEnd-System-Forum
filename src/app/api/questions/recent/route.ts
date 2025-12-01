@@ -6,7 +6,7 @@ export async function GET() {
     const response = await fetch(`${webConfig.url}:${webConfig.port}/questions/all?page=0&limit=5`, {
       method: "GET",
       headers: { Accept: "application/json" },
-      next: { revalidate: 60 * 5 },
+      next: { revalidate: 60 * 3 },
     });
 
     if (!response.ok) {
