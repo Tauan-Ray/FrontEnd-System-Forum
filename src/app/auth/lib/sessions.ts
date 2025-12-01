@@ -5,8 +5,10 @@ import { jwtVerify } from 'jose'
 import { getJwtSecretKey, REFRESH_TOKEN, USER_TOKEN } from '@/lib/constants'
 import { service_api } from '@/service/service.api'
 import { cookies } from 'next/headers'
-import { webConfig } from '@/lib/settings';
+import { serviceConfig, webConfig } from '@/lib/settings';
 import { handleApiError } from '@/lib/client.util'
+import { DefaultParamsResponse } from '@/lib/type'
+import { email_service } from '@/service/service-aux.api'
 
 type SessionPayload = {
   email: string;
@@ -200,7 +202,12 @@ export async function UploadUserImage(file: File) {
     })
       .then(({ data }) => ({ ...data }))
       .catch(handleApiError)
+}
 
+export async function sendForgotPasswordEmail(email: string): Promise<DefaultParamsResponse> {
+  return await email_service({ 'x-api-key': serviceConfig.email_api_key }).get(`/email/change-password/${email}`)
+    .then(({ data, status }) => ({ data, status }))
+    .catch(handleApiError)
 }
 
 export async function fetcher(url: string) {

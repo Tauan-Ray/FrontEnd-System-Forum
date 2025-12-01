@@ -4,3 +4,9 @@ export const webConfig = {
     secret: process.env.JWT_SECRET_KEY,
     env: process.env.NODE_ENV || 'development',
 }
+
+export const serviceConfig = {
+    email_service_url: process.env.EMAIL_SERVICE_URL,
+    email_service_port: Number(process.env.EMAIL_SERVICE_PORT),
+    email_api_key: process.env.EMAIL_API_KEY,
+}

@@ -23,6 +23,7 @@ import { useSearchParams } from "next/navigation";
 import Link from "next/link";
 import FormError from "../../ui/FormError";
 import PasswordInput from "../../ui/PasswordInput";
+import ForgotPasswordDialog from "../../ui/ForgotPasswordDialog";
 
 export default function SignInPage() {
   const [showPassword, setShowPassword] = useState<boolean>(false);
@@ -98,14 +99,17 @@ export default function SignInPage() {
                     control={form.control}
                     name="password"
                     render={({ field }) => (
-                      <PasswordInput
-                        field={field}
-                        label="Senha"
-                        placeholder="Digite sua senha"
-                        show={showPassword}
-                        toggle={() => setShowPassword(!showPassword)}
-                        disabled={isLoading}
-                      />
+                      <>
+                        <PasswordInput
+                          field={field}
+                          label="Senha"
+                          placeholder="Digite sua senha"
+                          show={showPassword}
+                          toggle={() => setShowPassword(!showPassword)}
+                          disabled={isLoading}
+                        />
+                        <ForgotPasswordDialog />
+                      </>
                     )}
                   />
                   <FormError
@@ -150,7 +154,7 @@ export default function SignInPage() {
                   <span>Não tem uma conta?</span>
                   <Link
                     href={searchParams.get("redirect") ? `/auth/signup?redirect=${searchParams.get("redirect")}` : "/auth/signup"}
-                    className="text-blue-primary hover:underline"
+                    className="text-blue-link hover:underline"
                   >
                     Crie Agora!
                   </Link>

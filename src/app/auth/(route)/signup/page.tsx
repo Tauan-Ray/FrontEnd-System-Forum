@@ -240,7 +240,7 @@ export default function SignUpPage() {
                   <span>Já possui uma conta?</span>
                   <Link
                     href={searchParams.get("redirect") ? `/auth/signin?redirect=${searchParams.get("redirect")}` : "/auth/signin"}
-                    className="text-blue-primary hover:underline"
+                    className="text-blue-link hover:underline"
                   >
                     Entre Agora!
                   </Link>
