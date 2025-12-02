@@ -52,3 +52,13 @@ export async function UpdateUserPassword(
     .then(({ data, status }) => ({ ...data, status }))
     .catch(handleApiError);
 }
+
+export async function DeleteUser(
+  ID_USER: string,
+  actualPassword: string
+): Promise<Pick<ResUpdateUserInfos, 'message'> & DefaultParamsResponse> {
+  return await service_api
+    .patch(`/user/delete/${ID_USER}`, { actualPassword })
+    .then(({ data, status }) => ({ ...data, status }))
+    .catch(handleApiError);
+}

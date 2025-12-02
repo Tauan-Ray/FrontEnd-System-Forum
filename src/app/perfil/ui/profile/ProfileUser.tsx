@@ -7,6 +7,7 @@ import { SkeletonUserProfile } from "@/components/SkeletonModel";
 import StatisticsCards from "./StatisticsCards";
 import { useState } from "react";
 import EditUserDialog from "./EditUserDialog";
+import DeleteUserDialog from "./DeleteUserDialog";
 
 export default function ProfileUser() {
   const { user, loading } = useAuthStore();
@@ -54,6 +55,10 @@ export default function ProfileUser() {
               Avaliação de contribuições
             </h2>
             <StatisticsCards user={user} />
+
+            <div className="flex justify-center mt-10">
+              <DeleteUserDialog />
+            </div>
           </div>
         </>
       )}
