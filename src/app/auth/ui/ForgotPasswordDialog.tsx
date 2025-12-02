@@ -26,7 +26,7 @@ export default function ForgotPasswordDialog() {
       toast.warning('Erro ao enviar email', {
         description: 'O campo de e-mail não deve estar vazio'
       })
-      return 
+      return
     }
 
     setIsLoading(true);

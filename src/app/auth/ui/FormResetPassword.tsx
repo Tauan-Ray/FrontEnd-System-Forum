@@ -15,16 +15,18 @@ import { redirect } from "next/navigation";
 import { VerifyTokenAction } from "../actions/VerifyTokenAction";
 import { Loader2 } from "lucide-react";
 import { ResetPasswordAction } from "../actions/ResetPasswordAction";
+import { useAuthStore } from "@/store/useAuthStore";
 
 export default function FormResetPassword({ token }: { token: string }) {
   const [isLoading, setIsLoading] = useState(false);
   const [validating, setValidating] = useState(true);
   const [validToken, setValidToken] = useState(false);
-
   const [showPassword, setShowPassword] = useState({
     password: false,
     confirm: false,
   });
+
+  const { logout } = useAuthStore();
 
   const form = useForm<z.infer<typeof ResetPasswordFormSchema>>({
     resolver: zodResolver(ResetPasswordFormSchema),
@@ -37,7 +39,14 @@ export default function FormResetPassword({ token }: { token: string }) {
 
   async function onSubmit(values: z.infer<typeof ResetPasswordFormSchema>) {
     setIsLoading(true);
-    await ResetPasswordAction(values);
+    const res = await ResetPasswordAction(values);
+    if (res.ok) {
+      logout();
+      
+      setTimeout(() => {
+        redirect("/auth/signin");
+      }, 800);
+    }
     setIsLoading(false);
   }
 

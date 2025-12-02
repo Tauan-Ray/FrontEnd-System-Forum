@@ -15,9 +15,9 @@ export async function ResetPasswordAction(
       description: "Sua senha foi alterada com sucesso! Efetue login",
     });
 
-    setTimeout(() => {
-      redirect("/auth/signin");
-    }, 800);
+    return {
+      ok: true,
+    }
   } else {
     switch (res.status) {
       case HttpStatusCode.BadRequest:
@@ -38,6 +38,10 @@ export async function ResetPasswordAction(
         });
         console.error(res);
         break;
+    }
+
+    return {
+      ok: false,
     }
   }
 }
