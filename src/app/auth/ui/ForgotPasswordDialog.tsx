@@ -13,6 +13,7 @@ import { CheckCircle } from "lucide-react";
 import React, { useState } from "react";
 import { sendForgotPasswordEmail } from "../lib/sessions";
 import { Spinner } from "@/components/ui/spinner";
+import { toast } from "sonner";
 
 export default function ForgotPasswordDialog() {
   const [open, setOpen] = useState<boolean>(false);
@@ -21,10 +22,28 @@ export default function ForgotPasswordDialog() {
   const [email, setEmail] = useState<string>("");
 
   const onSubmit = async () => {
+    if (!email.trim()) {
+      toast.warning('Erro ao enviar email', {
+        description: 'O campo de e-mail não deve estar vazio'
+      })
+      return 
+    }
+
     setIsLoading(true);
     const res = await sendForgotPasswordEmail(email);
 
-    console.log(res);
+    if (res.status === 400) {
+      toast.warning('Erro ao enviar email', {
+        description: res.message,
+      })
+
+      setIsLoading(false);
+
+      return
+    }
+
+    setEmailSended(true)
+
     setIsLoading(false);
   };
 

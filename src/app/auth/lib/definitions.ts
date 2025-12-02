@@ -12,7 +12,6 @@ export const SigninFormSchema = z.object({
   redirect: z.string().trim().default('/')
 })
 
-
 export const SignUpFormSchema = z.object({
   name: z.string()
     .min(3, 'O nome deve conter pelo menos 3 caracter(es)')
@@ -33,6 +32,20 @@ export const SignUpFormSchema = z.object({
   password_remember: z.boolean().default(true).optional(),
   redirect: z.string().trim().default('/'),
 }).refine((data) => data.password === data.confirmPassword, {
+  message: 'As senhas não coincidem',
+  path: ['confirmPassword']
+})
+
+export const ResetPasswordFormSchema = z.object({
+  newPassword: z.string()
+    .min(8, 'A senha deve conter pelo menos 8 caracter(es)')
+    .max(20, 'A senha deve conter no máximo 20 caracteres')
+    .regex(/[a-zA-Z]/, { message: 'É esperado ao menos 1 letra' })
+    .regex(/[0-9]/, { message: 'É esperado ao menos 1 número' })
+    .trim(),
+  confirmPassword: z.string(),
+  token: z.string(),
+}).refine((data) => data.newPassword === data.confirmPassword, {
   message: 'As senhas não coincidem',
   path: ['confirmPassword']
 })
