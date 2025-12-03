@@ -30,6 +30,7 @@ export type ResQuestion = {
     USERNAME: string;
     ROLE: string;
     DT_UP: Date;
+    DEL_AT: Date | null;
   };
   DEL_AT?: Date | null;
 };

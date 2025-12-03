@@ -50,6 +50,7 @@ export default function RecentQuestions() {
             redirect={true}
             ID_CT={question.ID_CT}
             DT_UP_USER={question.User.DT_UP}
+            DEL_AT_USER={question.User.DEL_AT}
           />
         ))}
       </div>

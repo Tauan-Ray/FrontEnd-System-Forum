@@ -142,6 +142,7 @@ export default function AllAnswersUser({
                   ID_QT={answer.ID_QT}
                   TITLE={answer.TITLE}
                   DT_UP_USER={answer.dt_up_user}
+                  DEL_AT_USER={answer.del_at_user}
                 />
               ))
             )

@@ -16,6 +16,7 @@ type OneQuestionProps = {
   DT_CR: Date;
   DT_UP: Date;
   DT_UP_USER: Date;
+  DEL_AT_USER: Date | null;
   title: string;
   ID_CT: string;
   category: string;
@@ -31,6 +32,7 @@ export default function OneQuestion({
   DT_CR,
   DT_UP,
   DT_UP_USER,
+  DEL_AT_USER,
   title,
   ID_CT,
   category,
@@ -64,7 +66,7 @@ export default function OneQuestion({
       >
         <div className="flex flex-col gap-3 md:gap-12 sm:flex-row sm:justify-between">
           <div className="flex flex-row gap-3 items-center">
-            {ID_USER ? (
+            {ID_USER && !DEL_AT_USER ? (
               <Image
                 width={32}
                 height={32}
@@ -79,7 +81,7 @@ export default function OneQuestion({
               />
             )}
             <p className="font-sans text-base sm:text-lg text-gray-dark">
-              {username}
+              {DEL_AT_USER ? 'Autor Desconhecido' : username}
             </p>
           </div>
 

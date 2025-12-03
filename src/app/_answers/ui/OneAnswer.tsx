@@ -21,6 +21,7 @@ type OneAnswerProps = {
   DT_CR: Date;
   DT_UP: Date;
   DT_UP_USER: Date;
+  DEL_AT_USER: Date | null;
   response: string;
   likes: number;
   dislikes: number;
@@ -37,6 +38,7 @@ export default function OneAnswer({
   DT_CR,
   DT_UP,
   DT_UP_USER,
+  DEL_AT_USER,
   response,
   likes: initialLikes,
   dislikes: initialDislikes,
@@ -106,7 +108,7 @@ export default function OneAnswer({
       <div className="flex flex-col border border-gray-dark rounded-md p-4 sm:p-5 gap-4 hover:border-blue-hover transition-colors">
         <div className="flex flex-col gap-2 sm:flex-row sm:justify-between">
           <div className="flex flex-row gap-3 items-center">
-            {ID_USER ? (
+            {ID_USER && !DEL_AT_USER ? (
               <Image
                 width={32}
                 height={32}
@@ -121,7 +123,7 @@ export default function OneAnswer({
               />
             )}
             <p className="font-sans text-base sm:text-lg text-gray-dark">
-              {username}
+              {DEL_AT_USER ? 'Autor Desconhecido' : username}
             </p>
           </div>
 
