@@ -54,6 +54,18 @@ type ResResetPasswordUser = {
   status: number;
 }
 
+type decryptSession = {
+  payload: {
+    sub: string;
+    username: string;
+    role: string;
+    email: string;
+  };
+  type: string;
+  iat: number;
+  exp: number;
+};
+
 async function AuthenticateUser(
   payload: SessionPayload
 ): Promise<EncryptProps> {
@@ -101,12 +113,12 @@ async function revalidateToken(
     });
 }
 
-export async function decrypt(session: string | undefined = "") {
+export async function decrypt(session: string | undefined = ""): Promise<decryptSession | undefined> {
   if (session) {
     try {
       const { payload } = await jwtVerify(session, await getJwtSecretKey());
 
-      return payload;
+      return payload as decryptSession;
     } catch (error: any) {
       if (error?.code !== "ERR_JWS_INVALID") {
         console.log("Falha ao verificar sessão", error);

@@ -8,6 +8,7 @@ import StatisticsCards from "./StatisticsCards";
 import { useState } from "react";
 import EditUserDialog from "./EditUserDialog";
 import DeleteUserDialog from "./DeleteUserDialog";
+import Link from "next/link";
 
 export default function ProfileUser() {
   const { user, loading } = useAuthStore();
@@ -43,6 +44,17 @@ export default function ProfileUser() {
               >
                 Editar Perfil
               </Button>
+
+              {user?.ROLE && (
+                <Button
+                  variant={"secondary"}
+                  className="px-12 py-5"
+                  asChild
+                >
+                  <Link href={'/admin'}>Painel Administrativo</Link>
+                </Button>
+              )}
+
               <EditUserDialog
                 open={openChangeInfos}
                 onChange={setOpenChangeInfos}
