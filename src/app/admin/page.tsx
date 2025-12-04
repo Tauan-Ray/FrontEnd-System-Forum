@@ -37,7 +37,7 @@ export default function AdminPanel() {
         </TabsTrigger>
       </TabsList>
 
-      <div className="mt-4 flex-1">
+      <div className="mt-4 flex-1 w-full">
         <TabsContent value="users" className="h-full">
           <TabUser />
         </TabsContent>

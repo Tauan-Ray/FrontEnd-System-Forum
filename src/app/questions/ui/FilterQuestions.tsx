@@ -8,10 +8,10 @@ import CategorySelect from "./CategorySelect";
 import { XCircle } from "lucide-react";
 import {
   Accordion,
+  AccordionItem,
   AccordionContent,
   AccordionTrigger,
 } from "@/components/ui/accordion";
-import { AccordionItem } from "@radix-ui/react-accordion";
 
 type FilterQuestionsProps = {
   search: searchParams;

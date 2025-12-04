@@ -93,7 +93,7 @@ export default function OneUser({
         </p>
 
         {isDeleted && (
-          <p className="mt-1 text-red-600">
+          <p className="text-red-600">
             <span className="font-semibold">Deletado em:</span>{" "}
             {new Date(DEL_AT).toLocaleDateString("pt-BR")}
           </p>

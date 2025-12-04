@@ -4,7 +4,7 @@ import { ParamsRequest } from "@/lib/type";
 import React, { useCallback, useEffect, useState } from "react";
 import useSWRInfinite from "swr/infinite";
 import { fetcher } from "@/app/auth/lib/sessions";
-import { SkeletonAnswers } from "@/components/SkeletonModel";
+import { SkeletonUsers } from "@/components/SkeletonModel";
 import { RefreshCw } from "lucide-react";
 import { searchUserParams } from "../../lib/types";
 import OneUser from "./OneUser";
@@ -128,7 +128,7 @@ export default function AllUsers({
         className="grid w-full grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4"
       >
         {isLoading ? (
-          <SkeletonAnswers quantity={3} />
+          <SkeletonUsers quantity={4} />
         ) : size >= 0 && !errorUsers ? (
           users?.length && users[0]._data?.length ? (
             users?.map(({ _data }) =>
