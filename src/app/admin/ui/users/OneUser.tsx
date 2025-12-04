@@ -1,7 +1,14 @@
 import Image from "next/image";
 import { webConfig } from "@/lib/settings";
 import { Button } from "@/components/ui/button";
-import { Pencil, Trash, Undo } from "lucide-react";
+import { Fingerprint, Trash, Undo } from "lucide-react";
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipProvider,
+  TooltipTrigger,
+} from "@/components/ui/tooltip";
+import EditUserAdminDialog from "./EditUserAdminDialog";
 
 type OneUserProps = {
   ID_USER: string;
@@ -36,8 +43,28 @@ export default function OneUser({
             className="h-10 w-10 rounded-full object-cover"
           />
 
-          <div className="flex flex-col">
+          <div className="flex flex-col gap-2">
             <p className="text-base font-semibold text-gray-800">{username}</p>
+            <TooltipProvider delayDuration={200} skipDelayDuration={400}>
+              <Tooltip>
+                <TooltipTrigger asChild>
+                  <Button variant="outline" size="sm" className="w-17 gap-1">
+                    <Fingerprint size={16} />
+                    UUID
+                  </Button>
+                </TooltipTrigger>
+
+                <TooltipContent
+                  sideOffset={6}
+                  className="rounded-md border bg-white px-3 py-2 text-xs text-gray-700 shadow-md"
+                >
+                  <div className="flex items-center gap-2">
+                    <Fingerprint size={14} className="text-gray-500" />
+                    <span className="font-mono">{ID_USER}</span>
+                  </div>
+                </TooltipContent>
+              </Tooltip>
+            </TooltipProvider>
 
             <span
               className={`w-fit rounded-full px-2 py-0.5 text-xs font-semibold ${
@@ -84,14 +111,13 @@ export default function OneUser({
       </div>
 
       <div className="mt-4 flex flex-row justify-center gap-3">
-        <Button
-          disabled={isDeleted}
-          variant="outline"
-          className="flex-1 rounded-lg border-gray-300 text-gray-700 hover:bg-gray-100"
-        >
-          <Pencil size={16} />
-          Editar
-        </Button>
+        <EditUserAdminDialog
+          ID_USER={ID_USER}
+          name={name}
+          username={username}
+          email={email}
+          isDeleted={isDeleted}
+        />
 
         <Button
           variant={isDeleted ? "secondary" : "destructive"}

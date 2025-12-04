@@ -1,7 +1,6 @@
 "use client";
 
 import FormError from "@/app/auth/ui/FormError";
-import PasswordInput from "@/app/auth/ui/PasswordInput";
 import { UpdateUserFormSchema } from "@/app/perfil/lib/definitions";
 import {
   Form,
@@ -11,41 +10,45 @@ import {
   FormLabel,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
-import { SetStateAction, useState } from "react";
+import { useState } from "react";
 import { z } from "@/components/pt-zod";
 import { useForm } from "react-hook-form";
 import { DialogFooter } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { useAuthStore } from "@/store/useAuthStore";
 import { UpdateInfosUserAction } from "@/app/perfil/actions/UpdateUserActions";
+import { Label } from "@/components/ui/label";
+import ForgotPasswordDialog from "@/app/auth/ui/ForgotPasswordDialog";
 
-type ChangeInfosTabProps = {
-  isLoading: boolean;
-  setIsLoading: React.Dispatch<SetStateAction<boolean>>;
-  onChange: (open: boolean) => void;
+type EditUserFormProps = {
+  ID_USER: string;
+  name: string;
+  username: string;
+  email: string;
+  handleCloseDialog: () => void;
 };
 
-export default function ChangeInfosTab({
-  isLoading,
-  setIsLoading,
-  onChange,
-}: ChangeInfosTabProps) {
-  const { user } = useAuthStore();
-  const [showPassword, setShowPassword] = useState<boolean>(false);
+export default function EditUserForm({
+  ID_USER,
+  name,
+  username,
+  email,
+  handleCloseDialog: closeDialog,
+}: EditUserFormProps) {
+  const [isLoading, setIsLoading] = useState<boolean>(false);
 
   const form = useForm<z.infer<typeof UpdateUserFormSchema>>({
     resolver: zodResolver(UpdateUserFormSchema),
     defaultValues: {
-      name: user?.NAME ?? "",
-      username: user?.USERNAME ?? "",
-      actualPassword: "",
+      name: name ?? "",
+      username: username ?? "",
+      actualPassword: "password10",
     },
   });
 
   async function onSubmit(values: z.infer<typeof UpdateUserFormSchema>) {
     setIsLoading(true);
-    const res = await UpdateInfosUserAction(values, user?.ID_USER ?? "");
+    const res = await UpdateInfosUserAction(values, ID_USER ?? "");
     setIsLoading(false);
 
     if (res.ok) {
@@ -55,12 +58,12 @@ export default function ChangeInfosTab({
 
   const handleCloseDialog = () => {
     form.reset();
-    onChange(false);
+    closeDialog();
   };
   return (
     <Form {...form}>
       <form
-        id="form-update-user"
+        id="form-update-user-admin"
         onSubmit={form.handleSubmit(onSubmit)}
         className="space-y-6"
       >
@@ -102,28 +105,24 @@ export default function ChangeInfosTab({
           )}
         />
 
-        <FormField
-          control={form.control}
-          name="actualPassword"
-          render={({ field }) => (
-            <>
-              <PasswordInput
-                field={field}
-                label="Senha atual"
-                placeholder="Digite sua senha"
-                show={showPassword}
-                toggle={() => setShowPassword((prev) => !prev)}
-                disabled={isLoading}
-              />
-              <FormError
-                message={form.formState.errors.actualPassword?.message}
-              />
-            </>
-          )}
-        />
+        <div className="flex gap-4 flex-row">
+          <div className="flex flex-col gap-2">
+            <Label>E-mail</Label>
+            <Button variant={"secondary"}>Recuperar Email</Button>
+          </div>
 
-        <DialogFooter className="pt-4 flex flex-col gap-6">
-          <Button disabled={isLoading} className="font-medium">
+          <div className="flex flex-col gap-2">
+            <Label>Senha</Label>
+            <ForgotPasswordDialog showTrigger={'button'} email={email}/>
+          </div>
+        </div>
+
+        <DialogFooter className="flex flex-col gap-6 pt-4">
+          <Button
+            id="form-edit-user-admin"
+            disabled={isLoading}
+            className="font-medium"
+          >
             Salvar
           </Button>
           <Button

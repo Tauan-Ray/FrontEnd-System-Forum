@@ -15,11 +15,16 @@ import { sendForgotPasswordEmail } from "../lib/sessions";
 import { Spinner } from "@/components/ui/spinner";
 import { toast } from "sonner";
 
-export default function ForgotPasswordDialog() {
+type ForgotPasswordDialogProps = {
+  email?: string;
+  showTrigger?: 'text' | 'button';
+}
+
+export default function ForgotPasswordDialog({ email: defaultEmail, showTrigger = 'text' }: ForgotPasswordDialogProps) {
   const [open, setOpen] = useState<boolean>(false);
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [emailSended, setEmailSended] = useState<boolean>(false);
-  const [email, setEmail] = useState<string>("");
+  const [email, setEmail] = useState<string>(defaultEmail ?? "");
 
   const onSubmit = async () => {
     if (!email.trim()) {
@@ -57,10 +62,15 @@ export default function ForgotPasswordDialog() {
         }}
       >
         <DialogTrigger asChild>
-          <span className="text-md font-sans font-bold text-blue-link pl-2 cursor-pointer hover:underline">
-            Esqueceu sua senha?
-          </span>
+          {showTrigger === 'text' ? (
+            <span className="text-md font-sans font-bold text-blue-link pl-2 cursor-pointer hover:underline">
+              Esqueceu sua senha?
+            </span>
+          ): (
+            <Button type="button" variant={"secondary"}>Recuperar Senha</Button>
+          )}
         </DialogTrigger>
+
         <DialogContent className="max-h-[90vh] w-full sm:max-w-md md:max-w-lg mx-auto overflow-auto rounded-2xl shadow-xl p-6">
           <DialogHeader className="flex flex-col items-center space-y-2">
             <DialogTitle className="text-lg md:text-2xl font-semibold text-center">
