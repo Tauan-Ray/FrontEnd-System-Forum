@@ -17,17 +17,13 @@ import { useState } from "react";
 import { DeleteUserAction } from "../../actions/UpdateUserActions";
 import { toast } from "sonner";
 import { redirect } from "next/navigation";
-import { EyeIcon, EyeOffIcon, Trash, Undo } from "lucide-react";
+import { EyeIcon, EyeOffIcon, Trash } from "lucide-react";
 
 type DeleteUserDialogProps = {
   userId?: string;
-  isDeleted?: boolean;
 };
 
-export default function DeleteUserDialog({
-  userId,
-  isDeleted,
-}: DeleteUserDialogProps) {
+export default function DeleteUserDialog({ userId }: DeleteUserDialogProps) {
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [password, setPassword] = useState<string>(userId ? "password10" : "");
   const [showPassword, setShowPassword] = useState<boolean>(false);
@@ -66,20 +62,13 @@ export default function DeleteUserDialog({
       <DialogTrigger asChild>
         {userId ? (
           <Button
-            variant={isDeleted ? "secondary" : "destructive"}
+            variant={"destructive"}
             className="flex-1 rounded-lg"
           >
-            {isDeleted ? (
-              <>
-                <Undo size={16} />
-                Restaurar
-              </>
-            ) : (
-              <>
-                <Trash size={16} />
-                Deletar
-              </>
-            )}
+            <>
+              <Trash size={16} />
+              Deletar
+            </>
           </Button>
         ) : (
           <Button variant={"destructive"} className="p-5 text-base font-bold">

@@ -7,7 +7,6 @@ import { fetcher } from "@/app/auth/lib/sessions";
 import { SkeletonAnswers } from "@/components/SkeletonModel";
 import { RefreshCw } from "lucide-react";
 import { searchUserParams } from "../../lib/types";
-import { ResUsers } from "../../lib/sessions";
 import OneUser from "./OneUser";
 import UsersNotFound from "./UsersNotFound";
 
@@ -16,6 +15,21 @@ type AllUsersProps = {
   setSearch: React.Dispatch<React.SetStateAction<searchUserParams>>;
   debouncedSearch: searchUserParams;
   setDebouncedSearch: React.Dispatch<React.SetStateAction<searchUserParams>>;
+};
+
+type ResUsers = {
+  ID_USER: string;
+  EMAIL: string;
+  NAME: string;
+  USERNAME: string;
+  ROLE: string;
+  DT_CR: Date;
+  DT_UP: Date;
+  DEL_AT: Date | null;
+  _count: {
+    Question: number;
+    Answers: number;
+  };
 };
 
 export default function AllUsers({

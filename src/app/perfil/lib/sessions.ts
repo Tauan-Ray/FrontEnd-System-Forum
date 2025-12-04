@@ -62,3 +62,12 @@ export async function DeleteUser(
     .then(({ data, status }) => ({ ...data, status }))
     .catch(handleApiError);
 }
+
+export async function RestoreUser(
+  ID_USER: string,
+): Promise<Pick<ResUpdateUserInfos, 'message'> & DefaultParamsResponse> {
+  return await service_api
+    .patch(`/user/restore/${ID_USER}`)
+    .then(({ data, status }) => ({ ...data, status }))
+    .catch(handleApiError);
+}

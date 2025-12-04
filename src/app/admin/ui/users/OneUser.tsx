@@ -10,6 +10,7 @@ import {
 } from "@/components/ui/tooltip";
 import EditUserAdminDialog from "./EditUserAdminDialog";
 import DeleteUserDialog from "@/app/perfil/ui/profile/DeleteUserDialog";
+import RestoreUserDialog from "./RestoreUserDialog";
 
 type OneUserProps = {
   ID_USER: string;
@@ -120,7 +121,11 @@ export default function OneUser({
           isDeleted={isDeleted}
         />
 
-        <DeleteUserDialog userId={ID_USER} isDeleted={isDeleted} />
+        {isDeleted ? (
+          <RestoreUserDialog userId={ID_USER} />
+        ): (
+          <DeleteUserDialog userId={ID_USER} />
+        )}
       </div>
     </div>
   );
