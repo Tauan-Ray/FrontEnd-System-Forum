@@ -1,11 +1,11 @@
 "use client";
 
 import { ParamsRequest } from "@/lib/type";
-import React, { useCallback, useEffect, useState } from "react";
+import React, { useCallback, useEffect, useRef, useState } from "react";
 import useSWRInfinite from "swr/infinite";
 import { fetcher } from "@/app/auth/lib/sessions";
 import { SkeletonUsers } from "@/components/SkeletonModel";
-import { RefreshCw } from "lucide-react";
+import { RefreshCw, UserCheck, UserMinus, Users } from "lucide-react";
 import { searchUserParams } from "../../lib/types";
 import OneUser from "./OneUser";
 import UsersNotFound from "./UsersNotFound";
@@ -32,12 +32,24 @@ type ResUsers = {
   };
 };
 
+type metaInfos = {
+  totalUsers: number;
+  activeUsers: number;
+  deletedUsers: number;
+};
+
 export default function AllUsers({
   search,
   setSearch,
   debouncedSearch,
   setDebouncedSearch,
 }: AllUsersProps) {
+  const [metaInfos, setMetaInfos] = useState<metaInfos>({
+    totalUsers: 0,
+    activeUsers: 0,
+    deletedUsers: 0,
+  });
+  const isFirstLoad = useRef(true);
   const getParams = useCallback(
     (pgIndx: number, prevPgIndx?: any) => {
       const params = new URLSearchParams();
@@ -70,6 +82,17 @@ export default function AllUsers({
     error: errorUsers,
   } = useSWRInfinite<ParamsRequest<ResUsers[]>>(getParams, fetcher, {
     revalidateOnFocus: true,
+    onSuccess: () => {
+      if (isFirstLoad.current && users?.[0]?._meta._meta_users) {
+        const metaUsers = users?.[0]?._meta?._meta_users;
+        setMetaInfos({
+          totalUsers: users?.[0]?._meta._total_results ?? 0,
+          activeUsers: metaUsers.activeUsers,
+          deletedUsers: metaUsers.deletedUsers,
+        });
+        isFirstLoad.current = false;
+      }
+    },
     onErrorRetry(err, key, config, revalidate, revalidateOpts) {
       if (err.status == 401) return;
     },
@@ -123,6 +146,32 @@ export default function AllUsers({
   }, [users, setSize, errorUsers, isValidating]);
   return (
     <div className="pb-14">
+      <div className="mb-6 grid grid-cols-1 gap-4 sm:grid-cols-3">
+        <div className="flex items-center gap-4 rounded-xl border bg-white p-5 shadow-sm">
+          <Users className="h-10 w-10 text-blue-600" />
+          <div>
+            <p className="text-sm text-zinc-500">Total de usuários</p>
+            <p className="text-3xl font-bold">{metaInfos.totalUsers}</p>
+          </div>
+        </div>
+
+        <div className="flex items-center gap-4 rounded-xl border bg-white p-5 shadow-sm">
+          <UserCheck className="h-10 w-10 text-green-600" />
+          <div>
+            <p className="text-sm text-zinc-500">Usuários ativos</p>
+            <p className="text-3xl font-bold">{metaInfos.activeUsers}</p>
+          </div>
+        </div>
+
+        <div className="flex items-center gap-4 rounded-xl border bg-white p-5 shadow-sm">
+          <UserMinus className="h-10 w-10 text-red-600" />
+          <div>
+            <p className="text-sm text-zinc-500">Usuários deletados</p>
+            <p className="text-3xl font-bold">{metaInfos.deletedUsers}</p>
+          </div>
+        </div>
+      </div>
+
       <div
         id="scroll-area"
         className="grid w-full grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4"

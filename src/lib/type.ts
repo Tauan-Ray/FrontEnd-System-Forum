@@ -3,6 +3,10 @@ export type ParamsRequest<T> = {
   _meta: {
     _results: number,
     _total_results: number,
+    _meta_users?: {
+      activeUsers: number,
+      deletedUsers: number,
+    }
     _page: number,
     _total_page: number
   },
