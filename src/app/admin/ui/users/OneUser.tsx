@@ -1,7 +1,7 @@
 import Image from "next/image";
 import { webConfig } from "@/lib/settings";
 import { Button } from "@/components/ui/button";
-import { Fingerprint, Trash, Undo } from "lucide-react";
+import { Fingerprint } from "lucide-react";
 import {
   Tooltip,
   TooltipContent,
@@ -9,6 +9,7 @@ import {
   TooltipTrigger,
 } from "@/components/ui/tooltip";
 import EditUserAdminDialog from "./EditUserAdminDialog";
+import DeleteUserDialog from "@/app/perfil/ui/profile/DeleteUserDialog";
 
 type OneUserProps = {
   ID_USER: string;
@@ -93,7 +94,7 @@ export default function OneUser({
         {isDeleted && (
           <p className="mt-1 text-red-600">
             <span className="font-semibold">Deletado em:</span>{" "}
-            {new Date(DEL_AT!).toLocaleDateString("pt-BR")}
+            {new Date(DEL_AT).toLocaleDateString("pt-BR")}
           </p>
         )}
       </div>
@@ -119,22 +120,7 @@ export default function OneUser({
           isDeleted={isDeleted}
         />
 
-        <Button
-          variant={isDeleted ? "secondary" : "destructive"}
-          className="flex-1 rounded-lg"
-        >
-          {isDeleted ? (
-            <>
-              <Undo size={16} />
-              Restaurar
-            </>
-          ) : (
-            <>
-              <Trash size={16} />
-              Deletar
-            </>
-          )}
-        </Button>
+        <DeleteUserDialog userId={ID_USER} isDeleted={isDeleted} />
       </div>
     </div>
   );

@@ -53,6 +53,7 @@ export default function EditUserForm({
 
     if (res.ok) {
       handleCloseDialog();
+      window.location.reload();
     }
   }
 

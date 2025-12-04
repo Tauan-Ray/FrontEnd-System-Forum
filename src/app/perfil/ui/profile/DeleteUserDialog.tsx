@@ -17,11 +17,19 @@ import { useState } from "react";
 import { DeleteUserAction } from "../../actions/UpdateUserActions";
 import { toast } from "sonner";
 import { redirect } from "next/navigation";
-import { EyeIcon, EyeOffIcon } from "lucide-react";
+import { EyeIcon, EyeOffIcon, Trash, Undo } from "lucide-react";
 
-export default function DeleteUserDialog() {
+type DeleteUserDialogProps = {
+  userId?: string;
+  isDeleted?: boolean;
+};
+
+export default function DeleteUserDialog({
+  userId,
+  isDeleted,
+}: DeleteUserDialogProps) {
   const [isLoading, setIsLoading] = useState<boolean>(false);
-  const [password, setPassword] = useState<string>("");
+  const [password, setPassword] = useState<string>(userId ? "password10" : "");
   const [showPassword, setShowPassword] = useState<boolean>(false);
   const { user, logout } = useAuthStore();
 
@@ -36,11 +44,18 @@ export default function DeleteUserDialog() {
     if (!user) return;
 
     setIsLoading(true);
-    const res = await DeleteUserAction(user.ID_USER, password);
+    const res = await DeleteUserAction(
+      userId ? userId : user.ID_USER,
+      password,
+    );
 
     if (res.ok) {
-      logout();
-      redirect("/");
+      if (!userId) {
+        logout();
+        redirect("/");
+      } else {
+        window.location.reload();
+      }
     }
 
     setIsLoading(false);
@@ -49,51 +64,72 @@ export default function DeleteUserDialog() {
   return (
     <Dialog>
       <DialogTrigger asChild>
-        <Button variant={"destructive"} className="font-bold text-base p-5">
-          Excluir conta
-        </Button>
+        {userId ? (
+          <Button
+            variant={isDeleted ? "secondary" : "destructive"}
+            className="flex-1 rounded-lg"
+          >
+            {isDeleted ? (
+              <>
+                <Undo size={16} />
+                Restaurar
+              </>
+            ) : (
+              <>
+                <Trash size={16} />
+                Deletar
+              </>
+            )}
+          </Button>
+        ) : (
+          <Button variant={"destructive"} className="p-5 text-base font-bold">
+            Excluir conta
+          </Button>
+        )}
       </DialogTrigger>
       <DialogContent
         className="max-w-sm rounded-2xl p-8 shadow-xl"
         onInteractOutside={(e) => e.preventDefault()}
       >
-        <DialogHeader className="text-center space-y-2">
+        <DialogHeader className="space-y-2 text-center">
           <DialogTitle className="text-xl font-semibold text-red-600">
             Esta ação é irreversível
           </DialogTitle>
 
-          <DialogDescription className="text-sm text-muted-foreground">
+          <DialogDescription className="text-muted-foreground text-sm">
             Tem certeza de que deseja deletar sua conta? Esta operação não
             poderá ser desfeita.
           </DialogDescription>
         </DialogHeader>
 
         <div className="mt-2 flex flex-col gap-6">
-          <div className="flex flex-col">
-            <Label className="p-2">Senha atual</Label>
-            <div className="relative w-full">
-              <Input
-                type={showPassword ? "text" : "password"}
-                placeholder="Confirma a sua senha"
-                className="w-full pr-12 font-mono font-bold text-md"
-                value={password}
-                onChange={(e) => setPassword(e.target.value)}
-                disabled={isLoading}
-              />
+          {!userId && (
+            <div className="flex flex-col">
+              <Label className="p-2">Senha atual</Label>
+              <div className="relative w-full">
+                <Input
+                  type={showPassword ? "text" : "password"}
+                  placeholder="Confirma a sua senha"
+                  className="text-md w-full pr-12 font-mono font-bold"
+                  value={password}
+                  onChange={(e) => setPassword(e.target.value)}
+                  disabled={isLoading}
+                />
 
-              <div
-                onClick={() => setShowPassword(!showPassword)}
-                className="absolute right-4 top-1/2 -translate-y-1/2 text-slate-400 cursor-pointer"
-              >
-                {showPassword ? (
-                  <EyeOffIcon className="w-6 h-6" />
-                ) : (
-                  <EyeIcon className="w-6 h-6" />
-                )}
+                <div
+                  onClick={() => setShowPassword(!showPassword)}
+                  className="absolute right-4 top-1/2 -translate-y-1/2 cursor-pointer text-slate-400"
+                >
+                  {showPassword ? (
+                    <EyeOffIcon className="h-6 w-6" />
+                  ) : (
+                    <EyeIcon className="h-6 w-6" />
+                  )}
+                </div>
               </div>
             </div>
-          </div>
-          <div className="w-full flex flex-col gap-3">
+          )}
+          <div className="flex w-full flex-col gap-3">
             <Button
               variant="destructive"
               className="w-full py-3 text-base"
