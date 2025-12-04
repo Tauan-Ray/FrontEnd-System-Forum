@@ -45,7 +45,7 @@ export default function ProfileUser() {
                 Editar Perfil
               </Button>
 
-              {user?.ROLE && (
+              {user?.ROLE === 'ADMIN' && (
                 <Button
                   variant={"secondary"}
                   className="px-12 py-5"
