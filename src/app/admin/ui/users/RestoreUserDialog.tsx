@@ -16,9 +16,10 @@ import { RestoreUserAction } from "../../actions/RestoreUserAction";
 
 type RestoreUserDialogProps = {
   userId: string;
+  handleReloadUsers: () => void;
 };
 
-export default function RestoreUserDialog({ userId }: RestoreUserDialogProps) {
+export default function RestoreUserDialog({ userId, handleReloadUsers }: RestoreUserDialogProps) {
   const [isLoading, setIsLoading] = useState<boolean>(false);
 
   const handleRestore = async () => {
@@ -27,7 +28,7 @@ export default function RestoreUserDialog({ userId }: RestoreUserDialogProps) {
 
     if (res.ok) {
         setTimeout(() => {
-            window.location.reload()
+            handleReloadUsers()
         }, 800)
     };
 

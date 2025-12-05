@@ -183,6 +183,7 @@ export default function AllUsers({
             users?.map(({ _data }) =>
               _data?.map((user) => (
                 <OneUser
+                  reloadUsers={() => mutate()}
                   key={user.ID_USER}
                   ID_USER={user.ID_USER}
                   name={user.NAME}

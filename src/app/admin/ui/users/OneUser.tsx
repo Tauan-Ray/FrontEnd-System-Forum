@@ -20,6 +20,7 @@ type OneUserProps = {
   DT_CR: Date;
   DEL_AT: Date | null;
   DT_UP: Date;
+  reloadUsers: () => void;
 };
 
 export default function OneUser({
@@ -30,8 +31,11 @@ export default function OneUser({
   DT_CR,
   DEL_AT,
   DT_UP,
+  reloadUsers
 }: OneUserProps) {
   const isDeleted = DEL_AT !== null;
+
+  const handleReloadUsers = () => reloadUsers();
 
   return (
     <div className="flex h-full flex-col gap-4 rounded-xl border border-gray-300 bg-white p-5 shadow-sm transition-all hover:border-blue-400 hover:shadow-md">
@@ -119,12 +123,13 @@ export default function OneUser({
           username={username}
           email={email}
           isDeleted={isDeleted}
+          handleReloadUsers={handleReloadUsers}
         />
 
         {isDeleted ? (
-          <RestoreUserDialog userId={ID_USER} />
+          <RestoreUserDialog userId={ID_USER} handleReloadUsers={handleReloadUsers} />
         ): (
-          <DeleteUserDialog userId={ID_USER} />
+          <DeleteUserDialog userId={ID_USER} handleReloadUsers={handleReloadUsers} />
         )}
       </div>
     </div>

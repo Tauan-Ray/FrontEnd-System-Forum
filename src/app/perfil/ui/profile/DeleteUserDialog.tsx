@@ -21,9 +21,10 @@ import { EyeIcon, EyeOffIcon, Trash } from "lucide-react";
 
 type DeleteUserDialogProps = {
   userId?: string;
+  handleReloadUsers?: () => void;
 };
 
-export default function DeleteUserDialog({ userId }: DeleteUserDialogProps) {
+export default function DeleteUserDialog({ userId, handleReloadUsers }: DeleteUserDialogProps) {
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [password, setPassword] = useState<string>(userId ? "password10" : "");
   const [showPassword, setShowPassword] = useState<boolean>(false);
@@ -50,7 +51,7 @@ export default function DeleteUserDialog({ userId }: DeleteUserDialogProps) {
         logout();
         redirect("/");
       } else {
-        window.location.reload();
+        handleReloadUsers?.()
       }
     }
 

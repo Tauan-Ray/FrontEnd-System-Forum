@@ -25,7 +25,7 @@ type EditUserFormProps = {
   name: string;
   username: string;
   email: string;
-  handleCloseDialog: () => void;
+  handleCloseDialog: (reloadUsers: boolean) => void;
 };
 
 export default function EditUserForm({
@@ -52,14 +52,14 @@ export default function EditUserForm({
     setIsLoading(false);
 
     if (res.ok) {
-      handleCloseDialog();
-      window.location.reload();
+      form.reset()
+      closeDialog(true)
     }
   }
 
   const handleCloseDialog = () => {
     form.reset();
-    closeDialog();
+    closeDialog(false);
   };
   return (
     <Form {...form}>

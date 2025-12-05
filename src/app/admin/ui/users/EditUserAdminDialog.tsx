@@ -17,6 +17,7 @@ type EditUserAdminDialogProps = {
   username: string;
   email: string;
   isDeleted: boolean;
+  handleReloadUsers: () => void;
 };
 
 export default function EditUserAdminDialog({
@@ -25,6 +26,7 @@ export default function EditUserAdminDialog({
   email,
   isDeleted,
   ID_USER,
+  handleReloadUsers,
 }: EditUserAdminDialogProps) {
   const [open, setOpen] = useState<boolean>(false);
   return (
@@ -59,7 +61,10 @@ export default function EditUserAdminDialog({
             name={name}
             username={username}
             email={email}
-            handleCloseDialog={() => setOpen(false)}
+            handleCloseDialog={(reloadUsers: boolean) => {
+              setOpen(false);
+              if (reloadUsers) handleReloadUsers();
+            }}
           />
         </div>
       </DialogContent>
