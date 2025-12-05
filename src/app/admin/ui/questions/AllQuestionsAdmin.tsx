@@ -37,7 +37,7 @@ export default function AllQuestionAdmin({
       if (debouncedSearch?.registerEnd)
         params.set("DT_FM", debouncedSearch?.registerEnd);
 
-      return `/questions/all?${params.toString()}`;
+      return `/questions/all/admin?${params.toString()}`;
     },
     [debouncedSearch]
   );
@@ -122,6 +122,7 @@ export default function AllQuestionAdmin({
                         username={question.User.USERNAME}
                         DT_CR={question.DT_CR}
                         DT_UP={question.DT_UP}
+                        DEL_AT={question.DEL_AT}
                         category={question.Category.CATEGORY}
                         title={question.TITLE}
                         description={question.DESCRIPTION}

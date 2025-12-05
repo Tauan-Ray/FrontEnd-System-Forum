@@ -5,22 +5,22 @@ import {
   DialogDescription,
   DialogHeader,
   DialogTitle,
+  DialogTrigger,
 } from "@/components/ui/dialog";
 import { useState } from "react";
 import { DeleteQuestionAction } from "../actions/DeleteQuestionAction";
 import { redirect, usePathname } from "next/navigation";
 
 type DeleteQuestionDialogProps = {
-  open: boolean;
-  onOpenChange: (open: boolean) => void;
   idQuestion: string;
+  children: React.ReactNode;
 };
 
 export default function DeleteQuestionDialog({
-  open,
-  onOpenChange,
   idQuestion,
+  children,
 }: DeleteQuestionDialogProps) {
+  const [open, setOpen] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const pathname = usePathname();
 
@@ -30,30 +30,27 @@ export default function DeleteQuestionDialog({
 
     setTimeout(() => {
       if (pathname.startsWith("/questions/") && pathname !== "/questions") {
-        redirect('/questions')
+        redirect("/questions");
       }
       window.location.reload();
-    }, 800)
-
+    }, 800);
   };
 
   return (
-    <Dialog
-      open={open}
-      onOpenChange={onOpenChange}
-    >
+    <Dialog open={open} onOpenChange={(value) => setOpen(value)}>
+      <DialogTrigger asChild>{children}</DialogTrigger>
       <DialogContent
         className="max-w-sm rounded-2xl p-8 shadow-xl"
         onInteractOutside={(e) => e.preventDefault()}
       >
-        <DialogHeader className="text-center space-y-2">
+        <DialogHeader className="space-y-2 text-center">
           <DialogTitle className="text-xl font-semibold text-red-600">
             Esta ação é irreversível
           </DialogTitle>
 
-          <DialogDescription className="text-sm text-muted-foreground">
-            Tem certeza de que deseja deletar esta pergunta?
-            Esta operação não poderá ser desfeita.
+          <DialogDescription className="text-muted-foreground text-sm">
+            Tem certeza de que deseja deletar esta pergunta? Esta operação não
+            poderá ser desfeita.
           </DialogDescription>
         </DialogHeader>
 
@@ -71,7 +68,7 @@ export default function DeleteQuestionDialog({
             variant="outline"
             className="w-full py-3 text-base"
             disabled={isLoading}
-            onClick={() => onOpenChange(false)}
+            onClick={() => setOpen(false)}
           >
             Cancelar
           </Button>

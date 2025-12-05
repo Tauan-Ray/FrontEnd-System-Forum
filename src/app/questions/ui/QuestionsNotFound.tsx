@@ -3,9 +3,7 @@
 import { Button } from "@/components/ui/button";
 import { Globe, MessageSquareOff, PlusCircle } from "lucide-react";
 import Link from "next/link";
-import { useRouter } from "next/navigation";
 import { defaultParams, searchParams } from "../lib/types";
-import { useState } from "react";
 import { toast } from "sonner";
 import CreateQuestionDialog from "./CreateQuestionDialog";
 import { useAuthStore } from "@/store/useAuthStore";
@@ -21,7 +19,6 @@ export default function QuestionsNotFound({
   type,
   setSearch,
 }: QuestionsNotFoundProps) {
-  const [openDialog, setOpenDialog] = useState<boolean>(false);
   const user = useAuthStore((state) => state.user);
 
   async function handleOpenDialog() {
@@ -31,7 +28,6 @@ export default function QuestionsNotFound({
       });
       return;
     }
-    setOpenDialog(true);
   }
 
   const handleResetFilters = () => {
@@ -39,22 +35,22 @@ export default function QuestionsNotFound({
   };
 
   return (
-    <div className="flex flex-col items-center justify-center text-center py-20 px-4 animate-in fade-in">
-      <div className="bg-blue-primary/10 p-6 rounded-full shadow-md mb-6">
+    <div className="flex flex-col items-center justify-center px-4 py-20 text-center animate-in fade-in">
+      <div className="mb-6 rounded-full bg-blue-primary/10 p-6 shadow-md">
         <MessageSquareOff size={56} className="text-blue-primary" />
       </div>
 
-      <h2 className="font-mono font-bold text-2xl sm:text-3xl text-gray-dark mb-2">
+      <h2 className="mb-2 font-mono text-2xl font-bold text-gray-dark sm:text-3xl">
         Nenhuma pergunta encontrada
       </h2>
-      <p className="text-gray-medium max-w-md mb-8">{message}</p>
+      <p className="mb-8 max-w-md text-gray-medium">{message}</p>
 
-      <div className="flex flex-col sm:flex-row gap-4">
+      <div className="flex flex-col gap-4 sm:flex-row">
         {type === "error" ? (
           <Button
             asChild
             variant="secondary"
-            className="px-8 py-6 text-base md:text-lg hover:bg-blue-hover hover:scale-105 transition-all"
+            className="px-8 py-6 text-base transition-all hover:scale-105 hover:bg-blue-hover md:text-lg"
           >
             <Link href="/" className="flex items-center gap-2">
               <Globe size={18} />
@@ -65,21 +61,22 @@ export default function QuestionsNotFound({
           <Button
             onClick={handleResetFilters}
             variant="secondary"
-            className="px-8 py-6 text-base md:text-lg hover:bg-blue-hover hover:scale-105 transition-all"
+            className="px-8 py-6 text-base transition-all hover:scale-105 hover:bg-blue-hover md:text-lg"
           >
             <MessageSquareOff size={18} />
             Limpar filtros
           </Button>
         )}
 
-        <Button
-          onClick={handleOpenDialog}
-          className="px-8 py-6 text-base md:text-lg shadow-lg hover:scale-105 transition-transform"
-        >
-          <PlusCircle size={18} />
-          Fazer uma pergunta
-        </Button>
-        <CreateQuestionDialog type="create" open={openDialog} onOpenChange={setOpenDialog} />
+        <CreateQuestionDialog type="create">
+          <Button
+            onClick={handleOpenDialog}
+            className="px-8 py-6 text-base shadow-lg transition-transform hover:scale-105 md:text-lg"
+          >
+            <PlusCircle size={18} />
+            Fazer uma pergunta
+          </Button>
+        </CreateQuestionDialog>
       </div>
     </div>
   );

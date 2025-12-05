@@ -32,7 +32,7 @@ export type ResQuestion = {
     DT_UP: Date;
     DEL_AT: Date | null;
   };
-  DEL_AT?: Date | null;
+  DEL_AT: Date | null;
 };
 
 type ResCreateQuestion = {

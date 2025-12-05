@@ -7,6 +7,7 @@ import {
   DialogContent,
   DialogDescription,
   DialogTitle,
+  DialogTrigger,
 } from "@/components/ui/dialog";
 import { CreateQuestionFormSchema } from "../lib/definitions";
 import { useState } from "react";
@@ -29,25 +30,24 @@ import { CreateQuestion } from "../actions/CreateQuestion";
 import { EditQuestionAction } from "../actions/EditQuestionAction";
 
 type CreateQuestionDialogProps = {
-  open: boolean;
-  onOpenChange: (open: boolean) => void;
   type: "edit" | "create";
   title?: string;
   description?: string;
   category?: string;
   ID_QT?: string;
+  children: React.ReactNode;
 };
 
 export default function CreateQuestionDialog({
-  open,
-  onOpenChange,
   type,
   title,
   description,
   category,
   ID_QT,
+  children,
 }: CreateQuestionDialogProps) {
   const [isLoading, setIsLoading] = useState<boolean>(false);
+  const [open, setOpen] = useState<boolean>(false);
 
   const form = useForm<z.infer<typeof CreateQuestionFormSchema>>({
     resolver: zodResolver(CreateQuestionFormSchema),
@@ -69,7 +69,7 @@ export default function CreateQuestionDialog({
 
     setIsLoading(false);
     form.reset();
-    onOpenChange(false);
+    setOpen(false);
 
     if (type === "edit") {
       window.location.reload();
@@ -77,9 +77,10 @@ export default function CreateQuestionDialog({
   }
 
   return (
-    <Dialog open={open} onOpenChange={onOpenChange}>
+    <Dialog open={open} onOpenChange={(value) => setOpen(value)}>
+      <DialogTrigger asChild>{children}</DialogTrigger>
       <DialogContent
-        className="max-h-[90vh] w-full sm:max-w-md md:max-w-lg mx-auto overflow-auto"
+        className="mx-auto max-h-[90vh] w-full overflow-auto sm:max-w-md md:max-w-lg"
         onInteractOutside={(e) => e.preventDefault()}
       >
         <DialogHeader className="flex flex-col items-center">
@@ -91,7 +92,7 @@ export default function CreateQuestionDialog({
           </DialogDescription>
         </DialogHeader>
         <Form {...form}>
-          <form onSubmit={form.handleSubmit(onSubmit)} className="w-full mb-8">
+          <form onSubmit={form.handleSubmit(onSubmit)} className="mb-8 w-full">
             <div className="flex flex-col gap-7">
               <FormField
                 control={form.control}
@@ -104,7 +105,7 @@ export default function CreateQuestionDialog({
                     <FormControl>
                       <Input
                         placeholder="Digite sua dúvida"
-                        className="w-full font-mono font-bold text-xs md:text-base"
+                        className="w-full font-mono text-xs font-bold md:text-base"
                         disabled={isLoading}
                         {...field}
                       />
@@ -119,7 +120,7 @@ export default function CreateQuestionDialog({
                 name="ID_CT"
                 render={({ field }) => (
                   <FormItem>
-                    <div className="flex flex-col md:flex-row gap-3 items-center">
+                    <div className="flex flex-col items-center gap-3 md:flex-row">
                       <FormLabel className="pl-3 text-base md:text-lg">
                         Categoria:
                       </FormLabel>
@@ -157,10 +158,10 @@ export default function CreateQuestionDialog({
               />
             </div>
 
-            <div className="flex justify-center mt-6">
+            <div className="mt-6 flex justify-center">
               <Button
                 type="submit"
-                className="flex py-5 w-4/5 md:w-2/5 text-md md:text-lg md:py-6 justify-center"
+                className="text-md flex w-4/5 justify-center py-5 md:w-2/5 md:py-6 md:text-lg"
               >
                 {isLoading && <Spinner />}
                 {type === "edit" ? "Editar pergunta" : "Criar pergunta"}

@@ -1,11 +1,24 @@
+"use client"
+
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import TabUser from "./ui/tabs/TabUser";
 import TabsQuestions from "./ui/tabs/TabsQuestions";
+import { useRouter, useSearchParams } from "next/navigation";
 
 export default function AdminPanel() {
+  const searchParams = useSearchParams();
+  const router = useRouter();
+
+  const currentTab = searchParams.get("tab") ?? "users";
+
+  const handleChangeTab = (newTab: string) => {
+    router.push(`?tab=${newTab}`);
+  }
+
   return (
     <Tabs
-      defaultValue="users"
+      value={currentTab}
+      onValueChange={handleChangeTab}
       className="flex h-full w-full flex-col items-center rounded-2xl p-4"
     >
       <TabsList className="flex flex-col sm:flex-row h-auto w-full rounded-xl bg-blue-primary/20 p-1">
