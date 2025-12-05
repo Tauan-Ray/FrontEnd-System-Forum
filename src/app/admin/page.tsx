@@ -1,5 +1,6 @@
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import TabUser from "./ui/tabs/TabUser";
+import TabsQuestions from "./ui/tabs/TabsQuestions";
 
 export default function AdminPanel() {
   return (
@@ -42,7 +43,9 @@ export default function AdminPanel() {
           <TabUser />
         </TabsContent>
 
-        <TabsContent value="questions" className="h-full"></TabsContent>
+        <TabsContent value="questions" className="h-full">
+          <TabsQuestions />
+        </TabsContent>
 
         <TabsContent value="answers" className="h-full"></TabsContent>
 
