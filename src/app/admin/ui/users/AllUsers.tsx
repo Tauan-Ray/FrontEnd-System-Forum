@@ -82,11 +82,11 @@ export default function AllUsers({
     error: errorUsers,
   } = useSWRInfinite<ParamsRequest<ResUsers[]>>(getParams, fetcher, {
     revalidateOnFocus: true,
-    onSuccess: () => {
-      if (isFirstLoad.current && users?.[0]?._meta._meta_users) {
-        const metaUsers = users?.[0]?._meta?._meta_users;
+    onSuccess: (data) => {
+      if (isFirstLoad.current && data?.[0]?._meta._meta_users) {
+        const metaUsers = data[0]._meta._meta_users;
         setMetaInfos({
-          totalUsers: users?.[0]?._meta._total_results ?? 0,
+          totalUsers: data[0]._meta._total_results ?? 0,
           activeUsers: metaUsers.activeUsers,
           deletedUsers: metaUsers.deletedUsers,
         });
