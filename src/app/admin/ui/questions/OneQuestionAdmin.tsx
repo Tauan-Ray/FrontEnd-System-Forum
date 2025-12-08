@@ -13,6 +13,7 @@ import {
   TooltipTrigger,
 } from "@/components/ui/tooltip";
 import { Fingerprint } from "lucide-react";
+import RestoreQuestionDialog from "./RestoreQuestionDialog";
 
 type OneQuestionAdminProps = {
   ID_QT: string;
@@ -22,13 +23,13 @@ type OneQuestionAdminProps = {
   DT_UP: Date;
   DEL_AT: Date | null;
   DT_UP_USER: Date;
-  DEL_AT_USER: Date | null;
   title: string;
   ID_CT: string;
   category: string;
   description: string;
   redirect?: boolean;
   onOpenResponseModal?: () => void;
+  mutate: () => void;
 };
 
 export default function OneQuestionAdmin({
@@ -39,13 +40,13 @@ export default function OneQuestionAdmin({
   DT_UP,
   DEL_AT,
   DT_UP_USER,
-  DEL_AT_USER,
   title,
   ID_CT,
   category,
   description,
   redirect,
   onOpenResponseModal,
+  mutate,
 }: OneQuestionAdminProps) {
   const router = useRouter();
   const formatDescription =
@@ -53,7 +54,7 @@ export default function OneQuestionAdmin({
       ? `${description.slice(0, description.slice(0, 250).lastIndexOf(" "))}...`
       : description || "";
 
-  const handleRedirectToQuestion = (ID_QT: string, e: React.MouseEvent) => {
+  const handleRedirectToQuestion = (e: React.MouseEvent) => {
     const selection = window.getSelection();
     if (selection && selection.toString().length > 0) return;
 
@@ -67,7 +68,7 @@ export default function OneQuestionAdmin({
     <div className="flex cursor-pointer flex-col gap-4 rounded-md border border-gray-dark p-4 transition-colors hover:border-blue-hover sm:p-5">
       <div
         className="flex flex-col gap-6"
-        onClick={(e) => handleRedirectToQuestion(ID_QT, e)}
+        onClick={(e) => handleRedirectToQuestion(e)}
       >
         <div className="flex flex-col gap-3 sm:flex-row sm:justify-between md:gap-12">
           <div className="flex flex-row items-center gap-3">
@@ -103,8 +104,9 @@ export default function OneQuestionAdmin({
 
             {DEL_AT && (
               <p className="sm:text-md flex flex-row font-sans text-sm text-red-500 sm:justify-end">
-                <span className="font-semibold">Deletado em:</span>{" "}
-                {new Date(DEL_AT).toLocaleDateString("pt-BR")}
+                <span className="font-semibold">
+                  Deletado em: {new Date(DEL_AT).toLocaleDateString("pt-BR")}
+                </span>
               </p>
             )}
           </div>
@@ -150,23 +152,21 @@ export default function OneQuestionAdmin({
         className={`flex w-full flex-col-reverse items-center justify-between gap-8 sm:flex-row`}
       >
         <div className="flex w-full flex-col gap-2 sm:w-auto sm:flex-row">
-          <DeleteQuestionDialog idQuestion={ID_QT}>
-            {DEL_AT ? (
-              <Button
-                variant="outline"
-                className="w-full p-4 text-sm sm:w-auto sm:text-base"
-              >
-                Restaurar
-              </Button>
-            ) : (
+          {DEL_AT ? (
+            <RestoreQuestionDialog
+              idQuestion={ID_QT}
+              handleReloadQuestions={mutate}
+            />
+          ) : (
+            <DeleteQuestionDialog idQuestion={ID_QT} handleReloadQuestions={mutate}>
               <Button
                 variant="destructive"
                 className="w-full p-4 text-sm sm:w-auto sm:text-base"
               >
                 Deletar
               </Button>
-            )}
-          </DeleteQuestionDialog>
+            </DeleteQuestionDialog>
+          )}
 
           <CreateQuestionDialog
             type="edit"
@@ -175,9 +175,14 @@ export default function OneQuestionAdmin({
             description={description}
             ID_QT={ID_QT}
           >
-            <Button className="w-full bg-blue-light p-4 text-sm sm:w-auto sm:text-base">
-              Editar
-            </Button>
+            {(open) => (
+              <Button
+                className="w-full bg-blue-light p-4 text-sm sm:w-auto sm:text-base"
+                onClick={open}
+              >
+                Editar
+              </Button>
+            )}
           </CreateQuestionDialog>
         </div>
 

@@ -14,11 +14,13 @@ import { redirect, usePathname } from "next/navigation";
 type DeleteQuestionDialogProps = {
   idQuestion: string;
   children: React.ReactNode;
+  handleReloadQuestions: () => void;
 };
 
 export default function DeleteQuestionDialog({
   idQuestion,
   children,
+  handleReloadQuestions,
 }: DeleteQuestionDialogProps) {
   const [open, setOpen] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
@@ -32,7 +34,7 @@ export default function DeleteQuestionDialog({
       if (pathname.startsWith("/questions/") && pathname !== "/questions") {
         redirect("/questions");
       }
-      window.location.reload();
+      handleReloadQuestions()
     }, 800);
   };
 

@@ -81,11 +81,15 @@ export default function OneAnswer({
     setNewVote(type);
   };
 
-  const handleRedirectQuestion = () => {
-    if (!redirect) return;
+  const handleRedirectQuestion = (e: React.MouseEvent) => {
+      const selection = window.getSelection();
+      if (selection && selection.toString().length > 0) return;
 
-    router.push(`/questions/${ID_QT}`);
-  };
+      const target = e.target as HTMLElement;
+      if (target.closest("button") || target.closest("a")) return;
+
+      router.push(`/questions/${ID_QT}`);
+    };
 
   const showActions = ID_USER === user?.ID_USER || user?.ROLE === "ADMIN";
 
@@ -93,7 +97,7 @@ export default function OneAnswer({
     <>
       {TITLE && (
         <div
-          onClick={handleRedirectQuestion}
+          onClick={(e) => handleRedirectQuestion(e)}
           className="flex items-center gap-3 my-3 cursor-pointer group"
         >
           <div className="h-px flex-1 bg-gray-300" />

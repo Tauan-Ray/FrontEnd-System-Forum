@@ -4,7 +4,6 @@ import ResponseButton from "./ResponseButton";
 import Image from "next/image";
 import { Button } from "@/components/ui/button";
 import CreateQuestionDialog from "./CreateQuestionDialog";
-import { useState } from "react";
 import { useAuthStore } from "@/store/useAuthStore";
 import DeleteQuestionDialog from "./DeleteQuestionDialog";
 import { webConfig } from "@/lib/settings";
@@ -23,6 +22,7 @@ type OneQuestionProps = {
   description: string;
   redirect?: boolean;
   onOpenResponseModal?: () => void;
+  mutate?: () => void;
 };
 
 export default function OneQuestion({
@@ -39,6 +39,7 @@ export default function OneQuestion({
   description,
   redirect,
   onOpenResponseModal,
+  mutate,
 }: OneQuestionProps) {
   const { user } = useAuthStore();
   const router = useRouter();
@@ -124,7 +125,7 @@ export default function OneQuestion({
               description={description}
               ID_QT={ID_QT}
             >
-              {() => (
+              {(open) => (
                 <Button
                   className="w-full bg-blue-light p-4 text-sm sm:w-auto sm:text-base"
                   onClick={() => open()}
@@ -134,7 +135,7 @@ export default function OneQuestion({
               )}
             </CreateQuestionDialog>
 
-            <DeleteQuestionDialog idQuestion={ID_QT}>
+            <DeleteQuestionDialog idQuestion={ID_QT} handleReloadQuestions={() => mutate ? mutate : window.location.reload}>
               <Button
                 variant="destructive"
                 className="w-full p-4 text-sm sm:w-auto sm:text-base"

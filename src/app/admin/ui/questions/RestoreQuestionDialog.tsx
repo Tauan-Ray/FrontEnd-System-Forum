@@ -12,23 +12,23 @@ import {
 } from "@/components/ui/dialog";
 import { useState } from "react";
 import { Undo } from "lucide-react";
-import { RestoreUserAction } from "../../actions/RestoreAction";
+import { RestoreQuestionAction } from "../../actions/RestoreAction";
 
-type RestoreUserDialogProps = {
-  userId: string;
-  handleReloadUsers: () => void;
+type RestoreQuestionDialogProps = {
+  idQuestion: string;
+  handleReloadQuestions: () => void;
 };
 
-export default function RestoreUserDialog({ userId, handleReloadUsers }: RestoreUserDialogProps) {
+export default function RestoreQuestionDialog({ idQuestion, handleReloadQuestions }: RestoreQuestionDialogProps) {
   const [isLoading, setIsLoading] = useState<boolean>(false);
 
   const handleRestore = async () => {
     setIsLoading(true);
-    const res = await RestoreUserAction(userId);
+    const res = await RestoreQuestionAction(idQuestion);
 
     if (res.ok) {
         setTimeout(() => {
-            handleReloadUsers()
+            handleReloadQuestions();
         }, 800)
     };
 
@@ -51,11 +51,11 @@ export default function RestoreUserDialog({ userId, handleReloadUsers }: Restore
       >
         <DialogHeader className="space-y-2 text-center">
           <DialogTitle className="text-xl font-semibold text-green-600 text-center">
-            Restauração de Usuário
+            Restauração de Pergunta
           </DialogTitle>
 
           <DialogDescription className="text-muted-foreground text-sm text-center">
-            Tem certeza de que deseja restaurar essa conta?
+            Tem certeza de que deseja restaurar essa pergunta?
           </DialogDescription>
         </DialogHeader>
 
@@ -67,7 +67,7 @@ export default function RestoreUserDialog({ userId, handleReloadUsers }: Restore
               disabled={isLoading}
               onClick={handleRestore}
             >
-              Restaurar conta
+              Restaurar pergunta
             </Button>
 
             <DialogClose className="w-full" asChild>

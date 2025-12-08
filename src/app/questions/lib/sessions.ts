@@ -85,3 +85,13 @@ export async function deleteQuestion(
     .then(({ data, status }) => ({ ...data, status }))
     .catch(handleApiError);
 }
+
+
+export async function RestoreQuestion(
+  ID_QT: string,
+): Promise<Pick<ResCreateQuestion, 'message'> & DefaultParamsResponse> {
+  return await service_api
+    .patch(`/questions/restore/${ID_QT}`)
+    .then(({ data, status }) => ({ ...data, status }))
+    .catch(handleApiError);
+}

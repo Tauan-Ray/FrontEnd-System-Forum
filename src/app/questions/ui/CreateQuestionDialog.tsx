@@ -35,7 +35,7 @@ type CreateQuestionDialogProps = {
   description?: string;
   category?: string;
   ID_QT?: string;
-  children: (open: () => void ) => React.ReactNode | React.ReactNode;
+  children: (open: () => void ) => React.ReactNode;
 };
 
 export default function CreateQuestionDialog({

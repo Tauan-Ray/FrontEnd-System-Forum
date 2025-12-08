@@ -46,7 +46,7 @@ const HomeActionsSection = () => {
         </span>
 
         <CreateQuestionDialog type="create">
-          {() => (
+          {(open) => (
             <Button
               onClick={() => {
                 if (!user) {

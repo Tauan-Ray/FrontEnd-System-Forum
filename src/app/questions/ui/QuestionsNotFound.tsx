@@ -4,7 +4,6 @@ import { Button } from "@/components/ui/button";
 import { Globe, MessageSquareOff, PlusCircle } from "lucide-react";
 import Link from "next/link";
 import { defaultParams, searchParams } from "../lib/types";
-import { toast } from "sonner";
 import CreateQuestionDialog from "./CreateQuestionDialog";
 import { useAuthStore } from "@/store/useAuthStore";
 import { useRedirectStore } from "@/store/useRedirectStore";
@@ -62,7 +61,7 @@ export default function QuestionsNotFound({
         )}
 
         <CreateQuestionDialog type="create">
-          {() => (
+          {(open) => (
             <Button
               onClick={() => {
                 if (!user) {
