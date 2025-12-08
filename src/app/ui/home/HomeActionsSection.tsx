@@ -46,14 +46,25 @@ const HomeActionsSection = () => {
         </span>
 
         <CreateQuestionDialog type="create">
-          <Button
-            onClick={handleOpenDialog}
-            className="w-full gap-2 rounded-lg border border-[#808080] bg-blue-light p-5 sm:w-64"
-          >
-            <Plus className="h-6 w-6 text-black sm:h-7 sm:w-7" />
-            <span className="font-mono text-base text-black">Criar</span>
-            <span className="font-mono text-base text-blue-800">pergunta</span>
-          </Button>
+          {() => (
+            <Button
+              onClick={() => {
+                if (!user) {
+                  setOpenDialog(true);
+                  return;
+                }
+
+                open();
+              }}
+              className="w-full gap-2 rounded-lg border border-[#808080] bg-blue-light p-5 sm:w-64"
+            >
+              <Plus className="h-6 w-6 text-black sm:h-7 sm:w-7" />
+              <span className="font-mono text-base text-black">Criar</span>
+              <span className="font-mono text-base text-blue-800">
+                pergunta
+              </span>
+            </Button>
+          )}
         </CreateQuestionDialog>
       </div>
     </div>

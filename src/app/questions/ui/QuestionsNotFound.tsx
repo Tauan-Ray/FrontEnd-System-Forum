@@ -7,6 +7,7 @@ import { defaultParams, searchParams } from "../lib/types";
 import { toast } from "sonner";
 import CreateQuestionDialog from "./CreateQuestionDialog";
 import { useAuthStore } from "@/store/useAuthStore";
+import { useRedirectStore } from "@/store/useRedirectStore";
 
 type QuestionsNotFoundProps = {
   message: string;
@@ -20,15 +21,7 @@ export default function QuestionsNotFound({
   setSearch,
 }: QuestionsNotFoundProps) {
   const user = useAuthStore((state) => state.user);
-
-  async function handleOpenDialog() {
-    if (!user) {
-      toast.warning("Você precisa estar logado para criar uma pergunta", {
-        description: "Faça login para continuar.",
-      });
-      return;
-    }
-  }
+  const { setOpenDialog } = useRedirectStore();
 
   const handleResetFilters = () => {
     setSearch?.(defaultParams);
@@ -69,13 +62,22 @@ export default function QuestionsNotFound({
         )}
 
         <CreateQuestionDialog type="create">
-          <Button
-            onClick={handleOpenDialog}
-            className="px-8 py-6 text-base shadow-lg transition-transform hover:scale-105 md:text-lg"
-          >
-            <PlusCircle size={18} />
-            Fazer uma pergunta
-          </Button>
+          {() => (
+            <Button
+              onClick={() => {
+                if (!user) {
+                  setOpenDialog(true);
+                  return;
+                }
+
+                open();
+              }}
+              className="px-8 py-6 text-base shadow-lg transition-transform hover:scale-105 md:text-lg"
+            >
+              <PlusCircle size={18} />
+              Fazer uma pergunta
+            </Button>
+          )}
         </CreateQuestionDialog>
       </div>
     </div>

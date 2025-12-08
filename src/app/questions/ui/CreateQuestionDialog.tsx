@@ -10,7 +10,7 @@ import {
   DialogTrigger,
 } from "@/components/ui/dialog";
 import { CreateQuestionFormSchema } from "../lib/definitions";
-import { useState } from "react";
+import React, { useState } from "react";
 import { z } from "@/components/pt-zod";
 import { useForm } from "react-hook-form";
 import {
@@ -35,7 +35,7 @@ type CreateQuestionDialogProps = {
   description?: string;
   category?: string;
   ID_QT?: string;
-  children: React.ReactNode;
+  children: (open: () => void ) => React.ReactNode | React.ReactNode;
 };
 
 export default function CreateQuestionDialog({
@@ -78,7 +78,7 @@ export default function CreateQuestionDialog({
 
   return (
     <Dialog open={open} onOpenChange={(value) => setOpen(value)}>
-      <DialogTrigger asChild>{children}</DialogTrigger>
+      {children(() => setOpen(true))}
       <DialogContent
         className="mx-auto max-h-[90vh] w-full overflow-auto sm:max-w-md md:max-w-lg"
         onInteractOutside={(e) => e.preventDefault()}

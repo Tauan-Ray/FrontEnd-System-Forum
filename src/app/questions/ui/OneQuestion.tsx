@@ -124,9 +124,14 @@ export default function OneQuestion({
               description={description}
               ID_QT={ID_QT}
             >
-              <Button className="w-full bg-blue-light p-4 text-sm sm:w-auto sm:text-base">
-                Editar
-              </Button>
+              {() => (
+                <Button
+                  className="w-full bg-blue-light p-4 text-sm sm:w-auto sm:text-base"
+                  onClick={() => open()}
+                >
+                  Editar
+                </Button>
+              )}
             </CreateQuestionDialog>
 
             <DeleteQuestionDialog idQuestion={ID_QT}>
