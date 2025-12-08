@@ -4,6 +4,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import TabUser from "./ui/tabs/TabUser";
 import TabsQuestions from "./ui/tabs/TabsQuestions";
 import { useRouter, useSearchParams } from "next/navigation";
+import TabAnswers from "./ui/tabs/TabAnswers";
 
 export default function AdminPanel() {
   const searchParams = useSearchParams();
@@ -60,7 +61,9 @@ export default function AdminPanel() {
           <TabsQuestions />
         </TabsContent>
 
-        <TabsContent value="answers" className="h-full"></TabsContent>
+        <TabsContent value="answers" className="h-full">
+          <TabAnswers />
+        </TabsContent>
 
         <TabsContent value="categories" className="h-full"></TabsContent>
       </div>

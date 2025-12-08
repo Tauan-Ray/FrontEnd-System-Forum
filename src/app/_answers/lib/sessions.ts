@@ -24,6 +24,25 @@ export type ResAnswer = {
   user_vote: "LIKE" | "DESLIKE" | null;
 };
 
+export type ResAllAnswers = {
+  ID_AN: string;
+  ID_QT: string;
+  ID_USER: string;
+  RESPONSE: string;
+  DT_CR: Date;
+  DT_UP: Date;
+  DEL_AT: Date | null;
+  USERNAME: string;
+  ROLE: string;
+  TITLE: string;
+  CATEGORY: string;
+  dt_up_user: Date,
+  likes: number;
+  dislikes: number;
+  user_vote: "LIKE" | "DESLIKE" | null;
+};
+
+
 export type ResAnswerCreate = {
   ID_AN: string;
   RESPONSE: string;
