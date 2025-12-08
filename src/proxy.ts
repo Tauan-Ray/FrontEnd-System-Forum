@@ -17,7 +17,7 @@ type sessionType = {
 
 const protectedRoutes = ["/perfil", "/admin"];
 
-export default async function middleware(req: NextRequest) {
+export default async function proxy(req: NextRequest) {
   let session: sessionType | undefined;
 
   const path = req.nextUrl.pathname;
