@@ -1,18 +1,20 @@
-import {
-  UserCircle2,
-  ThumbsUp,
-  ThumbsDown,
-  CornerDownRight,
-} from "lucide-react";
+"use client";
+
+import { ThumbsUp, ThumbsDown, Fingerprint, CornerDownRight } from "lucide-react";
 import { useState } from "react";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
-import { useAuthStore } from "@/store/useAuthStore";
 import { Button } from "@/components/ui/button";
 import { webConfig } from "@/lib/settings";
 import DeleteAnswerDialog from "@/app/_answers/ui/DeleteAnswerDialog";
 import EditAnswerDialog from "@/app/_answers/ui/EditAnswerDialog";
 import UpdateVotesButton from "@/app/_answers/ui/UpdateVotesButton";
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipProvider,
+  TooltipTrigger,
+} from "@/components/ui/tooltip";
 
 type OneAnswerProps = {
   ID_AN: string;
@@ -53,10 +55,10 @@ export default function OneAnswerAdmin({
   const [_, setNewVote] = useState<"LIKE" | "DESLIKE" | null>(null);
   const [likes, setLikes] = useState<number>(initialLikes);
   const [dislikes, setDislikes] = useState<number>(initialDislikes);
-  const [openAnswerDialog, setOpenAnswerDialog] = useState<{
-    edit: boolean;
-    delete: boolean;
-  }>({ edit: false, delete: false });
+  const [openAnswerDialog, setOpenAnswerDialog] = useState({
+    edit: false,
+    delete: false,
+  });
 
   const router = useRouter();
 
@@ -80,75 +82,106 @@ export default function OneAnswerAdmin({
     setNewVote(type);
   };
 
-  const handleRedirectQuestion = (e: React.MouseEvent) => {
-    if (!redirect) return;
+  const formatResponse =
+    response && response.length > 250
+      ? `${response.slice(0, response.slice(0, 250).lastIndexOf(" "))}...`
+      : response || "";
 
+  const handleRedirectQuestion = () => {
+    if (!redirect) return;
     router.push(`/questions/${ID_QT}`);
   };
 
   return (
-    <>
-      {TITLE && (
-        <div
-          onClick={(e) => handleRedirectQuestion(e)}
-          className="group my-3 flex cursor-pointer items-center gap-3"
-        >
-          <div className="h-px flex-1 bg-gray-300" />
-          <div className="flex items-center gap-2 rounded-lg border p-3 text-blue-primary transition group-hover:text-blue-hover">
-            <CornerDownRight size={18} />
-            <span className="text-base font-semibold">{TITLE}</span>
-          </div>
-          <div className="h-px flex-1 bg-gray-300" />
+    <div className="flex flex-col gap-3">
+      <div
+        onClick={handleRedirectQuestion}
+        className="group my-3 flex cursor-pointer items-center gap-3"
+      >
+        <div className="h-px flex-1 bg-gray-300" />
+        <div className="flex items-center gap-2 rounded-lg border p-3 text-blue-primary transition group-hover:text-blue-hover">
+          <CornerDownRight size={18} />
+          <span className="text-base font-semibold">{TITLE}</span>
         </div>
-      )}
+        <div className="h-px flex-1 bg-gray-300" />
+      </div>
+      <div className="flex h-full flex-col gap-5 rounded-2xl border bg-white p-6 shadow-sm transition-all hover:border-blue-300/70 hover:shadow-lg">
+        <div className="flex items-start gap-4">
+          <Image
+            width={42}
+            height={42}
+            src={`${webConfig.url}:${webConfig.port}/storage/${ID_USER}/avatar?q=${DT_UP_USER}`}
+            alt={`avatar ${username}`}
+            className="h-12 w-12 rounded-full object-cover shadow-sm"
+          />
 
-      <div className="flex flex-col gap-4 rounded-md border border-gray-dark p-4 transition-colors hover:border-blue-hover sm:p-5">
-        <div className="flex flex-col gap-2 sm:flex-row sm:justify-between">
-          <div className="flex flex-row items-center gap-3">
-            <Image
-              width={32}
-              height={32}
-              src={`${webConfig.url}:${webConfig.port}/storage/${ID_USER}/avatar?q=${DT_UP_USER}`}
-              alt={`${username} avatar`}
-              className="h-8 w-8 rounded-full"
-            />
-            <p className="font-sans text-base text-gray-dark sm:text-lg">
-              {username}
-            </p>
-          </div>
+          <div className="flex flex-col gap-1.5">
+            <p className="text-base font-semibold text-gray-900">{username}</p>
 
-          <div className="flex flex-col gap-2">
-            <p className="font-sans text-sm text-gray-dark sm:text-base">
-              Resposta enviada em: {new Date(DT_CR).toLocaleDateString("pt-BR")}
-            </p>
+            <span
+              className={`w-fit rounded-full px-2 py-0.5 text-xs font-semibold shadow-sm ${
+                DEL_AT
+                  ? "bg-red-100 text-red-700"
+                  : "bg-green-100 text-green-700"
+              }`}
+            >
+              {DEL_AT ? "Deletada" : "Ativa"}
+            </span>
 
-            <p className="flex font-sans text-sm text-gray-dark sm:justify-end sm:text-base">
-              Editada: {new Date(DT_UP).toLocaleDateString("pt-BR")}
-            </p>
+            <TooltipProvider delayDuration={150}>
+              <Tooltip>
+                <TooltipTrigger asChild>
+                  <Button
+                    variant="outline"
+                    size="sm"
+                    className="border-gray-300 bg-gray-50 px-2 text-xs text-gray-700 hover:text-blue-600"
+                  >
+                    <Fingerprint size={14} /> UUID
+                  </Button>
+                </TooltipTrigger>
 
-            {DEL_AT && (
-              <p className="sm:text-md flex flex-row font-sans text-sm text-red-500 sm:justify-end">
-                <span className="font-semibold">
-                  Deletado em: {new Date(DEL_AT).toLocaleDateString("pt-BR")}
-                </span>
-              </p>
-            )}
+                <TooltipContent className="rounded-md border bg-white p-2 text-xs text-gray-700 shadow-md">
+                  <div className="flex items-center gap-2 font-mono">
+                    <Fingerprint size={14} className="text-gray-500" />
+                    {ID_USER}
+                  </div>
+                </TooltipContent>
+              </Tooltip>
+            </TooltipProvider>
           </div>
         </div>
 
-        <div
-          className="prose prose-base max-w-none overflow-hidden whitespace-pre-wrap break-words leading-relaxed text-gray-dark sm:prose-lg prose-code:font-mono prose-code:text-base prose-code:text-blue-700 prose-pre:overflow-x-auto prose-pre:rounded-md prose-pre:bg-gray-100 prose-pre:p-3"
-          dangerouslySetInnerHTML={{
-            __html: response,
-          }}
-        />
+        <div className="flex flex-col gap-1 rounded-xl bg-gray-50 p-4 text-sm text-gray-600 shadow-inner">
+          <p>
+            <span className="font-semibold text-gray-700">Criada em:</span>{" "}
+            {new Date(DT_CR).toLocaleDateString("pt-BR")}
+          </p>
 
-        <div className="mt-2 flex items-center justify-between">
-          <div className="flex gap-2">
+          <p>
+            <span className="font-semibold text-gray-700">Atualizada em:</span>{" "}
+            {new Date(DT_UP).toLocaleDateString("pt-BR")}
+          </p>
+
+          {DEL_AT && (
+            <p className="font-medium text-red-600">
+              <span className="font-semibold">Deletada em:</span>{" "}
+              {new Date(DEL_AT).toLocaleDateString("pt-BR")}
+            </p>
+          )}
+        </div>
+
+        <div className="flex-1 space-y-3">
+          <div
+            className="prose prose-sm max-w-none whitespace-pre-wrap break-words leading-relaxed text-gray-800 prose-code:rounded prose-code:bg-gray-100 prose-code:px-1.5"
+            dangerouslySetInnerHTML={{ __html: formatResponse }}
+          />
+        </div>
+
+        <div className="mt-2 flex flex-col items-center justify-between gap-5">
+          <div className="flex gap-3">
             <Button
-              onClick={() =>
-                setOpenAnswerDialog((prev) => ({ ...prev, edit: true }))
-              }
+              disabled={DEL_AT !== null}
+              onClick={() => setOpenAnswerDialog((p) => ({ ...p, edit: true }))}
               className="bg-blue-light px-4 py-2"
             >
               Editar
@@ -157,31 +190,30 @@ export default function OneAnswerAdmin({
               ID_AN={ID_AN}
               actualResponse={response}
               open={openAnswerDialog.edit}
-              onOpenChange={(value) =>
-                setOpenAnswerDialog((prev) => ({ ...prev, edit: value }))
+              onOpenChange={(v) =>
+                setOpenAnswerDialog((p) => ({ ...p, edit: v }))
               }
             />
 
             <Button
               onClick={() =>
-                setOpenAnswerDialog((prev) => ({ ...prev, delete: true }))
+                setOpenAnswerDialog((p) => ({ ...p, delete: true }))
               }
               variant="destructive"
               className="px-4 py-2"
             >
               Deletar
             </Button>
-
             <DeleteAnswerDialog
               idAnswer={ID_AN}
               open={openAnswerDialog.delete}
-              onOpenChange={(value) =>
-                setOpenAnswerDialog((prev) => ({ ...prev, delete: value }))
+              onOpenChange={(v) =>
+                setOpenAnswerDialog((p) => ({ ...p, delete: v }))
               }
             />
           </div>
 
-          <div className="flex items-center gap-6">
+          <div className="flex items-center gap-8">
             <div className="flex flex-col items-center">
               <UpdateVotesButton
                 idAnswer={ID_AN}
@@ -190,7 +222,7 @@ export default function OneAnswerAdmin({
                 setNewVote={handleVote}
               >
                 <ThumbsUp
-                  size={24}
+                  size={26}
                   className={`transition-transform ${
                     actualVote === "LIKE"
                       ? "scale-110 text-blue-primary"
@@ -198,7 +230,9 @@ export default function OneAnswerAdmin({
                   }`}
                 />
               </UpdateVotesButton>
-              <span className="text-sm font-semibold">{likes}</span>
+              <span className="text-sm font-semibold text-gray-700">
+                {likes}
+              </span>
             </div>
 
             <div className="flex flex-col items-center">
@@ -209,7 +243,7 @@ export default function OneAnswerAdmin({
                 setNewVote={handleVote}
               >
                 <ThumbsDown
-                  size={24}
+                  size={26}
                   className={`transition-transform ${
                     actualVote === "DESLIKE"
                       ? "scale-110 text-red-500"
@@ -217,11 +251,13 @@ export default function OneAnswerAdmin({
                   }`}
                 />
               </UpdateVotesButton>
-              <span className="text-sm font-semibold">{dislikes}</span>
+              <span className="text-sm font-semibold text-gray-700">
+                {dislikes}
+              </span>
             </div>
           </div>
         </div>
       </div>
-    </>
+    </div>
   );
 }

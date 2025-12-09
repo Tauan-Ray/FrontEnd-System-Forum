@@ -8,8 +8,8 @@ import { RefreshCw } from "lucide-react";
 import { searchParams } from "@/app/questions/lib/types";
 import { ResAllAnswers } from "@/app/_answers/lib/sessions";
 import { SkeletonAnswers } from "@/components/SkeletonModel";
-import AnswersNotFound from "@/app/_answers/ui/AnswerNotFound";
 import OneAnswerAdmin from "./OneAnswerAdmin";
+import AnswerNotFoundAdmin from "./AnswerNotFoundAdmin";
 
 type AllAnswersAdminProps = {
   search: searchParams;
@@ -106,7 +106,7 @@ export default function AllAnswersAdmin({
   }, [answers, setSize, errorAnswer, isValidating]);
   return (
       <div className="pb-14">
-        <div id="scroll-area" className="flex flex-col gap-6">
+        <div id="scroll-area" className="grid w-full grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
           {isLoading ? (
             <SkeletonAnswers quantity={3} />
           ) : size >= 0 && !errorAnswer ? (
@@ -137,13 +137,17 @@ export default function AllAnswersAdmin({
                 }
               })
             ) : (
-                <AnswersNotFound
-                    message="Parece que ainda não há perguntas que correspondam aos filtros aplicados.
+                <AnswerNotFoundAdmin
+                type="normal"
+                    setSearch={setSearch}
+                    message="Parece que ainda não existem perguntas que correspondam aos filtros aplicados.
                                 Que tal explorar outras categorias ou criar uma nova resposta"
                 />
             )
           ) : (
-            <AnswersNotFound
+            <AnswerNotFoundAdmin
+                type='error'
+                setSearch={setSearch}
                 message={errorAnswer?.data?.message || "Falha ao carregar perguntas" }
             />
           )}

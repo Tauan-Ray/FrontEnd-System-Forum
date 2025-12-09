@@ -42,11 +42,11 @@ export default function OneUser({
       <div className="flex items-start gap-4">
         <div className="flex items-center gap-3">
           <Image
-            width={40}
-            height={40}
+            width={42}
+            height={42}
             src={`${webConfig.url}:${webConfig.port}/storage/${ID_USER}/avatar?q=${DT_UP}`}
             alt={`avatar ${username}`}
-            className="h-10 w-10 rounded-full object-cover"
+            className="h-12 w-12 rounded-full object-cover"
           />
 
           <div className="flex flex-col gap-2">
