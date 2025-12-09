@@ -15,3 +15,21 @@ export const defaultUserParams = {
   registerStart: undefined,
   registerEnd: undefined,
 }
+
+export type searchAnswerParams = {
+  ID_CT: string | undefined;
+  search: string | undefined;
+  EMAIL: string | undefined;
+  USERNAME: string | undefined;
+  registerStart: string | undefined;
+  registerEnd: string | undefined;
+}
+
+export const defaultAnswerParams = {
+  ID_CT: undefined,
+  search: undefined,
+  EMAIL: undefined,
+  USERNAME: undefined,
+  registerStart: undefined,
+  registerEnd: undefined,
+}

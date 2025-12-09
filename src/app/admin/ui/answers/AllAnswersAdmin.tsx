@@ -5,17 +5,17 @@ import { useCallback, useEffect } from "react";
 import useSWRInfinite from "swr/infinite";
 import { fetcher } from "@/app/auth/lib/sessions";
 import { RefreshCw } from "lucide-react";
-import { searchParams } from "@/app/questions/lib/types";
 import { ResAllAnswers } from "@/app/_answers/lib/sessions";
 import { SkeletonAnswersAdmin } from "@/components/SkeletonModel";
 import OneAnswerAdmin from "./OneAnswerAdmin";
 import AnswerNotFoundAdmin from "./AnswerNotFoundAdmin";
+import { searchAnswerParams } from "../../lib/types";
 
 type AllAnswersAdminProps = {
-  search: searchParams;
-  setSearch: React.Dispatch<React.SetStateAction<searchParams>>;
-  debouncedSearch: searchParams;
-  setDebouncedSearch: React.Dispatch<React.SetStateAction<searchParams>>;
+  search: searchAnswerParams;
+  setSearch: React.Dispatch<React.SetStateAction<searchAnswerParams>>;
+  debouncedSearch: searchAnswerParams;
+  setDebouncedSearch: React.Dispatch<React.SetStateAction<searchAnswerParams>>;
 };
 
 export default function AllAnswersAdmin({
@@ -36,6 +36,10 @@ export default function AllAnswersAdmin({
         params.set("DT_IN", debouncedSearch?.registerStart);
       if (debouncedSearch?.registerEnd)
         params.set("DT_FM", debouncedSearch?.registerEnd);
+
+      if (debouncedSearch?.EMAIL) params.set("EMAIL", debouncedSearch.EMAIL);
+      if (debouncedSearch?.USERNAME)
+        params.set("USERNAME", debouncedSearch.USERNAME);
 
       return `/answers/all?${params.toString()}`;
     },

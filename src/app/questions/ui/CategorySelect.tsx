@@ -16,7 +16,7 @@ import { searchParams } from "../lib/types";
 type CategorySelectProps =
   | {
       search: searchParams;
-      setSearch: React.Dispatch<React.SetStateAction<searchParams>>;
+      setSearch: (value: string) => void;
       value?: never;
       onChange?: never;
     }
@@ -47,7 +47,7 @@ export default function CategorySelect(props: CategorySelectProps) {
 
   const handleChange = (value: string) => {
     if (props?.setSearch) {
-      props.setSearch((prev) => ({ ...prev, ID_CT: value }));
+      props.setSearch(value);
     } else if (props.onChange) {
       props.onChange(value);
     }

@@ -5,17 +5,16 @@ import {
   Globe,
   MessageCircleOff,
   MessageSquareOff,
-  PlusCircle,
   RefreshCcw,
 } from "lucide-react";
 import React, { SetStateAction } from "react";
-import { defaultParams, searchParams } from "@/app/questions/lib/types";
 import Link from "next/link";
+import { defaultAnswerParams, searchAnswerParams } from "../../lib/types";
 
 type AnswersNotFoundProps = {
   message: string;
   type: "error" | "normal";
-  setSearch: React.Dispatch<SetStateAction<searchParams>>;
+  setSearch: React.Dispatch<SetStateAction<searchAnswerParams>>;
 };
 
 export default function AnswerNotFoundAdmin({
@@ -24,7 +23,7 @@ export default function AnswerNotFoundAdmin({
   type,
 }: AnswersNotFoundProps) {
   const handleResetFilters = () => {
-    setSearch(defaultParams);
+    setSearch(defaultAnswerParams);
   };
 
   return (
