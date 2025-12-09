@@ -20,6 +20,7 @@ import {
   TooltipProvider,
   TooltipTrigger,
 } from "@/components/ui/tooltip";
+import RestoreAnswerDialog from "./RestoreAnswerDialog";
 
 type OneAnswerProps = {
   ID_AN: string;
@@ -146,7 +147,7 @@ export default function OneAnswerAdmin({
                 <TooltipContent className="rounded-md border bg-white p-2 text-xs text-gray-700 shadow-md">
                   <div className="flex items-center gap-2 font-mono">
                     <Fingerprint size={14} className="text-gray-500" />
-                    {ID_USER}
+                    {ID_AN}
                   </div>
                 </TooltipContent>
               </Tooltip>
@@ -191,11 +192,15 @@ export default function OneAnswerAdmin({
               </Button>
             </EditAnswerDialog>
 
-            <DeleteAnswerDialog idAnswer={ID_AN} handleReloadAnswers={mutate}>
-              <Button variant="destructive" className="px-4 py-2">
-                Deletar
-              </Button>
-            </DeleteAnswerDialog>
+            {DEL_AT ? (
+              <RestoreAnswerDialog idAnswer={ID_AN} handleReloadQuestions={mutate}/>
+            ): (
+              <DeleteAnswerDialog idAnswer={ID_AN} handleReloadAnswers={mutate}>
+                <Button variant="destructive" className="px-4 py-2">
+                  Deletar
+                </Button>
+              </DeleteAnswerDialog>
+            )}
           </div>
 
           <div className="flex items-center gap-8">
@@ -205,6 +210,7 @@ export default function OneAnswerAdmin({
                 type="LIKE"
                 isActive={actualVote === "LIKE"}
                 setNewVote={handleVote}
+                disabled={DEL_AT !== null}
               >
                 <ThumbsUp
                   size={26}
@@ -226,6 +232,7 @@ export default function OneAnswerAdmin({
                 type="DESLIKE"
                 isActive={actualVote === "DESLIKE"}
                 setNewVote={handleVote}
+                disabled={DEL_AT !== null}
               >
                 <ThumbsDown
                   size={26}

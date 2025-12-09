@@ -98,3 +98,12 @@ export async function deleteAnswer(
     .then(({ data, status }) => ({ ...data, status }))
     .catch(handleApiError);
 }
+
+export async function RestoreAnswer(
+  ID_AN: string,
+): Promise<Pick<ResCreateAnswer, 'message'> & DefaultParamsResponse> {
+  return await service_api
+    .patch(`/answers/restore/${ID_AN}`)
+    .then(({ data, status }) => ({ ...data, status }))
+    .catch(handleApiError);
+}

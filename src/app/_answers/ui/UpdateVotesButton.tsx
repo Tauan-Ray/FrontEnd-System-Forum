@@ -10,6 +10,7 @@ type UpdateVotesButtonProps = {
   isActive?: boolean;
   children: React.ReactNode;
   setNewVote: (type: "LIKE" | "DESLIKE") => void;
+  disabled?: boolean;
 };
 
 export default function UpdateVotesButton({
@@ -17,7 +18,8 @@ export default function UpdateVotesButton({
   type,
   isActive,
   children,
-  setNewVote
+  setNewVote,
+  disabled,
 }: UpdateVotesButtonProps) {
   const [isLoading, setIsLoading] = useState(false);
   const { setOpenDialog } = useRedirectStore();
@@ -39,7 +41,7 @@ export default function UpdateVotesButton({
 
   return (
     <Button
-      disabled={isLoading}
+      disabled={isLoading || disabled}
       onClick={handleUpdateVote}
       variant={isActive ? "default" : "outline"}
       className={`border-none p-2 rounded-full transition-all ${
