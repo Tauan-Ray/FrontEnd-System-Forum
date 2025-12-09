@@ -185,8 +185,10 @@ export default function OneAnswerAdmin({
           <div className="flex gap-3">
             <EditAnswerDialog ID_AN={ID_AN} actualResponse={response} handleReloadAnswers={mutate}>
               <Button
+
                 disabled={DEL_AT !== null}
-                className="bg-blue-light px-4 py-2"
+                variant={"outline"}
+                className="flex-1 rounded-lg border-gray-300 text-gray-700 hover:bg-gray-100"
               >
                 Editar
               </Button>
