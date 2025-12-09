@@ -21,6 +21,7 @@ import {
   TooltipTrigger,
 } from "@/components/ui/tooltip";
 import RestoreAnswerDialog from "./RestoreAnswerDialog";
+import { toast } from "sonner";
 
 type OneAnswerProps = {
   ID_AN: string;
@@ -55,7 +56,7 @@ export default function OneAnswerAdmin({
   redirect,
   ID_QT,
   TITLE,
-  mutate
+  mutate,
 }: OneAnswerProps) {
   const [actualVote, setActualVote] = useState<"LIKE" | "DESLIKE" | null>(
     userVote,
@@ -139,6 +140,13 @@ export default function OneAnswerAdmin({
                     variant="outline"
                     size="sm"
                     className="border-gray-300 bg-gray-50 px-2 text-xs text-gray-700 hover:text-blue-600"
+                    onClick={() => {
+                      navigator.clipboard.writeText(ID_AN);
+                      toast.info("UUID copiado com sucesso!", {
+                        description:
+                          "O UUID foi copiado para sua área de transferência!",
+                      });
+                    }}
                   >
                     <Fingerprint size={14} /> UUID
                   </Button>
@@ -183,9 +191,12 @@ export default function OneAnswerAdmin({
 
         <div className="mt-2 flex flex-col items-center justify-between gap-5">
           <div className="flex gap-3">
-            <EditAnswerDialog ID_AN={ID_AN} actualResponse={response} handleReloadAnswers={mutate}>
+            <EditAnswerDialog
+              ID_AN={ID_AN}
+              actualResponse={response}
+              handleReloadAnswers={mutate}
+            >
               <Button
-
                 disabled={DEL_AT !== null}
                 variant={"outline"}
                 className="flex-1 rounded-lg border-gray-300 text-gray-700 hover:bg-gray-100"
@@ -195,8 +206,11 @@ export default function OneAnswerAdmin({
             </EditAnswerDialog>
 
             {DEL_AT ? (
-              <RestoreAnswerDialog idAnswer={ID_AN} handleReloadQuestions={mutate}/>
-            ): (
+              <RestoreAnswerDialog
+                idAnswer={ID_AN}
+                handleReloadQuestions={mutate}
+              />
+            ) : (
               <DeleteAnswerDialog idAnswer={ID_AN} handleReloadAnswers={mutate}>
                 <Button variant="destructive" className="px-4 py-2">
                   Deletar

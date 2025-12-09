@@ -5,7 +5,6 @@ import React from "react";
 import { webConfig } from "@/lib/settings";
 import DeleteQuestionDialog from "@/app/questions/ui/DeleteQuestionDialog";
 import CreateQuestionDialog from "@/app/questions/ui/CreateQuestionDialog";
-import ResponseButton from "@/app/questions/ui/ResponseButton";
 import {
   Tooltip,
   TooltipContent,
@@ -14,6 +13,7 @@ import {
 } from "@/components/ui/tooltip";
 import { Fingerprint } from "lucide-react";
 import RestoreQuestionDialog from "./RestoreQuestionDialog";
+import { toast } from "sonner";
 
 type OneQuestionAdminProps = {
   ID_QT: string;
@@ -27,8 +27,6 @@ type OneQuestionAdminProps = {
   ID_CT: string;
   category: string;
   description: string;
-  redirect?: boolean;
-  onOpenResponseModal?: () => void;
   mutate: () => void;
 };
 
@@ -44,15 +42,9 @@ export default function OneQuestionAdmin({
   ID_CT,
   category,
   description,
-  redirect,
-  onOpenResponseModal,
   mutate,
 }: OneQuestionAdminProps) {
   const router = useRouter();
-  const formatDescription =
-    description && redirect && description.length > 250
-      ? `${description.slice(0, description.slice(0, 250).lastIndexOf(" "))}...`
-      : description || "";
 
   const handleRedirectToQuestion = (e: React.MouseEvent) => {
     const selection = window.getSelection();
@@ -65,134 +57,140 @@ export default function OneQuestionAdmin({
   };
 
   return (
-    <div className="flex cursor-pointer flex-col gap-4 rounded-md border border-gray-dark p-4 transition-colors hover:border-blue-hover sm:p-5">
-      <div
-        className="flex flex-col gap-6"
-        onClick={(e) => handleRedirectToQuestion(e)}
-      >
-        <div className="flex flex-col gap-3 sm:flex-row sm:justify-between md:gap-12">
-          <div className="flex flex-row items-center gap-3">
+    <>
+      <div className="flex h-full flex-col gap-4 rounded-xl border border-gray-300 bg-white p-5 shadow-sm transition-all hover:border-blue-400 hover:shadow-md">
+        <div
+          className="flex items-start gap-4"
+          onClick={(e) => handleRedirectToQuestion(e)}
+        >
+          <div className="flex items-center gap-3">
             <Image
-              width={32}
-              height={32}
+              width={42}
+              height={42}
               src={`${webConfig.url}:${webConfig.port}/storage/${ID_USER}/avatar?q=${DT_UP_USER}`}
-              alt={`${username} avatar`}
-              className="h-8 w-8 rounded-full"
+              alt={`avatar ${username}`}
+              className="h-12 w-12 rounded-full object-cover"
             />
-            <p className="font-sans text-base text-gray-dark sm:text-lg">
-              {username}
-            </p>
-            <span
-              className={`w-fit rounded-full px-2 py-0.5 text-xs font-semibold ${
-                DEL_AT
-                  ? "bg-red-100 text-red-600"
-                  : "bg-green-100 text-green-700"
-              }`}
-            >
-              {DEL_AT ? "Deletada" : "Ativa"}
-            </span>
-          </div>
 
-          <div className="flex flex-col gap-2">
-            <p className="sm:text-md font-sans text-sm text-gray-dark">
-              Pergunta feita em: {new Date(DT_CR).toLocaleDateString("pt-BR")}
-            </p>
-
-            <p className="sm:text-md flex font-sans text-sm text-gray-dark sm:justify-end">
-              Editada: {new Date(DT_UP).toLocaleDateString("pt-BR")}
-            </p>
-
-            {DEL_AT && (
-              <p className="sm:text-md flex flex-row font-sans text-sm text-red-500 sm:justify-end">
-                <span className="font-semibold">
-                  Deletado em: {new Date(DEL_AT).toLocaleDateString("pt-BR")}
-                </span>
+            <div className="flex flex-col gap-2">
+              <p className="text-base font-semibold text-gray-800">
+                {username}
               </p>
-            )}
+              <TooltipProvider>
+                <Tooltip>
+                  <TooltipTrigger asChild>
+                    <Button
+                      variant="outline"
+                      size="sm"
+                      className="w-17 gap-1"
+                      onClick={() => {
+                        navigator.clipboard.writeText(ID_QT);
+                        toast.info("UUID copiado com sucesso!", {
+                          description:
+                            "O UUID foi copiado para sua área de transferência!",
+                        });
+                      }}
+                    >
+                      <Fingerprint size={16} />
+                      UUID
+                    </Button>
+                  </TooltipTrigger>
+
+                  <TooltipContent className="rounded-md border bg-white px-3 py-2 text-xs text-gray-700 shadow-md">
+                    <div className="flex items-center gap-2">
+                      <Fingerprint size={14} className="text-gray-500" />
+                      <span className="font-mono">{ID_QT}</span>
+                    </div>
+                  </TooltipContent>
+                </Tooltip>
+              </TooltipProvider>
+
+              <span
+                className={`w-fit rounded-full px-2 py-0.5 text-xs font-semibold ${
+                  DEL_AT
+                    ? "bg-red-100 text-red-600"
+                    : "bg-green-100 text-green-700"
+                }`}
+              >
+                {DEL_AT ? "Deletado" : "Ativo"}
+              </span>
+            </div>
           </div>
         </div>
-        <div className="flex flex-col gap-1">
-          <h3 className="font-mono text-base font-bold text-blue-primary sm:text-lg">
-            {title}
-          </h3>
-          <p className="font-mono text-sm text-blue-primary">
-            Categoria: {category}
-          </p>
-          <div className="mt-3">
-            <TooltipProvider delayDuration={200} skipDelayDuration={400}>
-              <Tooltip>
-                <TooltipTrigger asChild>
-                  <button className="flex items-center gap-1 rounded-md border px-3 py-2 text-xs text-gray-600 hover:bg-gray-50">
-                    <Fingerprint size={14} />
-                    UUID
-                  </button>
-                </TooltipTrigger>
 
-                <TooltipContent
-                  sideOffset={6}
-                  className="rounded-md border bg-white px-3 py-2 text-xs text-gray-700 shadow-lg"
-                >
-                  <div className="flex items-center gap-2">
-                    <Fingerprint size={14} className="text-gray-500" />
-                    <span className="font-mono">{ID_QT}</span>
-                  </div>
-                </TooltipContent>
-              </Tooltip>
-            </TooltipProvider>
+        <div className="rounded-lg bg-gray-50 p-3 text-xs text-gray-600 shadow-inner">
+          <p>
+            <span className="font-semibold text-gray-700">Criado em:</span>{" "}
+            {new Date(DT_CR).toLocaleDateString("pt-BR")}
+          </p>
+
+          <p>
+            <span className="font-semibold text-gray-700">Atualizado em:</span>{" "}
+            {new Date(DT_UP).toLocaleDateString("pt-BR")}
+          </p>
+
+          {DEL_AT && (
+            <p className="text-red-600">
+              <span className="font-semibold">Deletado em:</span>{" "}
+              {new Date(DEL_AT).toLocaleDateString("pt-BR")}
+            </p>
+          )}
+        </div>
+
+        <div className="flex-1 space-y-3">
+          <div className="space-y-1">
+            <p className="text-sm text-gray-500">Título</p>
+            <p className="font-mono text-base text-blue-700">{title}</p>
+          </div>
+
+          <div className="space-y-1">
+            <p className="text-sm text-gray-500">Categoria</p>
+            <p className="break-all font-mono text-blue-700">{category}</p>
           </div>
         </div>
 
         <div
-          className="prose prose-sm max-w-none text-gray-dark sm:prose-base prose-code:font-mono prose-code:text-sm prose-code:text-blue-700 prose-pre:overflow-x-auto prose-pre:rounded-md prose-pre:bg-gray-100 prose-pre:p-3"
-          dangerouslySetInnerHTML={{ __html: formatDescription }}
-        />
-      </div>
-
-      <div
-        className={`flex w-full flex-col-reverse items-center justify-between gap-8 sm:flex-row`}
-      >
-        <div className="flex w-full flex-col gap-2 sm:w-auto sm:flex-row">
-          {DEL_AT ? (
-            <RestoreQuestionDialog
-              idQuestion={ID_QT}
-              handleReloadQuestions={mutate}
-            />
-          ) : (
-            <DeleteQuestionDialog idQuestion={ID_QT} handleReloadQuestions={mutate}>
-              <Button
-                variant="destructive"
-                className="w-full p-4 text-sm sm:w-auto sm:text-base"
+          className={`mt-4 flex w-full flex-col-reverse items-center justify-center gap-8 sm:flex-row`}
+        >
+          <div className="flex w-full flex-col gap-2 sm:w-auto sm:flex-row">
+            {DEL_AT ? (
+              <RestoreQuestionDialog
+                idQuestion={ID_QT}
+                handleReloadQuestions={mutate}
+              />
+            ) : (
+              <DeleteQuestionDialog
+                idQuestion={ID_QT}
+                handleReloadQuestions={mutate}
               >
-                Deletar
-              </Button>
-            </DeleteQuestionDialog>
-          )}
-
-          <CreateQuestionDialog
-            type="edit"
-            title={title}
-            category={ID_CT}
-            description={description}
-            ID_QT={ID_QT}
-          >
-            {(open) => (
-              <Button
-                className="w-full bg-blue-light p-4 text-sm sm:w-auto sm:text-base"
-                onClick={open}
-              >
-                Editar
-              </Button>
+                <Button
+                  variant="destructive"
+                  className="w-full p-4 text-sm sm:w-auto sm:text-base"
+                >
+                  Deletar
+                </Button>
+              </DeleteQuestionDialog>
             )}
-          </CreateQuestionDialog>
-        </div>
 
-        <div className="w-full sm:w-auto">
-          <ResponseButton
-            onOpenModal={onOpenResponseModal}
-            idQuestion={ID_QT}
-          />
+            <CreateQuestionDialog
+              type="edit"
+              title={title}
+              category={ID_CT}
+              description={description}
+              ID_QT={ID_QT}
+            >
+              {(open) => (
+                <Button
+                  className="w-full bg-blue-light p-4 text-sm sm:w-auto sm:text-base"
+                  onClick={open}
+                >
+                  Editar
+                </Button>
+              )}
+            </CreateQuestionDialog>
+          </div>
         </div>
       </div>
-    </div>
+    </>
   );
 }

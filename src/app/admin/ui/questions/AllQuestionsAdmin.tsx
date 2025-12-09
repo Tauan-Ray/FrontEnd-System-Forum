@@ -106,7 +106,7 @@ export default function AllQuestionAdmin({
   }, [questions, setSize, errorQuestion, isValidating]);
   return (
       <div className="pb-14">
-        <div id="scroll-area" className="flex flex-col gap-6">
+        <div id="scroll-area" className="grid w-full grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
           {isLoading ? (
             <SkeletonQuestions quantity={3} />
           ) : size >= 0 && !errorQuestion ? (
@@ -126,7 +126,6 @@ export default function AllQuestionAdmin({
                         category={question.Category.CATEGORY}
                         title={question.TITLE}
                         description={question.DESCRIPTION}
-                        redirect={true}
                         ID_CT={question.ID_CT}
                         DT_UP_USER={question.User.DT_UP}
                         mutate={mutate}

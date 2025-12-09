@@ -11,6 +11,7 @@ import {
 import EditUserAdminDialog from "./EditUserAdminDialog";
 import DeleteUserDialog from "@/app/perfil/ui/profile/DeleteUserDialog";
 import RestoreUserDialog from "./RestoreUserDialog";
+import { toast } from "sonner";
 
 type OneUserProps = {
   ID_USER: string;
@@ -31,7 +32,7 @@ export default function OneUser({
   DT_CR,
   DEL_AT,
   DT_UP,
-  reloadUsers
+  reloadUsers,
 }: OneUserProps) {
   const isDeleted = DEL_AT !== null;
 
@@ -54,7 +55,18 @@ export default function OneUser({
             <TooltipProvider delayDuration={200} skipDelayDuration={400}>
               <Tooltip>
                 <TooltipTrigger asChild>
-                  <Button variant="outline" size="sm" className="w-17 gap-1">
+                  <Button
+                    variant="outline"
+                    size="sm"
+                    className="w-17 gap-1"
+                    onClick={() => {
+                      navigator.clipboard.writeText(ID_USER);
+                      toast.info("UUID copiado com sucesso!", {
+                        description:
+                          "O UUID foi copiado para sua área de transferência!",
+                      });
+                    }}
+                  >
                     <Fingerprint size={16} />
                     UUID
                   </Button>
@@ -127,9 +139,15 @@ export default function OneUser({
         />
 
         {isDeleted ? (
-          <RestoreUserDialog userId={ID_USER} handleReloadUsers={handleReloadUsers} />
-        ): (
-          <DeleteUserDialog userId={ID_USER} handleReloadUsers={handleReloadUsers} />
+          <RestoreUserDialog
+            userId={ID_USER}
+            handleReloadUsers={handleReloadUsers}
+          />
+        ) : (
+          <DeleteUserDialog
+            userId={ID_USER}
+            handleReloadUsers={handleReloadUsers}
+          />
         )}
       </div>
     </div>
