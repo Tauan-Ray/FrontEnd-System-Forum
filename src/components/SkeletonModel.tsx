@@ -246,3 +246,101 @@ export function SkeletonUsers({ quantity }: { quantity: number }) {
     </>
   );
 }
+
+export function SkeletonAnswersAdmin({ quantity }: { quantity: number }) {
+  const skeletons = Array.from({ length: quantity });
+  return (
+    <div className="flex flex-col gap-4">
+      {/* === Título da pergunta (Skeleton) === */}
+      <div className="my-3 flex items-center gap-3">
+        <div className="h-px flex-1 bg-gray-300" />
+
+        <div className="flex items-center gap-2 rounded-lg border p-3">
+          <Skeleton className="h-4 w-4 rounded bg-gray-300" /> {/* ícone */}
+          <Skeleton className="h-5 w-40 rounded bg-gray-300" /> {/* título */}
+        </div>
+
+        <div className="h-px flex-1 bg-gray-300" />
+      </div>
+
+      {skeletons.map((_, index) => (
+        <div
+          className="flex h-full animate-fadeIn flex-col gap-4 rounded-xl border border-gray-300 bg-gray-100 p-5 shadow-sm"
+          key={index}
+        >
+          {/* === TOPO — Avatar + Username + UUID + Badge === */}
+          <div className="flex items-start gap-4">
+            <div className="flex items-center gap-3">
+              {/* Avatar */}
+              <Skeleton className="h-10 w-10 animate-pulse rounded-full bg-gray-300" />
+
+              <div className="flex flex-col gap-2">
+                {/* Username */}
+                <Skeleton className="h-5 w-32 animate-pulse rounded-md bg-gray-300" />
+
+                {/* Botão UUID */}
+                <div className="flex items-center gap-2">
+                  {/* Botão */}
+                  <Skeleton className="h-8 w-20 animate-pulse rounded-md bg-gray-300" />
+                </div>
+
+                {/* Badge */}
+                <Skeleton className="h-5 w-20 animate-pulse rounded-full bg-gray-300" />
+              </div>
+            </div>
+          </div>
+
+          {/* === CARD DE DATAS === */}
+          <div className="space-y-3 rounded-lg bg-gray-200 p-3 shadow-inner">
+            <div className="flex items-center gap-3">
+              <Skeleton className="h-3 w-20 animate-pulse rounded bg-gray-300" />
+              <Skeleton className="h-3 w-32 animate-pulse rounded bg-gray-300" />
+            </div>
+
+            <div className="flex items-center gap-3">
+              <Skeleton className="h-3 w-24 animate-pulse rounded bg-gray-300" />
+              <Skeleton className="h-3 w-32 animate-pulse rounded bg-gray-300" />
+            </div>
+
+            <div className="flex items-center gap-3">
+              <Skeleton className="h-3 w-20 animate-pulse rounded bg-gray-300" />
+              <Skeleton className="h-3 w-28 animate-pulse rounded bg-gray-300" />
+            </div>
+          </div>
+
+          <div className="flex-1 space-y-4">
+            {/* Resposta */}
+            <div className="space-y-1">
+              <Skeleton className="h-3 w-12 animate-pulse rounded bg-gray-300" />
+              <Skeleton className="h-5 w-48 animate-pulse rounded bg-gray-300" />
+            </div>
+          </div>
+
+          {/* === Botões inferiores === */}
+          <div className="mt-2 flex flex-col items-center justify-between gap-5">
+            {/* Linha com Editar + Deletar */}
+            <div className="flex gap-3">
+              <Skeleton className="h-10 w-20 animate-pulse rounded-md bg-gray-300" />
+              <Skeleton className="h-10 w-24 animate-pulse rounded-md bg-gray-300" />
+            </div>
+
+            {/* Likes / Dislikes */}
+            <div className="flex items-center gap-8">
+              {/* Like */}
+              <div className="flex flex-col items-center gap-1">
+                <Skeleton className="h-7 w-7 animate-pulse rounded bg-gray-300" />
+                <Skeleton className="h-4 w-6 animate-pulse rounded bg-gray-300" />
+              </div>
+
+              {/* Dislike */}
+              <div className="flex flex-col items-center gap-1">
+                <Skeleton className="h-7 w-7 animate-pulse rounded bg-gray-300" />
+                <Skeleton className="h-4 w-6 animate-pulse rounded bg-gray-300" />
+              </div>
+            </div>
+          </div>
+        </div>
+      ))}
+    </div>
+  );
+}

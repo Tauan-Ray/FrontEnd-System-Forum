@@ -7,7 +7,7 @@ import { fetcher } from "@/app/auth/lib/sessions";
 import { RefreshCw } from "lucide-react";
 import { searchParams } from "@/app/questions/lib/types";
 import { ResAllAnswers } from "@/app/_answers/lib/sessions";
-import { SkeletonAnswers } from "@/components/SkeletonModel";
+import { SkeletonAnswers, SkeletonAnswersAdmin } from "@/components/SkeletonModel";
 import OneAnswerAdmin from "./OneAnswerAdmin";
 import AnswerNotFoundAdmin from "./AnswerNotFoundAdmin";
 
@@ -108,7 +108,7 @@ export default function AllAnswersAdmin({
       <div className="pb-14">
         <div id="scroll-area" className="grid w-full grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
           {isLoading ? (
-            <SkeletonAnswers quantity={3} />
+            <SkeletonAnswersAdmin quantity={3} />
           ) : size >= 0 && !errorAnswer ? (
             answers?.length && answers[0]._data?.length ? (
               answers?.map(({ _data }, _index) => {
