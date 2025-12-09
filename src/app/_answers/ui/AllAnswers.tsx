@@ -165,6 +165,7 @@ export default function AllAnswers({
                   likes={answer.likes}
                   dislikes={answer.dislikes}
                   userVote={answer.user_vote}
+                  mutate={mutate}
                 />
               ))
             )

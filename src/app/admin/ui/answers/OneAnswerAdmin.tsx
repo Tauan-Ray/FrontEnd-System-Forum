@@ -1,6 +1,11 @@
 "use client";
 
-import { ThumbsUp, ThumbsDown, Fingerprint, CornerDownRight } from "lucide-react";
+import {
+  ThumbsUp,
+  ThumbsDown,
+  Fingerprint,
+  CornerDownRight,
+} from "lucide-react";
 import { useState } from "react";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
@@ -29,8 +34,9 @@ type OneAnswerProps = {
   dislikes: number;
   userVote: "LIKE" | "DESLIKE" | null;
   redirect?: true;
-  ID_QT?: string;
-  TITLE?: string;
+  ID_QT: string;
+  TITLE: string;
+  mutate: () => void;
 };
 
 export default function OneAnswerAdmin({
@@ -48,6 +54,7 @@ export default function OneAnswerAdmin({
   redirect,
   ID_QT,
   TITLE,
+  mutate
 }: OneAnswerProps) {
   const [actualVote, setActualVote] = useState<"LIKE" | "DESLIKE" | null>(
     userVote,
@@ -55,10 +62,6 @@ export default function OneAnswerAdmin({
   const [_, setNewVote] = useState<"LIKE" | "DESLIKE" | null>(null);
   const [likes, setLikes] = useState<number>(initialLikes);
   const [dislikes, setDislikes] = useState<number>(initialDislikes);
-  const [openAnswerDialog, setOpenAnswerDialog] = useState({
-    edit: false,
-    delete: false,
-  });
 
   const router = useRouter();
 
@@ -179,38 +182,20 @@ export default function OneAnswerAdmin({
 
         <div className="mt-2 flex flex-col items-center justify-between gap-5">
           <div className="flex gap-3">
-            <Button
-              disabled={DEL_AT !== null}
-              onClick={() => setOpenAnswerDialog((p) => ({ ...p, edit: true }))}
-              className="bg-blue-light px-4 py-2"
-            >
-              Editar
-            </Button>
-            <EditAnswerDialog
-              ID_AN={ID_AN}
-              actualResponse={response}
-              open={openAnswerDialog.edit}
-              onOpenChange={(v) =>
-                setOpenAnswerDialog((p) => ({ ...p, edit: v }))
-              }
-            />
+            <EditAnswerDialog ID_AN={ID_AN} actualResponse={response} handleReloadAnswers={mutate}>
+              <Button
+                disabled={DEL_AT !== null}
+                className="bg-blue-light px-4 py-2"
+              >
+                Editar
+              </Button>
+            </EditAnswerDialog>
 
-            <Button
-              onClick={() =>
-                setOpenAnswerDialog((p) => ({ ...p, delete: true }))
-              }
-              variant="destructive"
-              className="px-4 py-2"
-            >
-              Deletar
-            </Button>
-            <DeleteAnswerDialog
-              idAnswer={ID_AN}
-              open={openAnswerDialog.delete}
-              onOpenChange={(v) =>
-                setOpenAnswerDialog((p) => ({ ...p, delete: v }))
-              }
-            />
+            <DeleteAnswerDialog idAnswer={ID_AN} handleReloadAnswers={mutate}>
+              <Button variant="destructive" className="px-4 py-2">
+                Deletar
+              </Button>
+            </DeleteAnswerDialog>
           </div>
 
           <div className="flex items-center gap-8">

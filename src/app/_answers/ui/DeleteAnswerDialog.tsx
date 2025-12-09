@@ -5,48 +5,48 @@ import {
   DialogDescription,
   DialogHeader,
   DialogTitle,
+  DialogTrigger,
 } from "@/components/ui/dialog";
-import { useState } from "react";
+import React, { useState } from "react";
 import { DeleteAnswerAction } from "../actions/DeleteAnswerAction";
 
 type DeleteAnswerDialogProps = {
-  open: boolean;
-  onOpenChange: (open: boolean) => void;
   idAnswer: string;
+  children: React.ReactNode;
+  handleReloadAnswers: () => void;
 };
 
 export default function DeleteAnswerDialog({
-  open,
-  onOpenChange,
+  children,
   idAnswer,
+  handleReloadAnswers
 }: DeleteAnswerDialogProps) {
-  const [isLoading, setIsLoading] = useState(false);
+  const [isLoading, setIsLoading] = useState<boolean>(false);
+  const [open, setOpen] = useState<boolean>(false);
 
   const handleDelete = async () => {
     setIsLoading(true);
     await DeleteAnswerAction(idAnswer);
-    setIsLoading(false)
+    setIsLoading(false);
 
-    window.location.reload();
+    handleReloadAnswers()
   };
 
   return (
-    <Dialog
-      open={open}
-      onOpenChange={onOpenChange}
-    >
+    <Dialog open={open} onOpenChange={setOpen}>
+      <DialogTrigger asChild>{children}</DialogTrigger>
       <DialogContent
         className="max-w-sm rounded-2xl p-8 shadow-xl"
         onInteractOutside={(e) => e.preventDefault()}
       >
-        <DialogHeader className="text-center space-y-2">
+        <DialogHeader className="space-y-2 text-center">
           <DialogTitle className="text-xl font-semibold text-red-600">
             Esta ação é irreversível
           </DialogTitle>
 
-          <DialogDescription className="text-sm text-muted-foreground">
-            Tem certeza de que deseja deletar esta resposta?
-            Esta operação não poderá ser desfeita.
+          <DialogDescription className="text-muted-foreground text-sm">
+            Tem certeza de que deseja deletar esta resposta? Esta operação não
+            poderá ser desfeita.
           </DialogDescription>
         </DialogHeader>
 
@@ -64,7 +64,7 @@ export default function DeleteAnswerDialog({
             variant="outline"
             className="w-full py-3 text-base"
             disabled={isLoading}
-            onClick={() => onOpenChange(false)}
+            onClick={() => setOpen(false)}
           >
             Cancelar
           </Button>

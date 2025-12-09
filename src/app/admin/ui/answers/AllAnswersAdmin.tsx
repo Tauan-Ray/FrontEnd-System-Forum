@@ -7,7 +7,7 @@ import { fetcher } from "@/app/auth/lib/sessions";
 import { RefreshCw } from "lucide-react";
 import { searchParams } from "@/app/questions/lib/types";
 import { ResAllAnswers } from "@/app/_answers/lib/sessions";
-import { SkeletonAnswers, SkeletonAnswersAdmin } from "@/components/SkeletonModel";
+import { SkeletonAnswersAdmin } from "@/components/SkeletonModel";
 import OneAnswerAdmin from "./OneAnswerAdmin";
 import AnswerNotFoundAdmin from "./AnswerNotFoundAdmin";
 
@@ -131,6 +131,7 @@ export default function AllAnswersAdmin({
                         ID_QT={answer.ID_QT}
                         TITLE={answer.TITLE}
                         DT_UP_USER={answer.dt_up_user}
+                        mutate={mutate}
                       />
                     );
                   });

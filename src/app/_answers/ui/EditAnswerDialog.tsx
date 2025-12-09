@@ -6,26 +6,28 @@ import {
   DialogContent,
   DialogDescription,
   DialogTitle,
+  DialogTrigger,
 } from "@/components/ui/dialog";
-import { useState } from "react";
+import React, { useState } from "react";
 import { toast } from "sonner";
 import RichTextEditor from "@/app/questions/ui/RichTextEditor/RichTextEditor";
 import { Button } from "@/components/ui/button";
 import { EditAnswerAction } from "../actions/EditQuestionAction";
 
 type EditAnswerDialogProps = {
-  open: boolean;
-  onOpenChange: (open: boolean) => void;
   actualResponse: string;
   ID_AN: string;
+  children: React.ReactNode
+  handleReloadAnswers: () => void;
 };
 
 export default function EditAnswerDialog({
-  open,
-  onOpenChange,
   actualResponse,
   ID_AN,
+  children,
+  handleReloadAnswers
 }: EditAnswerDialogProps) {
+  const [open, setOpen] = useState<boolean>(false);
   const [response, setResponse] = useState<string>(actualResponse);
   const [isLoading, setIsLoading] = useState<boolean>(false);
 
@@ -49,15 +51,18 @@ export default function EditAnswerDialog({
 
     setIsLoading(false);
     setResponse("");
-    onOpenChange(false);
+    setOpen(false);
 
     setTimeout(() => {
-        window.location.reload();
+        handleReloadAnswers()
     }, 800)
   }
 
   return (
-    <Dialog open={open} onOpenChange={onOpenChange}>
+    <Dialog open={open} onOpenChange={setOpen}>
+      <DialogTrigger asChild>
+        {children}
+      </DialogTrigger>
       <DialogContent
         className="max-h-[90vh] w-full sm:max-w-md md:max-w-lg mx-auto overflow-auto"
         onInteractOutside={(e) => e.preventDefault()}
