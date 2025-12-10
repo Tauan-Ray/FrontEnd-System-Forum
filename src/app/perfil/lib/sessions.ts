@@ -27,7 +27,7 @@ export async function getAllVotesUser(
   idUser: string
 ): Promise<{ data: ResAllVotesUser; status: number } | DefaultParamsResponse> {
   return await service_api
-    .get<ResAllVotesUser>(`/answers/user/${idUser}/vote`)
+    .get<ResAllVotesUser>(`/answers/votes/user/${idUser}`)
     .then(({ data, status }) => ({ status, data }))
     .catch(handleApiError);
 }
