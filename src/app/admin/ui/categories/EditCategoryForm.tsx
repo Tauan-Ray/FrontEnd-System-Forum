@@ -17,9 +17,11 @@ import { Button } from "@/components/ui/button";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { UpdateCategoryFormSchema } from "../../lib/definitions";
 import { EditCategoryAction } from "../../actions/EditCategoryAction";
+import { CreateCategoryAction } from "../../actions/CreateCategoryAction";
 
 type EditCategoryForm = {
   ID_CT: string;
+  type: "create" | "edit";
   CATEGORY: string;
   handleCloseDialog: (reloadCategories: boolean) => void;
 };
@@ -27,6 +29,7 @@ type EditCategoryForm = {
 export default function EditCategoryForm({
   ID_CT,
   CATEGORY,
+  type,
   handleCloseDialog: closeDialog,
 }: EditCategoryForm) {
   const [isLoading, setIsLoading] = useState<boolean>(false);
@@ -40,13 +43,17 @@ export default function EditCategoryForm({
 
   async function onSubmit(values: z.infer<typeof UpdateCategoryFormSchema>) {
     setIsLoading(true);
-    const res = await EditCategoryAction(values, ID_CT)
-    setIsLoading(false);
+
+    let res: { ok: boolean };
+
+    if (type === "edit") res = await EditCategoryAction(values, ID_CT);
+    else res = await CreateCategoryAction(values);
 
     if (res.ok) {
-      form.reset()
-      closeDialog(true)
+      form.reset();
+      closeDialog(true);
     }
+    setIsLoading(false);
   }
 
   const handleCloseDialog = () => {

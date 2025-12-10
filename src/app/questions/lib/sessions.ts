@@ -55,6 +55,15 @@ export async function getCategories(): Promise<
     .catch(handleApiError);
 }
 
+export async function createCategory(
+  category: z.infer<typeof UpdateCategoryFormSchema>
+): Promise<ResCreateQuestion & DefaultParamsResponse> {
+  return await service_api
+    .post("/category/create", category)
+    .then(({ data, status }) => ({ ...data, status }))
+    .catch(handleApiError);
+}
+
 export async function editCategory(
   category: z.infer<typeof UpdateCategoryFormSchema>,
   ID_CT: string

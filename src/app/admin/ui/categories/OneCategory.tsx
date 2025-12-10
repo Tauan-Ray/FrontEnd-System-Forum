@@ -6,7 +6,7 @@ import {
   TooltipProvider,
   TooltipTrigger,
 } from "@/components/ui/tooltip";
-import { Fingerprint } from "lucide-react";
+import { Fingerprint, Pencil } from "lucide-react";
 import { toast } from "sonner";
 import DeleteCategoryDialog from "./DeleteCategoryDialog";
 import RestoreCategoryDialog from "./RestoreCategoryDialog";
@@ -117,10 +117,19 @@ export default function OneQuestionAdmin({
 
             <EditCategoryDialog
               ID_CT={ID_CT}
+              type="edit"
               CATEGORY={CATEGORY}
-              isDeleted={DEL_AT !== null}
               handleReloadCategories={mutate}
-            />
+            >
+              <Button
+                disabled={DEL_AT !== null}
+                variant="outline"
+                className="flex-1 rounded-lg border-gray-300 text-gray-700 hover:bg-gray-100"
+              >
+                <Pencil size={16} />
+                Editar
+              </Button>
+            </EditCategoryDialog>
           </div>
         </div>
       </div>

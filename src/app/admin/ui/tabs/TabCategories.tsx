@@ -8,7 +8,7 @@ import FilterCategories from "../categories/FilterCategories";
 export default function TabsCategories() {
   const [search, setSearch] = useState<searchCategoriesParams>(defaultCategoriesParams);
   const [debouncedSearch, setDebouncedSearch] =
-    useState<searchCategoriesParams>(defaultCategoriesParams);  
+    useState<searchCategoriesParams>(defaultCategoriesParams);
 
   return (
     <div className="flex w-full flex-col items-center gap-5 pt-10">

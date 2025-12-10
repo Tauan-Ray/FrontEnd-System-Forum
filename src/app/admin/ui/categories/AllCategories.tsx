@@ -4,12 +4,14 @@ import { ParamsRequest } from "@/lib/type";
 import { useCallback, useEffect } from "react";
 import useSWRInfinite from "swr/infinite";
 import { fetcher } from "@/app/auth/lib/sessions";
-import { RefreshCw } from "lucide-react";
+import { Plus, RefreshCw } from "lucide-react";
 import { searchCategoriesParams } from "../../lib/types";
 import { ResCategory } from "@/app/questions/lib/sessions";
 import { SkeletonCategories } from "@/components/SkeletonModel";
 import OneCategory from "./OneCategory";
 import CategoriesNotfound from "./CategoryNotFound";
+import { Button } from "@/components/ui/button";
+import EditCategoryDialog from "./EditCategoryDialog";
 
 type AllQuestionsAdminProps = {
   search: searchCategoriesParams;
@@ -158,6 +160,11 @@ export default function AllCategories({
           <RefreshCw className="h-5 w-5 animate-spin text-blue-primary" />
         </div>
       )}
+      <EditCategoryDialog type="create" handleReloadCategories={mutate}>
+        <Button className="fixed bottom-10 right-10 rounded-full bg-blue-primary p-5 text-white shadow-lg">
+          <Plus size={16} />
+        </Button>
+      </EditCategoryDialog>
     </div>
   );
 }

@@ -2,22 +2,22 @@ import { z } from "@/components/pt-zod";
 import { HttpStatusCode } from "axios";
 import { toast } from "sonner";
 import { UpdateCategoryFormSchema } from "../lib/definitions";
-import { editCategory } from "@/app/questions/lib/sessions";
+import { createCategory } from "@/app/questions/lib/sessions";
 
-export async function EditCategoryAction(
+export async function CreateCategoryAction(
   values: z.infer<typeof UpdateCategoryFormSchema>,
-  idCategory: string,
 ) {
-  const res = await editCategory(values, idCategory);
+  const res = await createCategory(values);
 
-  if (res?.message == "Categoria atualizada com sucesso") {
+  if (res?.message == "Categoria criada com sucesso") {
     toast.success(res.message, {
-      description: "A categoria foi alterada com maestria!",
+      description: "Log logo sua categoria estará cheia de vida!",
     });
 
     return {
       ok: true,
-    }
+    };
+    
   } else {
     if (res.message) {
       switch (res.status) {
@@ -42,13 +42,7 @@ export async function EditCategoryAction(
           });
           break;
 
-        case HttpStatusCode.NotFound:
-          toast.warning(res.message, {
-            description: "Categoria selecionada não encontrada",
-          });
-          break;
-
-          case HttpStatusCode.Conflict:
+        case HttpStatusCode.Conflict:
           toast.warning("Categoria já existente", {
             description: res.message,
           });
@@ -71,6 +65,6 @@ export async function EditCategoryAction(
     }
     return {
       ok: false,
-    }
+    };
   }
 }

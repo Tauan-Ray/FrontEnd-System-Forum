@@ -12,17 +12,19 @@ import { useState } from "react";
 import EditCategoryForm from "./EditCategoryForm";
 
 type EditCategoryDialogProps = {
-  ID_CT: string;
-  CATEGORY: string;
-  isDeleted: boolean;
+  type: 'create' | 'edit';
+  ID_CT?: string;
+  CATEGORY?: string;
   handleReloadCategories: () => void;
+  children: React.ReactNode;
 };
 
 export default function EditCategoryDialog({
   ID_CT,
   CATEGORY,
-  isDeleted,
+  children,
   handleReloadCategories,
+  type,
 }: EditCategoryDialogProps) {
   const [open, setOpen] = useState<boolean>(false);
 
@@ -35,14 +37,7 @@ export default function EditCategoryDialog({
   return (
     <Dialog open={open} onOpenChange={(value) => setOpen(value)}>
       <DialogTrigger asChild>
-        <Button
-          disabled={isDeleted}
-          variant="outline"
-          className="flex-1 rounded-lg border-gray-300 text-gray-700 hover:bg-gray-100"
-        >
-          <Pencil size={16} />
-          Editar
-        </Button>
+        {children}
       </DialogTrigger>
       <DialogContent
         className="max-w-sm rounded-2xl p-10"
@@ -52,16 +47,17 @@ export default function EditCategoryDialog({
       >
         <DialogHeader className="space-y-1 text-center">
           <DialogTitle className="text-center text-xl font-semibold">
-            Editar categoria
+            {type === 'edit' ? 'Editar categoria' : 'Criar categoria'}
           </DialogTitle>
           <DialogDescription className="text-center">
-            Altere a categoria aqui!
+            {type === 'edit' ? 'Altere a categoria aqui!' : 'Crie uma nova categoria agora mesmo!'}
           </DialogDescription>
         </DialogHeader>
         <div>
           <EditCategoryForm
-            ID_CT={ID_CT}
-            CATEGORY={CATEGORY}
+            ID_CT={ID_CT ?? ""}
+            CATEGORY={CATEGORY ?? ""}
+            type={type}
             handleCloseDialog={(value) => handleCloseDialog(value)}
           />
         </div>
