@@ -336,3 +336,57 @@ export function SkeletonAnswersAdmin({ quantity }: { quantity: number }) {
     </>
   );
 }
+
+export function SkeletonCategories({ quantity }: { quantity: number }) {
+  const skeletons = Array.from({ length: quantity });
+  return (
+    <>
+      {skeletons.map((_, index) => (
+        <div
+          className="flex h-full animate-fadeIn flex-col gap-4 rounded-xl border border-gray-300 bg-gray-100 p-5 shadow-sm"
+          key={index}
+        >
+
+          {/* === Categoria / UUID === */}
+          <div className="flex-1 space-y-4">
+
+            {/* CATEGORIA */}
+            <div className="space-y-1">
+              <Skeleton className="h-3 w-12 animate-pulse rounded bg-gray-300" />
+              <Skeleton className="h-5 w-48 animate-pulse rounded bg-gray-300" />
+            </div>
+
+            {/* UUID */}
+            <div className="flex items-center gap-2">
+              <Skeleton className="h-8 w-20 animate-pulse rounded-md bg-gray-300" />
+            </div>
+          </div>
+
+          {/* === CARD DE DATAS === */}
+          <div className="space-y-3 rounded-lg bg-gray-200 p-3 shadow-inner">
+            <div className="flex items-center gap-3">
+              <Skeleton className="h-3 w-20 animate-pulse rounded bg-gray-300" />
+              <Skeleton className="h-3 w-32 animate-pulse rounded bg-gray-300" />
+            </div>
+
+            <div className="flex items-center gap-3">
+              <Skeleton className="h-3 w-24 animate-pulse rounded bg-gray-300" />
+              <Skeleton className="h-3 w-32 animate-pulse rounded bg-gray-300" />
+            </div>
+
+            <div className="flex items-center gap-3">
+              <Skeleton className="h-3 w-20 animate-pulse rounded bg-gray-300" />
+              <Skeleton className="h-3 w-28 animate-pulse rounded bg-gray-300" />
+            </div>
+          </div>
+
+          {/* === Botões inferiores === */}
+          <div className="mt-4 flex flex-row justify-center gap-3">
+            <Skeleton className="h-10 w-28 animate-pulse rounded-lg bg-gray-300" />
+            <Skeleton className="h-10 w-28 animate-pulse rounded-lg bg-gray-300" />
+          </div>
+        </div>
+      ))}
+    </>
+  );
+}

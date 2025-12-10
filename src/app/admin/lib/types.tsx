@@ -33,3 +33,17 @@ export const defaultAnswerParams = {
   registerStart: undefined,
   registerEnd: undefined,
 }
+
+export type searchCategoriesParams = {
+  ID_CT: string | undefined;
+  CATEGORY: string | undefined;
+  registerStart: string | undefined;
+  registerEnd: string | undefined;
+}
+
+export const defaultCategoriesParams = {
+  ID_CT: undefined,
+  CATEGORY: undefined,
+  registerStart: undefined,
+  registerEnd: undefined,
+}
