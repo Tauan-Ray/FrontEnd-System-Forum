@@ -6,6 +6,7 @@ import { DefaultParamsResponse } from "@/lib/type";
 import { service_api } from "@/service/service.api";
 import { CreateQuestionFormSchema } from "./definitions";
 import { z } from "@/components/pt-zod";
+import { UpdateCategoryFormSchema } from "@/app/admin/lib/definitions";
 
 export type ResCategory = {
   ID_CT: string;
@@ -14,6 +15,11 @@ export type ResCategory = {
   DT_UP: Date;
   DEL_AT: Date | null;
 };
+
+type ResCreateCategory = {
+  message: string;
+  data: ResCategory;
+}
 
 export type ResQuestion = {
   ID_QT: string;
@@ -46,6 +52,35 @@ export async function getCategories(): Promise<
   return await service_api
     .get<ResCategory[]>(`/category/all`)
     .then(({ data, status }) => ({ status, data }))
+    .catch(handleApiError);
+}
+
+export async function editCategory(
+  category: z.infer<typeof UpdateCategoryFormSchema>,
+  ID_CT: string
+): Promise<ResCreateCategory & DefaultParamsResponse> {
+  return await service_api
+    .patch(`/category/update/${ID_CT}`, category)
+    .then(({ data, status }) => ({ ...data, status }))
+    .catch(handleApiError);
+}
+
+export async function deleteCategory(
+  ID_CT: string
+): Promise<{ message: string } & DefaultParamsResponse> {
+  return await service_api
+    .patch(`/category/delete/${ID_CT}`)
+    .then(({ data, status }) => ({ ...data, status }))
+    .catch(handleApiError);
+}
+
+
+export async function RestoreCategory(
+  ID_CT: string,
+): Promise<Pick<ResCreateCategory, 'message'> & DefaultParamsResponse> {
+  return await service_api
+    .patch(`/category/restore/${ID_CT}`)
+    .then(({ data, status }) => ({ ...data, status }))
     .catch(handleApiError);
 }
 
