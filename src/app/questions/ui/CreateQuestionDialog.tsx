@@ -48,6 +48,7 @@ export default function CreateQuestionDialog({
 }: CreateQuestionDialogProps) {
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [open, setOpen] = useState<boolean>(false);
+  const [selectedCategory, setSelectedCategory] = useState<string | null>(null);
 
   const form = useForm<z.infer<typeof CreateQuestionFormSchema>>({
     resolver: zodResolver(CreateQuestionFormSchema),
@@ -120,14 +121,15 @@ export default function CreateQuestionDialog({
                 name="ID_CT"
                 render={({ field }) => (
                   <FormItem>
-                    <div className="flex flex-col items-center gap-3 md:flex-row">
+                    <div className="flex flex-col items-center gap-3 md:flex-row w-full">
                       <FormLabel className="pl-3 text-base md:text-lg">
                         Categoria:
                       </FormLabel>
                       <FormControl>
                         <CategorySelect
-                          value={field.value}
-                          onChange={field.onChange}
+                          selectedCategory={selectedCategory}
+                          setSelectedCategory={setSelectedCategory}
+                          setSearch={field.onChange}
                         />
                       </FormControl>
                     </div>

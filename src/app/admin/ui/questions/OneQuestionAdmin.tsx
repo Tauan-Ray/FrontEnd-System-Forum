@@ -183,6 +183,7 @@ export default function OneQuestionAdmin({
                 <Button
                   className="w-full bg-blue-light p-4 text-sm sm:w-auto sm:text-base"
                   onClick={open}
+                  disabled={!!DEL_AT}
                 >
                   Editar
                 </Button>

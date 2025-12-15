@@ -12,6 +12,7 @@ import {
   AccordionContent,
   AccordionTrigger,
 } from "@/components/ui/accordion";
+import { useState } from "react";
 
 type FilterQuestionsProps = {
   search: searchParams;
@@ -23,29 +24,33 @@ export default function FilterQuestions({
   setSearch,
 }: FilterQuestionsProps) {
   const today = new Date().toLocaleDateString("en-CA");
+  const [selectedCategory, setSelectedCategory] = useState<string | null>(null);
 
   const hasFiltersApplied =
     search.registerStart || search.registerEnd || search.search || search.ID_CT;
 
-  const handleClearFilters = () => setSearch(defaultParams);
+  const handleClearFilters = () => {
+    setSearch(defaultParams);
+    setSelectedCategory(null);
+  };
   return (
-    <div className="w-full rounded-xl bg-white shadow-sm p-4 sm:p-6 space-y-6">
+    <div className="w-full space-y-6 rounded-xl bg-white p-4 shadow-sm sm:p-6">
       <Accordion type="single" collapsible defaultValue="filters-accordion">
         <AccordionItem value="filters-accordion">
           <div className="grid grid-cols-12 gap-2">
             <div
               className={`${
                 hasFiltersApplied
-                  ? "md:col-span-11 col-span-8 md:pr-12 sm:pr-0 pr-4"
+                  ? "col-span-8 pr-4 sm:pr-0 md:col-span-11 md:pr-12"
                   : "col-span-12"
               }`}
             >
-              <AccordionTrigger className="text-2xl font-bold p-1 col-span-2">
+              <AccordionTrigger className="col-span-2 p-1 text-2xl font-bold">
                 Filtros
               </AccordionTrigger>
             </div>
             {hasFiltersApplied && (
-              <div className="md:col-span-1 col-span-4 flex items-center justify-end gap-3">
+              <div className="col-span-4 flex items-center justify-end gap-3 md:col-span-1">
                 <Button
                   variant="link"
                   onClick={handleClearFilters}
@@ -58,17 +63,8 @@ export default function FilterQuestions({
             )}
           </div>
           <AccordionContent>
-            <div
-              className="
-                grid
-                grid-cols-1
-                sm:grid-cols-2
-                gap-6
-                px-1 pt-2
-              "
-            >
-
-              <div className="flex flex-col gap-2 ">
+            <div className="grid grid-cols-1 gap-6 px-1 pt-2 sm:grid-cols-2">
+              <div className="flex flex-col gap-2">
                 <Label htmlFor="content">Conteúdo</Label>
                 <Input
                   id="content"
@@ -88,7 +84,11 @@ export default function FilterQuestions({
 
               <div className="flex flex-col gap-2">
                 <Label>Categoria</Label>
-                <CategorySelect search={search} setSearch={(value: string) => setSearch((prev) => ({ ...prev, ID_CT: value }))} />
+                <CategorySelect
+                  setSelectedCategory={setSelectedCategory}
+                  selectedCategory={selectedCategory}
+                  setSearch={(value) =>  setSearch((prev) => ({ ...prev, ID_CT: value }))}
+                />
               </div>
 
               <div className="flex flex-col gap-2">
@@ -106,7 +106,7 @@ export default function FilterQuestions({
                     }))
                   }
                   max={today}
-                  className="h-11 block"
+                  className="block h-11"
                 />
               </div>
 
@@ -125,7 +125,7 @@ export default function FilterQuestions({
                     }))
                   }
                   max={today}
-                  className="h-11 block"
+                  className="block h-11"
                 />
               </div>
             </div>

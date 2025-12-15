@@ -1,35 +1,41 @@
 "use client";
 
-import {
-  Select,
-  SelectContent,
-  SelectGroup,
-  SelectItem,
-  SelectLabel,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select";
 import { useEffect, useState } from "react";
 import { getCategories, ResCategory } from "../lib/sessions";
-import { searchParams } from "../lib/types";
+import {
+  Popover,
+  PopoverContent,
+  PopoverTrigger,
+} from "@/components/ui/popover";
+import {
+  Command,
+  CommandDialog,
+  CommandEmpty,
+  CommandGroup,
+  CommandInput,
+  CommandItem,
+  CommandList,
+} from "@/components/ui/command";
+import { Skeleton } from "@/components/ui/skeleton";
+import { Check } from "lucide-react";
+import { DialogTitle } from "@/components/ui/dialog";
+import { Input } from "@/components/ui/input";
+import { Button } from "@/components/ui/button";
 
-type CategorySelectProps =
-  | {
-      search: searchParams;
-      setSearch: (value: string) => void;
-      value?: never;
-      onChange?: never;
-    }
-  | {
-      value?: string;
-      onChange?: (value: string) => void;
-      search?: never;
-      setSearch?: never;
-    };
+type CategorySelectProps = {
+  setSelectedCategory: (value: string | null) => void;
+  selectedCategory: string | null;
+  setSearch: (value: string) => void;
+};
 
-export default function CategorySelect(props: CategorySelectProps) {
+export default function CategorySelect({
+  setSearch,
+  selectedCategory,
+  setSelectedCategory,
+}: CategorySelectProps) {
   const [allCategories, setAllCategories] = useState<ResCategory[]>([]);
   const [isLoading, setIsLoading] = useState<boolean>(false);
+  const [open, setOpen] = useState<boolean>(false);
 
   useEffect(() => {
     setIsLoading(true);
@@ -37,7 +43,8 @@ export default function CategorySelect(props: CategorySelectProps) {
     getCategories()
       .then((res) => {
         if (res?.data) {
-          setAllCategories(res.data);
+          const categories = res.data._data;
+          setAllCategories(categories);
         }
       })
       .finally(() => {
@@ -45,38 +52,41 @@ export default function CategorySelect(props: CategorySelectProps) {
       });
   }, []);
 
-  const handleChange = (value: string) => {
-    if (props?.setSearch) {
-      props.setSearch(value);
-    } else if (props.onChange) {
-      props.onChange(value);
-    }
-  };
-
-  const currentValue =
-    props?.search
-      ? props.search.ID_CT || ""
-      : props.value || "";
-
   return (
-    <Select
-      onValueChange={handleChange}
-      value={currentValue}
-      disabled={isLoading}
-    >
-      <SelectTrigger>
-        <SelectValue placeholder={isLoading ? "Carregando..." : "Selecione"} />
-      </SelectTrigger>
-      <SelectContent>
-        <SelectGroup>
-          <SelectLabel>Categorias</SelectLabel>
-          {allCategories.map((category) => (
-            <SelectItem key={category.ID_CT} value={category.ID_CT}>
-              {category.CATEGORY}
-            </SelectItem>
-          ))}
-        </SelectGroup>
-      </SelectContent>
-    </Select>
+    <>
+      <Button
+        variant={"outline"}
+        className="flex items-start justify-start text-gray-medium hover:bg-white max-w-xs w-full"
+        onClick={() => setOpen(true)}
+        disabled={isLoading}
+        type="button"
+      >
+        {selectedCategory ?? "Selecione uma categoria"}
+      </Button>
+      <CommandDialog open={open} onOpenChange={setOpen}>
+        <DialogTitle />
+        <CommandInput placeholder="Procure por uma categoria..." />
+        <CommandList>
+          <CommandEmpty>Nenhuma categoria encontrada.</CommandEmpty>
+          <CommandGroup heading="Categorias">
+            {allCategories.map((category) => (
+              <CommandItem
+                key={category.ID_CT}
+                onSelect={() => {
+                  setSelectedCategory(category.CATEGORY);
+                  setSearch(category.ID_CT);
+                  setOpen(false);
+                }}
+              >
+                <span>{category.CATEGORY}</span>
+                {selectedCategory === category.CATEGORY && (
+                  <Check className="ml-auto h-4 w-4" />
+                )}
+              </CommandItem>
+            ))}
+          </CommandGroup>
+        </CommandList>
+      </CommandDialog>
+    </>
   );
 }

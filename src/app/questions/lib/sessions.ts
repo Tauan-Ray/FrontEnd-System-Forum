@@ -50,7 +50,7 @@ export async function getCategories(): Promise<
   { data: ResCategory; status: number } | DefaultParamsResponse
 > {
   return await service_api
-    .get<ResCategory[]>(`/category/all`)
+    .get<ResCategory[]>(`/category/all?limit=200`)
     .then(({ data, status }) => ({ status, data }))
     .catch(handleApiError);
 }

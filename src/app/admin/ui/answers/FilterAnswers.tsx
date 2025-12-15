@@ -12,6 +12,7 @@ import {
 } from "@/components/ui/accordion";
 import { defaultAnswerParams, searchAnswerParams } from "../../lib/types";
 import CategorySelect from "@/app/questions/ui/CategorySelect";
+import { useState } from "react";
 
 type FilterAnswersProps = {
   search: searchAnswerParams;
@@ -23,6 +24,7 @@ export default function FilterAnswers({
   setSearch,
 }: FilterAnswersProps) {
   const today = new Date().toLocaleDateString("en-CA");
+  const [selectedCategory, setSelectedCategory] = useState<string | null>(null);
 
   const hasFiltersApplied =
     search.USERNAME ||
@@ -85,7 +87,8 @@ export default function FilterAnswers({
               <div className="flex flex-col gap-2">
                 <Label>Categoria</Label>
                 <CategorySelect
-                  search={search}
+                  selectedCategory={selectedCategory}
+                  setSelectedCategory={setSelectedCategory}
                   setSearch={(value: string) =>
                     setSearch((prev) => ({ ...prev, ID_CT: value }))
                   }

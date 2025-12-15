@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import { getQuestionById, ResQuestion } from "../questions/lib/sessions";
 import { SkeletonQuestions } from "@/components/SkeletonModel";
@@ -19,16 +19,15 @@ export default function IntoQuestion({ questionId }: IntoQuestionProps) {
 
   const searchParams = useSearchParams();
   const route = useRouter();
-  const pathname = usePathname()
+  const pathname = usePathname();
 
   useEffect(() => {
     const openBox = searchParams.get("response");
-    if (openBox) setOpenResponseBox(true);
-
-    route.replace(pathname)
-
+    if (openBox) {
+      setOpenResponseBox(true);
+      route.replace(pathname);
+    }
   }, [searchParams]);
-
 
   useEffect(() => {
     setIsLoading(true);
@@ -54,7 +53,7 @@ export default function IntoQuestion({ questionId }: IntoQuestionProps) {
   }
 
   return (
-    <div className="flex flex-col gap-8 w-full">
+    <div className="flex w-full flex-col gap-8">
       <OneQuestion
         ID_USER={question.ID_USER}
         username={question.User.USERNAME}
@@ -70,7 +69,12 @@ export default function IntoQuestion({ questionId }: IntoQuestionProps) {
         DEL_AT_USER={question.User.DEL_AT}
       />
 
-      <AllAnswers openResponseBox={openResponseBox} setOpenResponseBox={setOpenResponseBox} onChangeModal={setOpenResponseBox} questionId={questionId} />
+      <AllAnswers
+        openResponseBox={openResponseBox}
+        setOpenResponseBox={setOpenResponseBox}
+        onChangeModal={setOpenResponseBox}
+        questionId={questionId}
+      />
     </div>
   );
 }
