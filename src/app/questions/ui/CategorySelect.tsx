@@ -3,12 +3,6 @@
 import { useEffect, useState } from "react";
 import { getCategories, ResCategory } from "../lib/sessions";
 import {
-  Popover,
-  PopoverContent,
-  PopoverTrigger,
-} from "@/components/ui/popover";
-import {
-  Command,
   CommandDialog,
   CommandEmpty,
   CommandGroup,
@@ -16,10 +10,8 @@ import {
   CommandItem,
   CommandList,
 } from "@/components/ui/command";
-import { Skeleton } from "@/components/ui/skeleton";
 import { Check } from "lucide-react";
 import { DialogTitle } from "@/components/ui/dialog";
-import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 
 type CategorySelectProps = {
@@ -56,7 +48,7 @@ export default function CategorySelect({
     <>
       <Button
         variant={"outline"}
-        className="flex items-start justify-start text-gray-medium hover:bg-white max-w-xs w-full"
+        className="flex items-start justify-start text-gray-medium hover:bg-white w-full max-w-xs"
         onClick={() => setOpen(true)}
         disabled={isLoading}
         type="button"

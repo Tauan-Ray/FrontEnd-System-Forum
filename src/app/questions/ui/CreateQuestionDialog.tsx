@@ -121,7 +121,7 @@ export default function CreateQuestionDialog({
                 name="ID_CT"
                 render={({ field }) => (
                   <FormItem>
-                    <div className="flex flex-col items-center gap-3 md:flex-row w-full">
+                    <div className="flex flex-col gap-3 md:flex-row md:items-center">
                       <FormLabel className="pl-3 text-base md:text-lg">
                         Categoria:
                       </FormLabel>
