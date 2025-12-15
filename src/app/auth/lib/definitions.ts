@@ -49,3 +49,8 @@ export const ResetPasswordFormSchema = z.object({
   message: 'As senhas não coincidem',
   path: ['confirmPassword']
 })
+
+export const ChangeEmailFormSchema = z.object({
+  newEmail: z.string().email().trim(),
+  token: z.string(),
+})

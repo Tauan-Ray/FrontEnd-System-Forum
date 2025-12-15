@@ -16,5 +16,6 @@ export type DefaultParamsResponse = {
   data?: any,
   status: number,
   message?: string,
+  cause?: string;
   error?: any,
 }

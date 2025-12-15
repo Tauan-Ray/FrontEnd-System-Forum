@@ -10,7 +10,7 @@ import { handleApiError } from "@/lib/client.util";
 import { DefaultParamsResponse } from "@/lib/type";
 import { email_service } from "@/service/service-aux.api";
 import { z } from "@/components/pt-zod";
-import { ResetPasswordFormSchema } from "./definitions";
+import { ChangeEmailFormSchema, ResetPasswordFormSchema } from "./definitions";
 
 type SessionPayload = {
   email: string;
@@ -285,6 +285,18 @@ export async function resetPassword(
     .post(`/update-password`, value)
     .then(({ data, status }) => ({ ...data, status }))
     .catch(handleApiError);
+}
+
+export async function changeEmail(
+  value: z.infer<typeof ChangeEmailFormSchema>
+): Promise<ResResetPasswordUser & DefaultParamsResponse> {
+  return await email_service({ "x-api-key": serviceConfig.email_api_key })
+    .post(`/change-email`, value)
+    .then(({ data, status }) => ({ ...data, status }))
+    .catch((reason) => {
+      const response = reason.response.data;
+      return { status: reason.response.status, message: response.message, cause: response.cause };
+    });
 }
 
 export async function fetcher(url: string) {
