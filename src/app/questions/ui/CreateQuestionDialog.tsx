@@ -35,7 +35,7 @@ type CreateQuestionDialogProps = {
   description?: string;
   category?: string;
   ID_QT?: string;
-  children: (open: () => void ) => React.ReactNode;
+  children: (open: () => void) => React.ReactNode;
 };
 
 export default function CreateQuestionDialog({
@@ -126,11 +126,13 @@ export default function CreateQuestionDialog({
                         Categoria:
                       </FormLabel>
                       <FormControl>
-                        <CategorySelect
-                          selectedCategory={selectedCategory}
-                          setSelectedCategory={setSelectedCategory}
-                          setSearch={field.onChange}
-                        />
+                        <div className="w-full max-w-xs">
+                          <CategorySelect
+                            selectedCategory={selectedCategory}
+                            setSelectedCategory={setSelectedCategory}
+                            setSearch={field.onChange}
+                          />
+                        </div>
                       </FormControl>
                     </div>
                     <FormError message={form.formState.errors.ID_CT?.message} />

@@ -48,7 +48,7 @@ export default function CategorySelect({
     <>
       <Button
         variant={"outline"}
-        className="flex items-start justify-start text-gray-medium hover:bg-white w-full max-w-xs"
+        className="flex w-full items-start justify-start text-gray-medium hover:bg-white"
         onClick={() => setOpen(true)}
         disabled={isLoading}
         type="button"
