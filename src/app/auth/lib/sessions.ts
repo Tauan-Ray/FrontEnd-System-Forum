@@ -260,6 +260,15 @@ export async function sendForgotPasswordEmail(
     .catch(handleApiError);
 }
 
+export async function sendChangeEmail(
+  email: string
+): Promise<DefaultParamsResponse> {
+  return await email_service({ "x-api-key": serviceConfig.email_api_key })
+    .get(`/email/change-email/${email}`)
+    .then(({ data, status }) => ({ data, status }))
+    .catch(handleApiError);
+}
+
 export async function verifyToken(
   token: string
 ): Promise<DefaultParamsResponse> {

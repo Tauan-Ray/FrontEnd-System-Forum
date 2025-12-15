@@ -19,6 +19,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { UpdateInfosUserAction } from "@/app/perfil/actions/UpdateUserActions";
 import { Label } from "@/components/ui/label";
 import ForgotPasswordDialog from "@/app/auth/ui/ForgotPasswordDialog";
+import ButtonChangeEmail from "@/app/perfil/ui/profile/ButtonChangeEmail";
 
 type EditUserFormProps = {
   ID_USER: string;
@@ -52,8 +53,8 @@ export default function EditUserForm({
     setIsLoading(false);
 
     if (res.ok) {
-      form.reset()
-      closeDialog(true)
+      form.reset();
+      closeDialog(true);
     }
   }
 
@@ -106,15 +107,19 @@ export default function EditUserForm({
           )}
         />
 
-        <div className="flex gap-4 flex-row">
+        <div className="flex flex-row gap-4">
           <div className="flex flex-col gap-2">
             <Label>E-mail</Label>
-            <Button variant={"secondary"}>Recuperar Email</Button>
+            <ButtonChangeEmail
+              email={email}
+              isLoading={isLoading}
+              setIsLoading={(value: boolean) => setIsLoading(value)}
+            />
           </div>
 
           <div className="flex flex-col gap-2">
             <Label>Senha</Label>
-            <ForgotPasswordDialog showTrigger={'button'} email={email}/>
+            <ForgotPasswordDialog showTrigger={"button"} email={email} />
           </div>
         </div>
 

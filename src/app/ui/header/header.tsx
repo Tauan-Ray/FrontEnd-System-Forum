@@ -31,42 +31,42 @@ export default function Header() {
   };
 
   return (
-    <header className="w-full bg-white/80 border-b border-b-gray-300 p-4 sticky top-0 z-50 backdrop-blur-md">
+    <header className="sticky top-0 z-50 w-full border-b border-b-gray-300 bg-white/80 p-4 backdrop-blur-md">
       <div className="mx-auto max-w-7xl px-2 sm:px-6 lg:px-8">
-        <div className="flex h-16 items-center justify-between gap-4 flex-row-reverse md:flex-row">
+        <div className="flex h-16 flex-row-reverse items-center justify-between gap-4 md:flex-row">
           <Link
             href="/"
             title="Página inicial"
-            className="flex items-center shrink-0"
+            className="flex shrink-0 items-center"
           >
             <Image src="/logo.svg" alt="Logo" width={100} height={32} />
           </Link>
 
-          <div className="hidden md:flex items-center gap-6">
+          <div className="hidden items-center gap-6 md:flex">
             {loading && (
               <>
                 <Skeleton className="h-10 w-24 rounded-md bg-gray-300" />
-                <Skeleton className="w-8 h-8 rounded-full bg-gray-300" />
+                <Skeleton className="h-8 w-8 rounded-full bg-gray-300" />
               </>
             )}
 
             {!loading && !user && (
               <>
                 <Link href="/auth/signin">
-                  <Button className="rounded-md px-5 py-3 text-sm bg-blue-medium hover:bg-blue-hover">
+                  <Button className="rounded-md bg-blue-medium px-5 py-3 text-sm hover:bg-blue-hover">
                     Login
                   </Button>
                 </Link>
 
                 <Link href="/auth/signup">
-                  <Button className="rounded-md px-5 py-3 text-sm bg-blue-medium hover:bg-blue-hover">
+                  <Button className="rounded-md bg-blue-medium px-5 py-3 text-sm hover:bg-blue-hover">
                     Cadastro
                   </Button>
                 </Link>
 
                 <UserCircle2
                   size={32}
-                  className="text-blue-light cursor-pointer"
+                  className="cursor-pointer text-blue-light"
                   onClick={() => redirect("/auth/signin")}
                 />
               </>
@@ -74,9 +74,14 @@ export default function Header() {
 
             {!loading && user && (
               <>
+                {user?.ROLE === "ADMIN" && (
+                  <Button variant={"secondary"} asChild>
+                    <Link href={"/admin"}>Painel Administrativo</Link>
+                  </Button>
+                )}
                 <Button
                   onClick={handleLogoutUser}
-                  className="rounded-md px-5 py-3 text-sm bg-blue-medium hover:bg-blue-hover"
+                  className="rounded-md bg-blue-medium px-5 py-3 text-sm hover:bg-blue-hover"
                 >
                   Logout
                 </Button>
@@ -86,7 +91,7 @@ export default function Header() {
                   height={38}
                   src={`${webConfig.url}:${webConfig.port}/storage/${user.ID_USER}/avatar?q=${user.DT_UP}`}
                   alt={`${user.USERNAME} avatar`}
-                  className="w-10 h-10 rounded-full cursor-pointer"
+                  className="h-10 w-10 cursor-pointer rounded-full"
                   onClick={handleRedirectToProfile}
                 />
               </>
@@ -94,7 +99,7 @@ export default function Header() {
           </div>
 
           {/* Menu mobile */}
-          <div className="flex md:hidden items-center">
+          <div className="flex items-center md:hidden">
             <MenuMobile />
           </div>
         </div>

@@ -8,24 +8,27 @@ import StatisticsCards from "./StatisticsCards";
 import { useState } from "react";
 import EditUserDialog from "./EditUserDialog";
 import DeleteUserDialog from "./DeleteUserDialog";
-import Link from "next/link";
+import ButtonChangeEmail from "./ButtonChangeEmail";
 
 export default function ProfileUser() {
   const { user, loading } = useAuthStore();
   const [openChangeInfos, setOpenChangeInfos] = useState<boolean>(false);
+  const [isLoading, setIsLoading] = useState<boolean>(false);
 
   return (
-    <div className="flex flex-col h-full rounded-xl md:shadow-lg overflow-hidden max-w-md md:border md:border-gray-dark gap-14">
+    <div className="flex h-full max-w-md flex-col gap-14 overflow-hidden rounded-xl md:border md:border-gray-dark md:shadow-lg">
       {loading ? (
         <>
           <SkeletonUserProfile />
         </>
       ) : (
         <>
-          <div className="flex flex-col mx-auto mt-10 items-center">
+          <div className="mx-auto mt-10 flex flex-col items-center">
             <ProfileImage />
-            <div className="flex flex-col items-center mt-5 mb-10 text-gray-600 gap-2">
-              <h2 className="text-2xl font-semibold text-center">{user?.NAME}</h2>
+            <div className="mb-10 mt-5 flex flex-col items-center gap-2 text-gray-600">
+              <h2 className="text-center text-2xl font-semibold">
+                {user?.NAME}
+              </h2>
               <div className="flex flex-row gap-3">
                 <p>{user?.EMAIL}</p>
                 <span> - </span>
@@ -33,7 +36,8 @@ export default function ProfileUser() {
               </div>
               {user?.DT_CR && (
                 <p>
-                  Membro desde: {new Date(user.DT_CR).toLocaleDateString("pt-BR")}
+                  Membro desde:{" "}
+                  {new Date(user.DT_CR).toLocaleDateString("pt-BR")}
                 </p>
               )}
             </div>
@@ -45,16 +49,11 @@ export default function ProfileUser() {
                 Editar Perfil
               </Button>
 
-              {user?.ROLE === 'ADMIN' && (
-                <Button
-                  variant={"secondary"}
-                  className="px-12 py-5"
-                  asChild
-                >
-                  <Link href={'/admin'}>Painel Administrativo</Link>
-                </Button>
-              )}
-
+              <ButtonChangeEmail
+                email={user?.EMAIL ?? ""}
+                isLoading={isLoading}
+                setIsLoading={(value: boolean) => setIsLoading(value)}
+              />
               <EditUserDialog
                 open={openChangeInfos}
                 onChange={setOpenChangeInfos}
@@ -63,12 +62,12 @@ export default function ProfileUser() {
           </div>
 
           <div className="px-6 pb-10">
-            <h2 className="font-mono text-gray-dark text-center mb-6">
+            <h2 className="mb-6 text-center font-mono text-gray-dark">
               Avaliação de contribuições
             </h2>
             <StatisticsCards user={user} />
 
-            <div className="flex justify-center mt-10">
+            <div className="mt-10 flex justify-center">
               <DeleteUserDialog />
             </div>
           </div>

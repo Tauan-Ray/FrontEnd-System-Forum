@@ -9,7 +9,7 @@ import {
 } from "@/components/ui/dialog";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { CheckCircle } from "lucide-react";
+import { CheckCircle, Lock } from "lucide-react";
 import React, { useState } from "react";
 import { sendForgotPasswordEmail } from "../lib/sessions";
 import { Spinner } from "@/components/ui/spinner";
@@ -17,10 +17,13 @@ import { toast } from "sonner";
 
 type ForgotPasswordDialogProps = {
   email?: string;
-  showTrigger?: 'text' | 'button';
-}
+  showTrigger?: "text" | "button";
+};
 
-export default function ForgotPasswordDialog({ email: defaultEmail, showTrigger = 'text' }: ForgotPasswordDialogProps) {
+export default function ForgotPasswordDialog({
+  email: defaultEmail,
+  showTrigger = "text",
+}: ForgotPasswordDialogProps) {
   const [open, setOpen] = useState<boolean>(false);
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [emailSended, setEmailSended] = useState<boolean>(false);
@@ -28,26 +31,26 @@ export default function ForgotPasswordDialog({ email: defaultEmail, showTrigger 
 
   const onSubmit = async () => {
     if (!email.trim()) {
-      toast.warning('Erro ao enviar email', {
-        description: 'O campo de e-mail não deve estar vazio'
-      })
-      return
+      toast.warning("Erro ao enviar email", {
+        description: "O campo de e-mail não deve estar vazio",
+      });
+      return;
     }
 
     setIsLoading(true);
     const res = await sendForgotPasswordEmail(email);
 
     if (res.status === 400) {
-      toast.warning('Erro ao enviar email', {
+      toast.warning("Erro ao enviar email", {
         description: res.message,
-      })
+      });
 
       setIsLoading(false);
 
-      return
+      return;
     }
 
-    setEmailSended(true)
+    setEmailSended(true);
 
     setIsLoading(false);
   };
@@ -62,29 +65,35 @@ export default function ForgotPasswordDialog({ email: defaultEmail, showTrigger 
         }}
       >
         <DialogTrigger asChild>
-          {showTrigger === 'text' ? (
-            <span className="text-md font-sans font-bold text-blue-link pl-2 cursor-pointer hover:underline">
+          {showTrigger === "text" ? (
+            <span className="text-md cursor-pointer pl-2 font-sans font-bold text-blue-link hover:underline">
               Esqueceu sua senha?
             </span>
-          ): (
-            <Button type="button" variant={"secondary"}>Recuperar Senha</Button>
+          ) : (
+            <Button
+              variant="secondary"
+              className="flex items-center gap-2 px-12 py-5"
+              onClick={onSubmit}
+              disabled={isLoading}
+            >
+              <Lock className="h-4 w-4" />
+              Alterar senha
+            </Button>
           )}
         </DialogTrigger>
 
-        <DialogContent className="max-h-[90vh] w-full sm:max-w-md md:max-w-lg mx-auto overflow-auto rounded-2xl shadow-xl p-6">
+        <DialogContent className="mx-auto max-h-[90vh] w-full overflow-auto rounded-2xl p-6 shadow-xl sm:max-w-md md:max-w-lg">
           <DialogHeader className="flex flex-col items-center space-y-2">
-            <DialogTitle className="text-lg md:text-2xl font-semibold text-center">
+            <DialogTitle className="text-center text-lg font-semibold md:text-2xl">
               Recuperação de Senha
             </DialogTitle>
-            <DialogDescription className="text-xs md:text-sm text-center opacity-80">
+            <DialogDescription className="text-center text-xs opacity-80 md:text-sm">
               Esqueceu sua senha? Recupere ela agora!
             </DialogDescription>
           </DialogHeader>
 
           {!emailSended ? (
-            <div
-              className="w-full mt-6 flex flex-col gap-6"
-            >
+            <div className="mt-6 flex w-full flex-col gap-6">
               <div className="flex flex-col gap-2">
                 <Label className="pl-1 text-sm font-medium">E-mail</Label>
                 <Input
@@ -97,7 +106,7 @@ export default function ForgotPasswordDialog({ email: defaultEmail, showTrigger 
 
               <Button
                 disabled={isLoading}
-                className="w-full text-md py-6 rounded-xl shadow-md"
+                className="text-md w-full rounded-xl py-6 shadow-md"
                 onClick={onSubmit}
               >
                 {isLoading ? (
@@ -110,12 +119,12 @@ export default function ForgotPasswordDialog({ email: defaultEmail, showTrigger 
               </Button>
             </div>
           ) : (
-            <div className="flex flex-col items-center justify-center py-10 text-green-600 gap-3">
-              <CheckCircle className="w-12 h-12" />
+            <div className="flex flex-col items-center justify-center gap-3 py-10 text-green-600">
+              <CheckCircle className="h-12 w-12" />
               <p className="text-lg font-semibold">
                 E-mail enviado com sucesso!
               </p>
-              <p className="text-sm opacity-80 max-w-[80%] text-center">
+              <p className="max-w-[80%] text-center text-sm opacity-80">
                 Verifique sua caixa de entrada e siga as instruções para
                 redefinir sua senha.
               </p>

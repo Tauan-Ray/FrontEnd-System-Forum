@@ -20,6 +20,7 @@ import {
   LogOut,
   LogIn,
   UserPlus,
+  ShieldUser,
   Home,
   HelpCircle,
   Handshake,
@@ -55,10 +56,10 @@ export default function MenuMobile() {
     <Link
       href={href}
       onClick={() => setOpen(false)}
-      className={`flex items-center gap-3 px-3 py-2 rounded-md transition-all duration-200 ${
+      className={`flex items-center gap-3 rounded-md px-3 py-2 transition-all duration-200 ${
         pathname === href
-          ? "bg-blue-light text-white font-semibold"
-          : "hover:bg-blue-hover/10 text-gray-700"
+          ? "bg-blue-light font-semibold text-white"
+          : "text-gray-700 hover:bg-blue-hover/10"
       }`}
     >
       <Icon size={20} />
@@ -71,18 +72,17 @@ export default function MenuMobile() {
       <SheetTrigger asChild>
         <button
           aria-label="Abrir menu"
-          className="p-2 rounded-md hover:bg-gray-100 transition"
+          className="rounded-md p-2 transition hover:bg-gray-100"
         >
           <Menu size={28} className="text-blue-medium" />
         </button>
       </SheetTrigger>
 
-      <SheetContent side="left" className="bg-white w-72 sm:w-80 p-0">
-        <SheetHeader className="px-6 pt-4 pb-2 border-b">
+      <SheetContent side="left" className="w-72 bg-white p-0 sm:w-80">
+        <SheetHeader className="border-b px-6 pb-2 pt-4">
           <SheetTitle className="flex items-center gap-3">
-
             {loading && (
-              <Skeleton className="w-10 h-10 rounded-full bg-gray-300 animate-pulse" />
+              <Skeleton className="h-10 w-10 animate-pulse rounded-full bg-gray-300" />
             )}
 
             {!loading && user && (
@@ -92,16 +92,13 @@ export default function MenuMobile() {
                   height={38}
                   src={`${webConfig.url}:${webConfig.port}/storage/${user.ID_USER}/avatar?q=${user.DT_UP}`}
                   alt={`${user.USERNAME} avatar`}
-                  className="w-10 h-10 rounded-full"
+                  className="h-10 w-10 rounded-full"
                 />
               </Link>
             )}
 
             {!loading && !user && (
-              <UserCircle2
-                size={32}
-                className="text-blue-medium"
-              />
+              <UserCircle2 size={32} className="text-blue-medium" />
             )}
 
             {!loading && user ? (
@@ -120,12 +117,12 @@ export default function MenuMobile() {
             {loading
               ? "Carregando..."
               : user
-              ? "Gerencie sua conta e explore o app"
-              : "Acesse ou cadastre-se para participar"}
+                ? "Gerencie sua conta e explore o app"
+                : "Acesse ou cadastre-se para participar"}
           </SheetDescription>
         </SheetHeader>
 
-        <div className="p-6 flex flex-col gap-6 overflow-y-auto">
+        <div className="flex flex-col gap-6 overflow-y-auto p-6">
           <nav className="flex flex-col gap-2">
             <NavItem href="/" icon={Home} label="Início" />
             <NavItem href="/questions" icon={HelpCircle} label="Perguntas" />
@@ -137,9 +134,17 @@ export default function MenuMobile() {
                 label="Perfil de usuário"
               />
             )}
+
+            {!loading && user?.ROLE === "ADMIN" && (
+              <NavItem
+                href="/admin"
+                icon={ShieldUser}
+                label="Painel Administrativo"
+              />
+            )}
           </nav>
 
-          <hr className="border-gray-200 my-3" />
+          <hr className="my-3 border-gray-200" />
 
           {!loading && user && (
             <Button
@@ -155,7 +160,7 @@ export default function MenuMobile() {
           {!loading && !user && (
             <div className="flex flex-col gap-3">
               <Link href="/auth/signin" onClick={() => setOpen(false)}>
-                <Button className="w-full flex items-center justify-center gap-2 bg-blue-medium hover:bg-blue-hover">
+                <Button className="flex w-full items-center justify-center gap-2 bg-blue-medium hover:bg-blue-hover">
                   <LogIn size={18} />
                   Login
                 </Button>
@@ -164,7 +169,7 @@ export default function MenuMobile() {
               <Link href="/auth/signup" onClick={() => setOpen(false)}>
                 <Button
                   variant="outline"
-                  className="w-full flex items-center justify-center gap-2"
+                  className="flex w-full items-center justify-center gap-2"
                 >
                   <UserPlus size={18} />
                   Cadastrar-se
